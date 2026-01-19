@@ -1,0 +1,209 @@
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 98%;
+    --foreground: 30 10% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 30 10% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 10% 12%;
+
+    --primary: 30 10% 12%;
+    --primary-foreground: 40 20% 98%;
+
+    --secondary: 35 20% 94%;
+    --secondary-foreground: 30 10% 12%;
+
+    --muted: 35 15% 92%;
+    --muted-foreground: 30 8% 45%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 30 10% 12%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 30 10% 12%;
+
+    --info: 210 100% 50%;
+    --info-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 15% 88%;
+    --input: 35 15% 88%;
+    --ring: 38 92% 50%;
+
+    --radius: 0.75rem;
+
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(30 10% 12%) 0%, hsl(30 10% 22%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(30 85% 55%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(35 20% 98%) 100%);
+    --gradient-result: linear-gradient(135deg, hsl(30 10% 10%) 0%, hsl(35 15% 18%) 50%, hsl(30 10% 14%) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(30 10% 12% / 0.03);
+    --shadow-md: 0 4px 6px -1px hsl(30 10% 12% / 0.05), 0 2px 4px -2px hsl(30 10% 12% / 0.05);
+    --shadow-lg: 0 10px 15px -3px hsl(30 10% 12% / 0.08), 0 4px 6px -4px hsl(30 10% 12% / 0.05);
+    --shadow-xl: 0 20px 25px -5px hsl(30 10% 12% / 0.08), 0 8px 10px -6px hsl(30 10% 12% / 0.05);
+    --shadow-card: 0 0 0 1px hsl(35 15% 88%), 0 4px 12px -2px hsl(30 10% 12% / 0.08);
+    --shadow-hover: 0 0 0 1px hsl(38 92% 50% / 0.3), 0 8px 20px -4px hsl(30 10% 12% / 0.12);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 30 10% 8%;
+    --foreground: 40 20% 95%;
+
+    --card: 30 10% 12%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 30 10% 12%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 40 20% 95%;
+    --primary-foreground: 30 10% 8%;
+
+    --secondary: 30 10% 18%;
+    --secondary-foreground: 40 20% 95%;
+
+    --muted: 30 10% 18%;
+    --muted-foreground: 35 15% 55%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 30 10% 8%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 40 20% 95%;
+
+    --border: 30 10% 20%;
+    --input: 30 10% 20%;
+    --ring: 38 92% 50%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(40 20% 95%) 0%, hsl(35 15% 80%) 100%);
+    --gradient-result: linear-gradient(135deg, hsl(30 10% 6%) 0%, hsl(35 15% 12%) 50%, hsl(30 10% 8%) 100%);
+
+    --shadow-card: 0 0 0 1px hsl(30 10% 20%), 0 4px 12px -2px hsl(0 0% 0% / 0.3);
+    --shadow-hover: 0 0 0 1px hsl(38 92% 50% / 0.4), 0 8px 20px -4px hsl(0 0% 0% / 0.4);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Montserrat', system-ui, sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Montserrat', system-ui, sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border;
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+  }
+
+  .glass-card-hover:hover {
+    box-shadow: var(--shadow-hover);
+    @apply border-accent/30;
+  }
+
+  .result-gradient {
+    background: var(--gradient-result);
+  }
+
+  .accent-gradient {
+    background: var(--gradient-accent);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background: var(--gradient-accent);
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from { 
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to { 
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
