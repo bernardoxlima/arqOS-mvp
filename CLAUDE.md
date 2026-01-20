@@ -206,7 +206,7 @@ arqOS-mvp/
 │   │
 │   ├── shared/                   # Shared code
 │   │   ├── components/
-│   │   │   ├── ui/               # 23 shadcn/ui components
+│   │   │   ├── ui/               # 25 shadcn/ui components
 │   │   │   └── app-sidebar.tsx   # Main app sidebar
 │   │   ├── hooks/
 │   │   │   └── use-mobile.ts
@@ -249,12 +249,12 @@ arqOS-mvp/
 
 ---
 
-## shadcn/ui Components (23 installed)
+## shadcn/ui Components (25 installed)
 
 ```
-accordion, alert-dialog, avatar, badge, button, card, checkbox,
+accordion, alert, alert-dialog, avatar, badge, button, card, checkbox,
 dialog, dropdown-menu, form, input, label, scroll-area, select,
-separator, sheet, sidebar, skeleton, sonner (toast), table, tabs,
+separator, sheet, sidebar, skeleton, slider, sonner (toast), table, tabs,
 textarea, tooltip
 ```
 
@@ -373,6 +373,25 @@ presentation-images  # Private - presentation images
   - `GET /api/projects/[id]/timeline` - Timeline do projeto
 - [x] Testes unitários (33 testes - schemas)
 
+### ✅ Fase 2: Projetos - Frontend (COMPLETA)
+- [x] Página `/projetos` com lista de projetos
+- [x] Visualizações: Grade, Lista e Kanban
+- [x] Hook `useProjects` para gerenciamento de estado
+- [x] Componentes em `src/modules/projects/components/`:
+  - `ProjectCard` - Card de projeto com barra de progresso
+  - `ProjectModal` - Modal de criar/editar projeto
+  - `EmptyState` - Estado vazio
+  - `KanbanBoard` - Quadro Kanban com drag-and-drop
+  - `KanbanColumn` - Coluna do Kanban
+  - `KanbanCard` - Card do Kanban arrastável
+  - `TimeEntryModal` - Modal de registro de horas
+- [x] Filtros por status e busca por nome/cliente
+- [x] Página de detalhe do projeto (`/projetos/[id]`)
+- [x] Linha do tempo visual das etapas
+- [x] Confirmação de exclusão com AlertDialog
+
+**Nota:** Usuários autenticados são redirecionados de `/` para `/projetos` (tela principal do app).
+
 ### ✅ Fase 3: Calculadora - Backend (COMPLETA)
 - [x] Módulo calculator criado em `src/modules/calculator/`
 - [x] Types e schemas Zod para validação
@@ -471,6 +490,26 @@ presentation-images  # Private - presentation images
   - `POST /api/documents/presentations/[id]/detailing` - Gerar PPT detalhamento
   - `POST /api/documents/proposals` - Gerar proposta PDF ou Word
 
+### ✅ Fase 7: AI - Backend (COMPLETA)
+- [x] Módulo ai criado em `src/modules/ai/`
+- [x] Types: BriefingResult, BrandbookResult, ProductExtractionResult
+- [x] Types: AIError, AIRequestOptions
+- [x] Schemas Zod: briefingInputSchema, brandbookInputSchema, productExtractionSchema
+- [x] Prompts em `src/modules/ai/prompts/`:
+  - `briefing.ts` - Prompts para memorial, moodboard, referências
+  - `brandbook.ts` - Prompt para brandbook completo
+  - `product-extraction.ts` - Prompt para extrair dados de produtos
+- [x] Services em `src/modules/ai/services/`:
+  - `briefing.service.ts` - Geração de briefing com IA
+  - `brandbook.service.ts` - Geração de brandbook com IA
+  - `product-extraction.service.ts` - Extração de dados de produtos
+- [x] API endpoints:
+  - `POST /api/ai/briefing` - Gerar memorial/moodboard/referência
+  - `POST /api/ai/brandbook` - Gerar brandbook completo
+  - `POST /api/ai/extract-product` - Extrair dados de link de produto
+- [x] Integração com OpenRouter (`src/shared/lib/openrouter.ts`)
+- [x] Testes unitários (73 testes - schemas + services)
+
 ### ✅ Fase 8: Dashboard - Backend (COMPLETA)
 - [x] Módulo dashboard criado em `src/modules/dashboard/`
 - [x] Types: DashboardStats, ProjectStats, BudgetStats, PresentationStats, HoursStats
@@ -492,8 +531,8 @@ presentation-images  # Private - presentation images
   - Finanças: receitas (por categoria, pago/pendente/vencido), despesas, balanço
 - [x] Testes unitários (51 testes - schemas + api)
 
-### 🔲 Fases 7, 9
-Ver `TODO.md` para detalhes completos.
+### 🔲 Fase 9: Deploy
+Ver `TODO.md` para detalhes completos (Polish UX, Performance, Deploy, Documentação).
 
 ---
 
@@ -568,4 +607,4 @@ npx shadcn@latest add [component]
 
 ---
 
-**Última atualização:** 2026-01-20 (Fase 8 Dashboard Backend + Testes - 604 testes passando)
+**Última atualização:** 2026-01-20 (Sync completo - Fases 2-3 Frontend + Fases 4-8 Backend - 640 testes)

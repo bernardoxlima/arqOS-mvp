@@ -132,7 +132,7 @@
 
 ---
 
-## 📁 FASE 2: PROJETOS
+## ✅ FASE 2: PROJETOS (COMPLETA)
 
 ### Banco de Dados ✅
 - [x] 🟢 Criar tabela de projetos
@@ -166,35 +166,35 @@
 - [x] 🟢 Criar endpoint para timeline (`GET /api/projects/[id]/timeline`)
 - [x] 🟢 Criar endpoint para time entry (`POST /api/projects/[id]/time-entry`)
 
-### Tela de Lista de Projetos
-- [ ] 🔵 Criar página de projetos
-- [ ] 🔵 Criar cabeçalho da página
-- [ ] 🔵 Criar botão alternar visualização Lista/Kanban
-- [ ] 🔵 Criar card de projeto
-- [ ] 🔵 Criar filtro por status
-- [ ] 🔵 Criar busca por nome ou cliente
-- [ ] 🔵 Criar tela vazia "nenhum projeto"
+### Tela de Lista de Projetos ✅
+- [x] 🔵 Criar página de projetos (`/projetos`)
+- [x] 🔵 Criar cabeçalho da página
+- [x] 🔵 Criar botão alternar visualização Lista/Kanban
+- [x] 🔵 Criar card de projeto (`ProjectCard`)
+- [x] 🔵 Criar filtro por status
+- [x] 🔵 Criar busca por nome ou cliente
+- [x] 🔵 Criar tela vazia "nenhum projeto" (`EmptyState`)
 
-### Tela do Kanban
-- [ ] 🔵 Criar visualização Kanban
-- [ ] 🔵 Criar colunas por etapa
-- [ ] 🔵 Implementar arrastar e soltar
-- [ ] 🔵 Criar modal para informar horas ao mover
-- [ ] 🔵 Criar indicador visual de progresso
+### Tela do Kanban ✅
+- [x] 🔵 Criar visualização Kanban (`KanbanBoard`)
+- [x] 🔵 Criar colunas por etapa (`KanbanColumn`)
+- [x] 🔵 Implementar arrastar e soltar (drag & drop nativo)
+- [x] 🔵 Criar modal para informar horas ao mover (`TimeEntryModal`)
+- [x] 🔵 Criar indicador visual de progresso
 
-### Tela de Detalhe do Projeto
-- [ ] 🔵 Criar página de detalhe do projeto
-- [ ] 🔵 Criar cabeçalho com nome e status
-- [ ] 🔵 Criar seção com dados do cliente
-- [ ] 🔵 Criar linha do tempo das etapas
-- [ ] 🔵 Criar botões de editar e deletar
+### Tela de Detalhe do Projeto ✅
+- [x] 🔵 Criar página de detalhe do projeto (`/projetos/[id]`)
+- [x] 🔵 Criar cabeçalho com nome e status
+- [x] 🔵 Criar seção com dados do cliente
+- [x] 🔵 Criar linha do tempo das etapas (timeline visual)
+- [x] 🔵 Criar botões de editar e deletar
 
-### Modais de Projeto
-- [ ] 🔵 Criar modal de criar/editar projeto
-- [ ] 🔵 Criar formulário (nome, cliente, fase)
-- [ ] 🔵 Criar modal de confirmação de exclusão
-- [ ] 🔵 Criar hook para gerenciar lista de projetos
-- [ ] 🔵 Criar hook para gerenciar projeto individual
+### Modais de Projeto ✅
+- [x] 🔵 Criar modal de criar/editar projeto (`ProjectModal`)
+- [x] 🔵 Criar formulário (nome, cliente, fase)
+- [x] 🔵 Criar modal de confirmação de exclusão (AlertDialog)
+- [x] 🔵 Criar hook para gerenciar lista de projetos (`useProjects`)
+- [x] 🔵 Criar hook para gerenciar projeto individual
 
 ### Testes de Projetos ✅
 - [x] 🟡 Testar lógica de projetos (33 schema tests)
@@ -205,7 +205,7 @@
 
 ---
 
-## 🧮 FASE 3: CALCULADORA
+## ✅ FASE 3: CALCULADORA (COMPLETA)
 
 ### Banco de Dados ✅
 - [x] 🟢 Criar tabela de configuração de preços (`lookup_data`)
@@ -573,4 +573,4 @@
 
 ---
 
-**Última atualização:** 2026-01-20 (Fase 8 Dashboard + Financeiro Frontend completos - 640 testes)
+**Última atualização:** 2026-01-20 (Fases 2-3 Frontend completas + Fases 4-8 Backend completas - 640 testes)
