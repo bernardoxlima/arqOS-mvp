@@ -493,22 +493,23 @@
 - [x] 🟢 Criar endpoint de projetos recentes (`GET /api/dashboard/projects/recent`)
 - [x] 🟢 Criar endpoint de resumo financeiro (`GET /api/dashboard/finance/summary`)
 
-### Tela do Dashboard
-- [ ] 🔵 Criar página inicial (dashboard)
-- [ ] 🔵 Criar cards de estatísticas
-- [ ] 🔵 Card: total de projetos
-- [ ] 🔵 Card: valor total faturado
-- [ ] 🔵 Card: projetos entregues
-- [ ] 🔵 Card: projetos em andamento
-- [ ] 🔵 Criar lista de projetos recentes
-- [ ] 🔵 Criar ações rápidas
+### Tela do Dashboard ✅
+- [x] 🔵 Criar página inicial (dashboard)
+- [x] 🔵 Criar cards de estatísticas
+- [x] 🔵 Card: total de projetos
+- [x] 🔵 Card: valor total faturado
+- [x] 🔵 Card: projetos entregues
+- [x] 🔵 Card: projetos em andamento
+- [x] 🔵 Criar lista de projetos recentes
+- [x] 🔵 Criar ações rápidas
 
-### Tela Financeira
-- [ ] 🔵 Criar página financeira
-- [ ] 🔵 Criar resumo financeiro
-- [ ] 🔵 Criar gráfico de receitas
-- [ ] 🔵 Criar filtro por período
-- [ ] 🔵 Criar tabela de entradas
+### Tela Financeira ✅
+- [x] 🔵 Criar página financeira (`/dashboard/financeiro`)
+- [x] 🔵 Criar resumo financeiro (5 cards: Saldo, Recebido, Pendente, Vencido, Despesas)
+- [x] 🔵 Criar gráfico de receitas (recharts - bar chart horizontal)
+- [x] 🔵 Criar filtro por período (Este Mês, Mês Anterior, 3 Meses, Ano, Personalizado)
+- [x] 🔵 Criar tabela de entradas (Receita por Projeto)
+- [x] 🔵 Criar breakdown por categoria (Receitas e Despesas com progress bars)
 
 ### Testes do Dashboard ✅
 - [x] 🟡 Testar schemas de validação (23 testes em `schemas.test.ts`)
@@ -572,4 +573,4 @@
 
 ---
 
-**Última atualização:** 2026-01-20 (Fase 8 Dashboard Backend + Testes - 604 testes)
+**Última atualização:** 2026-01-20 (Fase 8 Dashboard + Financeiro Frontend completos - 640 testes)

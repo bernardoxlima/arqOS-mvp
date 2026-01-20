@@ -42,3 +42,24 @@ export {
   getRecentProjects,
   getFinanceSummary,
 } from "./services/dashboard.service";
+
+// Hooks
+export { useDashboard, type UseDashboardReturn } from "./hooks/use-dashboard";
+
+// Components
+export {
+  MetricCard,
+  FinanceCard,
+  DashboardSkeleton,
+  RecentBudgets,
+  ActiveProjects,
+  QuickActions,
+} from "./components";
+export type {
+  MetricCardProps,
+  FinanceCardProps,
+  FinanceCardVariant,
+  RecentBudgetsProps,
+  ActiveProjectsProps,
+  QuickActionsProps,
+} from "./components";

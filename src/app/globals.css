@@ -89,3 +89,54 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ArqOS Dashboard Components */
+@layer components {
+  /* Metric Card */
+  .metric-card {
+    @apply bg-card border border-border rounded-xl p-4 space-y-1;
+  }
+  .metric-label {
+    @apply text-xs text-muted-foreground uppercase tracking-wide;
+  }
+  .metric-value {
+    @apply text-2xl font-bold;
+  }
+  .metric-subtitle {
+    @apply text-xs text-muted-foreground;
+  }
+
+  /* ArqOS Card Variants */
+  .arq-card {
+    @apply bg-card border border-border rounded-xl;
+  }
+  .arq-card-success {
+    @apply bg-emerald-50 border-emerald-200 text-emerald-900;
+  }
+  .arq-card-success.dark,
+  .dark .arq-card-success {
+    @apply bg-emerald-950 border-emerald-800 text-emerald-100;
+  }
+  .arq-card-amber {
+    @apply bg-amber-50 border-amber-200 text-amber-900;
+  }
+  .arq-card-amber.dark,
+  .dark .arq-card-amber {
+    @apply bg-amber-950 border-amber-800 text-amber-100;
+  }
+  .arq-card-error {
+    @apply bg-red-50 border-red-200 text-red-900;
+  }
+  .arq-card-error.dark,
+  .dark .arq-card-error {
+    @apply bg-red-950 border-red-800 text-red-100;
+  }
+
+  /* Progress Bar */
+  .progress-bar {
+    @apply h-1.5 bg-muted rounded-full overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full transition-all duration-300;
+  }
+}

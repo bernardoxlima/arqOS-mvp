@@ -1,117 +1,143 @@
 "use client";
 
 import { useAuth } from "@/modules/auth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { Skeleton } from "@/shared/components/ui/skeleton";
+import { useDashboard } from "@/modules/dashboard/hooks/use-dashboard";
+import {
+  MetricCard,
+  FinanceCard,
+  DashboardSkeleton,
+  RecentBudgets,
+  ActiveProjects,
+  QuickActions,
+} from "@/modules/dashboard/components";
+import { formatCurrency, formatPercentage, formatHours } from "@/shared/lib/format";
+import {
+  FileText,
+  TrendingUp,
+  Briefcase,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  XCircle,
+} from "lucide-react";
 
 export default function DashboardPage() {
-  const { profile, isLoading } = useAuth();
+  const { profile, isLoading: authLoading } = useAuth();
+  const {
+    stats,
+    recentProjects,
+    recentBudgets,
+    financeSummary,
+    isLoading: dashboardLoading,
+  } = useDashboard();
+
+  const isLoading = authLoading || dashboardLoading;
 
   if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <Skeleton className="h-8 w-48" />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-32" />
-          ))}
-        </div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
+
+  // Calculate metrics
+  const budgetsTotal = stats?.budgets.total ?? 0;
+  const budgetsDraftAndSent =
+    (stats?.budgets.byStatus.draft ?? 0) + (stats?.budgets.byStatus.sent ?? 0);
+  const approvalRate = stats?.budgets.approvalRate ?? 0;
+  const activeProjects = stats?.projects.activeCount ?? 0;
+  const pendingValue = stats?.budgets.pendingValue ?? 0;
+  const hoursThisMonth = stats?.hours.totalThisMonth ?? 0;
+
+  // Finance summary values
+  const paidAmount = financeSummary?.income.byPaymentStatus.paid ?? 0;
+  const pendingAmount = financeSummary?.income.byPaymentStatus.pending ?? 0;
+  const overdueAmount = financeSummary?.income.byPaymentStatus.overdue ?? 0;
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold tracking-tight">
-          Bem-vindo, {profile?.full_name?.split(" ")[0] || "Usuário"}!
+          Bem-vindo, {profile?.full_name?.split(" ")[0] || "Usuario"}!
         </h1>
         <p className="text-muted-foreground">
-          Aqui está um resumo do seu escritório.
+          Aqui esta um resumo do seu escritorio.
         </p>
       </div>
 
+      {/* Metric Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total de Projetos
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">0</div>
-            <p className="text-xs text-muted-foreground">
-              projetos cadastrados
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Em Andamento
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">0</div>
-            <p className="text-xs text-muted-foreground">
-              projetos ativos
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Orçamentos
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">0</div>
-            <p className="text-xs text-muted-foreground">
-              orçamentos pendentes
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Faturamento
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ 0</div>
-            <p className="text-xs text-muted-foreground">
-              este mês
-            </p>
-          </CardContent>
-        </Card>
+        <MetricCard
+          label="Orcamentos"
+          value={budgetsTotal}
+          subtitle={`${budgetsDraftAndSent} aguardando/rascunhos`}
+          icon={FileText}
+          iconColor="text-blue-500"
+        />
+        <MetricCard
+          label="Conversao"
+          value={formatPercentage(approvalRate, { alreadyPercentage: true })}
+          subtitle="taxa de aprovacao"
+          icon={TrendingUp}
+          iconColor="text-emerald-500"
+        />
+        <MetricCard
+          label="Projetos Ativos"
+          value={activeProjects}
+          subtitle={`${formatCurrency(pendingValue)} em valor`}
+          icon={Briefcase}
+          iconColor="text-purple-500"
+        />
+        <MetricCard
+          label="Horas"
+          value={formatHours(hoursThisMonth)}
+          subtitle="neste mes"
+          icon={Clock}
+          iconColor="text-amber-500"
+        />
       </div>
 
+      {/* Financial Summary */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <FinanceCard
+          label="Recebido"
+          value={formatCurrency(paidAmount)}
+          variant="success"
+          icon={CheckCircle}
+        />
+        <FinanceCard
+          label="Pendente"
+          value={formatCurrency(pendingAmount)}
+          variant="amber"
+          icon={AlertCircle}
+        />
+        {overdueAmount > 0 && (
+          <FinanceCard
+            label="Vencido"
+            value={formatCurrency(overdueAmount)}
+            variant="error"
+            icon={XCircle}
+          />
+        )}
+        {overdueAmount === 0 && (
+          <FinanceCard
+            label="Saldo"
+            value={formatCurrency(financeSummary?.balance ?? 0)}
+            variant="success"
+            icon={CheckCircle}
+          />
+        )}
+      </div>
+
+      {/* Two Column Section */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Projetos Recentes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Nenhum projeto cadastrado ainda.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Ações Rápidas</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <p className="text-sm text-muted-foreground">
-              Em breve você poderá criar projetos, orçamentos e apresentações por aqui.
-            </p>
-          </CardContent>
-        </Card>
+        <RecentBudgets budgets={recentBudgets} />
+        <ActiveProjects
+          projects={recentProjects}
+          hoursStats={stats?.hours}
+        />
       </div>
+
+      {/* Quick Actions */}
+      <QuickActions />
     </div>
   );
 }
