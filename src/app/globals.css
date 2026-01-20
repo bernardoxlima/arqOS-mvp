@@ -4,89 +4,438 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Colors */
-  --color-background: hsl(0 0% 100%);
-  --color-foreground: hsl(240 10% 3.9%);
-  --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(240 10% 3.9%);
-  --color-popover: hsl(0 0% 100%);
-  --color-popover-foreground: hsl(240 10% 3.9%);
-  --color-primary: hsl(240 5.9% 10%);
-  --color-primary-foreground: hsl(0 0% 98%);
-  --color-secondary: hsl(240 4.8% 95.9%);
-  --color-secondary-foreground: hsl(240 5.9% 10%);
-  --color-muted: hsl(240 4.8% 95.9%);
-  --color-muted-foreground: hsl(240 3.8% 46.1%);
-  --color-accent: hsl(240 4.8% 95.9%);
-  --color-accent-foreground: hsl(240 5.9% 10%);
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(0 0% 98%);
-  --color-border: hsl(240 5.9% 90%);
-  --color-input: hsl(240 5.9% 90%);
-  --color-ring: hsl(240 5.9% 10%);
-  --color-chart-1: hsl(12 76% 61%);
-  --color-chart-2: hsl(173 58% 39%);
-  --color-chart-3: hsl(197 37% 24%);
-  --color-chart-4: hsl(43 74% 66%);
-  --color-chart-5: hsl(27 87% 67%);
+  /* ===========================================
+   * ArqOS Design System - Minimalist Premium
+   * Philosophy: Black, white, grays + functional accents
+   * =========================================== */
 
-  /* Sidebar */
-  --color-sidebar: hsl(0 0% 98%);
-  --color-sidebar-foreground: hsl(240 5.3% 26.1%);
-  --color-sidebar-primary: hsl(240 5.9% 10%);
-  --color-sidebar-primary-foreground: hsl(0 0% 98%);
-  --color-sidebar-accent: hsl(240 4.8% 95.9%);
-  --color-sidebar-accent-foreground: hsl(240 5.9% 10%);
-  --color-sidebar-border: hsl(220 13% 91%);
-  --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
+  /* Core Colors - Light Mode */
+  --color-background: hsl(0 0% 98%);
+  --color-foreground: hsl(0 0% 0%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(0 0% 0%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(0 0% 0%);
+  --color-primary: hsl(0 0% 0%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: hsl(0 0% 96%);
+  --color-secondary-foreground: hsl(0 0% 15%);
+  --color-muted: hsl(0 0% 96%);
+  --color-muted-foreground: hsl(0 0% 45%);
+  --color-accent: hsl(0 0% 96%);
+  --color-accent-foreground: hsl(0 0% 15%);
+  --color-destructive: hsl(0 84% 60%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-border: hsl(0 0% 90%);
+  --color-input: hsl(0 0% 90%);
+  --color-ring: hsl(0 0% 0%);
+
+  /* Chart Colors - ArqExpress Palette */
+  --color-chart-1: hsl(262 83% 66%);  /* Violet - Briefing */
+  --color-chart-2: hsl(217 91% 60%);  /* Blue - Conceito */
+  --color-chart-3: hsl(189 94% 43%);  /* Cyan - Render */
+  --color-chart-4: hsl(142 71% 45%);  /* Green - Executivo */
+  --color-chart-5: hsl(38 92% 50%);   /* Amber - Warning */
+
+  /* Sidebar Colors */
+  --color-sidebar: hsl(0 0% 100%);
+  --color-sidebar-foreground: hsl(0 0% 25%);
+  --color-sidebar-primary: hsl(0 0% 0%);
+  --color-sidebar-primary-foreground: hsl(0 0% 100%);
+  --color-sidebar-accent: hsl(0 0% 96%);
+  --color-sidebar-accent-foreground: hsl(0 0% 15%);
+  --color-sidebar-border: hsl(0 0% 92%);
+  --color-sidebar-ring: hsl(0 0% 0%);
 
   /* Radius */
-  --radius: 0.5rem;
+  --radius: 0.375rem;
 }
 
+/* ===========================================
+ * Dark Mode
+ * =========================================== */
 .dark {
-  --color-background: hsl(240 10% 3.9%);
+  --color-background: hsl(0 0% 5%);
   --color-foreground: hsl(0 0% 98%);
-  --color-card: hsl(240 10% 3.9%);
+  --color-card: hsl(0 0% 8%);
   --color-card-foreground: hsl(0 0% 98%);
-  --color-popover: hsl(240 10% 3.9%);
+  --color-popover: hsl(0 0% 8%);
   --color-popover-foreground: hsl(0 0% 98%);
-  --color-primary: hsl(0 0% 98%);
-  --color-primary-foreground: hsl(240 5.9% 10%);
-  --color-secondary: hsl(240 3.7% 15.9%);
+  --color-primary: hsl(0 0% 100%);
+  --color-primary-foreground: hsl(0 0% 5%);
+  --color-secondary: hsl(0 0% 15%);
   --color-secondary-foreground: hsl(0 0% 98%);
-  --color-muted: hsl(240 3.7% 15.9%);
-  --color-muted-foreground: hsl(240 5% 64.9%);
-  --color-accent: hsl(240 3.7% 15.9%);
+  --color-muted: hsl(0 0% 15%);
+  --color-muted-foreground: hsl(0 0% 65%);
+  --color-accent: hsl(0 0% 15%);
   --color-accent-foreground: hsl(0 0% 98%);
-  --color-destructive: hsl(0 62.8% 30.6%);
+  --color-destructive: hsl(0 62% 30%);
   --color-destructive-foreground: hsl(0 0% 98%);
-  --color-border: hsl(240 3.7% 15.9%);
-  --color-input: hsl(240 3.7% 15.9%);
-  --color-ring: hsl(240 4.9% 83.9%);
-  --color-chart-1: hsl(220 70% 50%);
-  --color-chart-2: hsl(160 60% 45%);
-  --color-chart-3: hsl(30 80% 55%);
-  --color-chart-4: hsl(280 65% 60%);
-  --color-chart-5: hsl(340 75% 55%);
+  --color-border: hsl(0 0% 15%);
+  --color-input: hsl(0 0% 15%);
+  --color-ring: hsl(0 0% 85%);
 
-  /* Sidebar dark */
-  --color-sidebar: hsl(240 5.9% 10%);
-  --color-sidebar-foreground: hsl(240 4.8% 95.9%);
-  --color-sidebar-primary: hsl(224.3 76.3% 48%);
-  --color-sidebar-primary-foreground: hsl(0 0% 100%);
-  --color-sidebar-accent: hsl(240 3.7% 15.9%);
-  --color-sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-  --color-sidebar-border: hsl(240 3.7% 15.9%);
-  --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
+  /* Chart Colors - Dark Mode */
+  --color-chart-1: hsl(262 83% 70%);
+  --color-chart-2: hsl(217 91% 65%);
+  --color-chart-3: hsl(189 94% 50%);
+  --color-chart-4: hsl(142 71% 50%);
+  --color-chart-5: hsl(38 92% 55%);
+
+  /* Sidebar - Dark */
+  --color-sidebar: hsl(0 0% 5%);
+  --color-sidebar-foreground: hsl(0 0% 95%);
+  --color-sidebar-primary: hsl(0 0% 100%);
+  --color-sidebar-primary-foreground: hsl(0 0% 5%);
+  --color-sidebar-accent: hsl(0 0% 15%);
+  --color-sidebar-accent-foreground: hsl(0 0% 95%);
+  --color-sidebar-border: hsl(0 0% 15%);
+  --color-sidebar-ring: hsl(0 0% 85%);
 }
 
+/* ===========================================
+ * Base Styles
+ * =========================================== */
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+/* ===========================================
+ * Phase Colors (Workflow Stages)
+ * =========================================== */
+@layer utilities {
+  /* Phase Badges */
+  .phase-briefing {
+    @apply bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-300;
+  }
+  .phase-conceito {
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300;
+  }
+  .phase-render {
+    @apply bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300;
+  }
+  .phase-executivo {
+    @apply bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300;
+  }
+  .phase-decoracao {
+    @apply bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300;
+  }
+  .phase-finalizado {
+    @apply bg-gray-100 text-gray-800 dark:bg-gray-800/50 dark:text-gray-300;
+  }
+
+  /* Status Badges */
+  .status-draft {
+    @apply bg-amber-50 border border-amber-200 text-amber-800 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-300;
+  }
+  .status-sent {
+    @apply bg-blue-50 border border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-300;
+  }
+  .status-approved {
+    @apply bg-emerald-50 border border-emerald-200 text-emerald-800 dark:bg-emerald-900/20 dark:border-emerald-800 dark:text-emerald-300;
+  }
+  .status-rejected {
+    @apply bg-red-50 border border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300;
+  }
+  .status-in-progress {
+    @apply bg-blue-50 border border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-300;
+  }
+  .status-completed {
+    @apply bg-emerald-50 border border-emerald-200 text-emerald-800 dark:bg-emerald-900/20 dark:border-emerald-800 dark:text-emerald-300;
+  }
+  .status-cancelled {
+    @apply bg-gray-50 border border-gray-200 text-gray-800 dark:bg-gray-800/50 dark:border-gray-700 dark:text-gray-300;
+  }
+
+  /* Priority Indicators */
+  .priority-low {
+    @apply bg-emerald-500;
+  }
+  .priority-normal {
+    @apply bg-blue-500;
+  }
+  .priority-high {
+    @apply bg-orange-500;
+  }
+  .priority-urgent {
+    @apply bg-red-500 animate-pulse;
+  }
+
+  /* Metric Card Styles */
+  .metric-card {
+    @apply bg-card border border-border rounded-lg p-4 space-y-1;
+  }
+  .metric-label {
+    @apply text-xs text-muted-foreground uppercase tracking-wide font-medium;
+  }
+  .metric-value {
+    @apply text-2xl font-bold;
+  }
+
+  /* Phase Badge Component */
+  .phase-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-sm;
+  }
+
+  /* Status Badge Component */
+  .status-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-sm;
+  }
+
+  /* Priority Dot */
+  .priority-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+
+  /* Page Header Typography */
+  .page-title {
+    @apply text-xl font-light tracking-tight;
+  }
+  .page-subtitle {
+    @apply text-sm text-muted-foreground;
+  }
+
+  /* ArqOS Card Styles */
+  .arq-card {
+    @apply bg-card border border-border rounded-lg shadow-sm;
+  }
+  .arq-card-amber {
+    @apply bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800;
+  }
+  .arq-card-success {
+    @apply bg-emerald-50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800;
+  }
+  .arq-card-info {
+    @apply bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800;
+  }
+  .arq-card-dark {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  /* Custom Scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(0 0% 70%) transparent;
+  }
+
+  /* ===========================================
+   * Calculator Component Styles
+   * Based on legacy ArqFlow-AI design
+   * =========================================== */
+
+  /* Toggle Selection Buttons */
+  .toggle-option {
+    @apply px-4 py-2 text-sm font-medium border-2 transition-colors rounded-md;
+  }
+  .toggle-option-active {
+    @apply border-primary bg-primary text-primary-foreground;
+  }
+  .toggle-option-inactive {
+    @apply border-border hover:border-primary/50 bg-background;
+  }
+
+  /* Size Selection Cards */
+  .size-card {
+    @apply p-3 border-2 text-center transition-colors rounded-md cursor-pointer;
+  }
+  .size-card-active {
+    @apply border-primary bg-primary text-primary-foreground;
+  }
+  .size-card-inactive {
+    @apply border-border hover:border-primary/50 bg-background;
+  }
+
+  /* Service Selection Button */
+  .service-btn {
+    @apply p-4 border-2 text-left transition-all rounded-lg;
+  }
+  .service-btn-active {
+    @apply border-primary bg-primary text-primary-foreground shadow-md;
+  }
+  .service-btn-inactive {
+    @apply border-border hover:border-primary/50 hover:shadow-sm bg-card;
+  }
+
+  /* ArqOS Input Styles */
+  .arq-input {
+    @apply w-full px-3 py-2 border border-border bg-background text-sm rounded-md
+           focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary
+           placeholder:text-muted-foreground transition-colors;
+  }
+
+  /* ArqOS Button Variants */
+  .arq-btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium
+           rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .arq-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium
+           rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary;
+  }
+  .arq-btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium
+           rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           border border-border hover:bg-accent hover:text-accent-foreground;
+  }
+  .arq-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium
+           rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           hover:bg-accent hover:text-accent-foreground;
+  }
+
+  /* Calculator Result Cards */
+  .result-card {
+    @apply rounded-lg p-4 space-y-3;
+  }
+  .result-card-hours {
+    @apply bg-amber-50 border border-amber-200 text-amber-900 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-100;
+  }
+  .result-card-price {
+    @apply bg-primary text-primary-foreground;
+  }
+  .result-card-ai {
+    @apply bg-gradient-to-br from-violet-50 to-blue-50 border border-violet-200 dark:from-violet-900/20 dark:to-blue-900/20 dark:border-violet-800;
+  }
+
+  /* Health Status Badges */
+  .health-good {
+    @apply bg-emerald-500/20 text-emerald-600 dark:text-emerald-400;
+  }
+  .health-warning {
+    @apply bg-amber-500/20 text-amber-600 dark:text-amber-400;
+  }
+  .health-danger {
+    @apply bg-red-500/20 text-red-600 dark:text-red-400;
+  }
+
+  /* Reference Price Dots */
+  .price-dot-min {
+    @apply w-2 h-2 rounded-full bg-red-500;
+  }
+  .price-dot-adequate {
+    @apply w-2 h-2 rounded-full bg-amber-500;
+  }
+  .price-dot-ideal {
+    @apply w-2 h-2 rounded-full bg-emerald-500;
+  }
+}
+
+/* Scrollbar WebKit */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(0 0% 70%);
+  border-radius: 3px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: hsl(0 0% 50%);
+}
+
+/* ===========================================
+ * Animations
+ * =========================================== */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+  .animate-fade-in-up {
+    animation: fade-in-up 0.4s ease-out forwards;
+  }
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out forwards;
+  }
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s ease-out forwards;
+  }
+  .animate-slide-in-left {
+    animation: slide-in-left 0.3s ease-out forwards;
+  }
+
+  /* Staggered animations */
+  .animate-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+  .animate-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animate-delay-500 {
+    animation-delay: 500ms;
   }
 }
 

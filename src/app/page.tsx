@@ -1,17 +1,28 @@
+import Link from "next/link";
+import { Button } from "@/shared/components/ui/button";
+
 export default function Home() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-white mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="text-center animate-fade-in">
+        <div className="flex justify-center mb-6">
+          <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-primary text-primary-foreground text-2xl font-bold">
+            A
+          </div>
+        </div>
+        <h1 className="text-4xl font-light tracking-tight text-foreground mb-2">
           ArqOS
         </h1>
-        <p className="text-slate-400 text-lg">
+        <p className="text-muted-foreground text-lg mb-8">
           Sistema unificado para arquitetura e design de interiores
         </p>
-        <div className="mt-8 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
-          <p className="text-green-400 font-mono text-sm">
-            ✓ Next.js 15 + TypeScript + Tailwind CSS 4
-          </p>
+        <div className="flex gap-4 justify-center">
+          <Button asChild>
+            <Link href="/login">Entrar</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href="/cadastro">Criar conta</Link>
+          </Button>
         </div>
       </div>
     </div>
