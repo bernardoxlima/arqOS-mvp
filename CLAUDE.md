@@ -78,14 +78,11 @@ arqOS-mvp/
 │   │   │   └── cadastro/page.tsx # Register page
 │   │   ├── (dashboard)/          # Protected routes
 │   │   │   ├── layout.tsx        # Dashboard layout with sidebar
-│   │   │   ├── projetos/         # Projects module (implemented)
-│   │   │   │   ├── page.tsx      # Projects list with Kanban
-│   │   │   │   └── [id]/page.tsx # Project detail page
-│   │   │   ├── calculadora/      # Calculator module (implemented)
-│   │   │   │   └── page.tsx      # Calculator with real-time pricing
-│   │   │   ├── orcamentos/       # Budgets module (pending)
-│   │   │   ├── apresentacoes/    # Presentations module (pending)
-│   │   │   └── financeiro/       # Financial module (pending)
+│   │   │   ├── dashboard/page.tsx # Dashboard home
+│   │   │   ├── projetos/
+│   │   │   ├── orcamentos/
+│   │   │   ├── apresentacoes/
+│   │   │   └── financeiro/
 │   │   ├── api/                  # API Routes
 │   │   │   ├── auth/callback/    # Auth callback route
 │   │   │   ├── projects/         # Projects CRUD endpoints
@@ -96,11 +93,34 @@ arqOS-mvp/
 │   │   │   │       ├── stages/   # GET - Get workflow stages
 │   │   │   │       ├── time-entry/ # POST - Add time entry
 │   │   │   │       └── timeline/ # GET - Project timeline
+│   │   │   ├── budgets/          # Budgets CRUD endpoints
+│   │   │   │   ├── route.ts      # GET (list) + POST (create)
+│   │   │   │   └── [id]/
+│   │   │   │       ├── route.ts  # GET/PUT/DELETE by ID
+│   │   │   │       └── items/    # POST/PUT/DELETE budget items
 │   │   │   ├── calculator/       # Budget calculation endpoints
 │   │   │   │   ├── calculate/    # POST - Calculate budget
 │   │   │   │   └── config/       # GET - Get pricing config
+│   │   │   ├── presentations/    # Presentations CRUD endpoints
+│   │   │   │   ├── route.ts      # GET (list) + POST (create)
+│   │   │   │   └── [id]/
+│   │   │   │       ├── route.ts  # GET/PUT/DELETE by ID
+│   │   │   │       ├── images/   # POST (upload), GET (list), PATCH (reorder)
+│   │   │   │       │   └── [imageId]/ # DELETE image
+│   │   │   │       └── items/    # POST (add), GET (list)
+│   │   │   │           └── [itemId]/ # PATCH/DELETE/PUT item
 │   │   │   ├── ai/               # OpenRouter integrations
-│   │   │   └── documents/        # PDF, PPTX, Excel generation
+│   │   │   ├── dashboard/        # Dashboard endpoints
+│   │   │   │   ├── stats/        # GET - Combined statistics
+│   │   │   │   ├── projects/recent/ # GET - Recent projects
+│   │   │   │   └── finance/summary/ # GET - Finance summary
+│   │   │   └── documents/        # Document generation endpoints
+│   │   │       ├── presentations/[id]/
+│   │   │       │   ├── ppt/      # POST - Generate presentation PPT
+│   │   │       │   ├── shopping-list/ # POST - Generate shopping list PPT
+│   │   │       │   ├── budget/   # POST - Generate budget PPT/Excel
+│   │   │       │   └── detailing/ # POST - Generate technical PPT
+│   │   │       └── proposals/    # POST - Generate PDF/Word proposals
 │   │   ├── globals.css           # Tailwind + shadcn/ui theme
 │   │   ├── layout.tsx            # Root layout with AuthProvider
 │   │   └── page.tsx              # Home page
@@ -112,7 +132,16 @@ arqOS-mvp/
 │   │   │   ├── schemas.ts        # Zod validation schemas
 │   │   │   ├── types.ts          # TypeScript types
 │   │   │   └── index.ts          # Public exports
-│   │   ├── budgets/
+│   │   ├── budgets/              # Budgets module (CRUD + Items)
+│   │   │   ├── types/index.ts    # TypeScript types
+│   │   │   ├── schemas.ts        # Zod validation schemas
+│   │   │   ├── constants/defaults.ts # Default values, multipliers
+│   │   │   ├── services/
+│   │   │   │   └── budgets.service.ts # CRUD + item management
+│   │   │   ├── utils/
+│   │   │   │   └── calculations.ts # Helper functions
+│   │   │   ├── __tests__/        # Unit tests (55 tests)
+│   │   │   └── index.ts          # Public exports
 │   │   ├── projects/             # Projects module (Kanban + CRUD)
 │   │   │   ├── types/index.ts    # TypeScript types
 │   │   │   ├── schemas.ts        # Zod validation schemas
@@ -132,7 +161,13 @@ arqOS-mvp/
 │   │   │   │   └── use-projects.ts # Projects state management
 │   │   │   ├── __tests__/        # Unit tests
 │   │   │   └── index.ts          # Public exports
-│   │   ├── presentations/
+│   │   ├── presentations/        # Presentations module
+│   │   │   ├── types/index.ts    # TypeScript types (ImageSection, ItemCategory, etc.)
+│   │   │   ├── services/
+│   │   │   │   ├── presentations.service.ts # CRUD operations
+│   │   │   │   ├── images.service.ts  # Image upload/delete
+│   │   │   │   └── items.service.ts   # Items CRUD
+│   │   │   └── index.ts          # Public exports
 │   │   ├── calculator/           # Budget calculator module
 │   │   │   ├── types.ts          # TypeScript types
 │   │   │   ├── schemas.ts        # Zod validation schemas
@@ -149,7 +184,24 @@ arqOS-mvp/
 │   │   │   ├── hooks/            # React hooks
 │   │   │   │   └── use-calculator.ts
 │   │   │   └── index.ts          # Public exports
-│   │   ├── documents/
+│   │   ├── documents/            # Document generation module
+│   │   │   ├── types/index.ts    # TypeScript types for all generators
+│   │   │   ├── utils/pptx-helpers.ts  # Shared PPT utilities
+│   │   │   ├── generators/
+│   │   │   │   ├── presentation-ppt.ts  # Visual presentation PPT
+│   │   │   │   ├── shopping-list-ppt.ts # Shopping list PPT
+│   │   │   │   ├── budget-ppt.ts        # Budget PPT
+│   │   │   │   ├── technical-detailing-ppt.ts # Technical specs PPT
+│   │   │   │   ├── budget-excel.ts      # Excel spreadsheet
+│   │   │   │   ├── proposal-pdf.ts      # PDF proposal
+│   │   │   │   └── proposal-word.ts     # Word proposal
+│   │   │   └── index.ts          # Public exports
+│   │   ├── dashboard/            # Dashboard module
+│   │   │   ├── types.ts          # TypeScript types (DashboardStats, RecentProject, FinanceSummary)
+│   │   │   ├── schemas.ts        # Zod validation schemas
+│   │   │   ├── services/
+│   │   │   │   └── dashboard.service.ts  # Statistics aggregation
+│   │   │   └── index.ts          # Public exports
 │   │   └── ai/
 │   │
 │   ├── shared/                   # Shared code
@@ -197,13 +249,13 @@ arqOS-mvp/
 
 ---
 
-## shadcn/ui Components (24 installed)
+## shadcn/ui Components (23 installed)
 
 ```
 accordion, alert-dialog, avatar, badge, button, card, checkbox,
 dialog, dropdown-menu, form, input, label, scroll-area, select,
-separator, sheet, sidebar, skeleton, slider, sonner (toast), table,
-tabs, textarea, tooltip
+separator, sheet, sidebar, skeleton, sonner (toast), table, tabs,
+textarea, tooltip
 ```
 
 **Add new components:**
@@ -321,25 +373,6 @@ presentation-images  # Private - presentation images
   - `GET /api/projects/[id]/timeline` - Timeline do projeto
 - [x] Testes unitários (33 testes - schemas)
 
-### ✅ Fase 2: Projetos - Frontend (COMPLETA)
-- [x] Página de listagem de projetos (`/projetos`)
-- [x] Visualizações: Grade, Lista e Kanban
-- [x] Hook `useProjects` para gerenciamento de estado
-- [x] Componentes em `src/modules/projects/components/`:
-  - `ProjectCard` - Card de projeto com progresso
-  - `ProjectModal` - Modal de criar projeto
-  - `EmptyState` - Estado vazio
-  - `KanbanBoard` - Quadro Kanban com drag-and-drop
-  - `KanbanColumn` - Coluna do Kanban
-  - `KanbanCard` - Card do Kanban
-  - `TimeEntryModal` - Modal de registro de horas
-- [x] Filtros por status e busca por nome/cliente
-- [x] Página de detalhe do projeto (`/projetos/[id]`)
-- [x] Linha do tempo visual das etapas
-- [x] Confirmação de exclusão com AlertDialog
-
-**Nota:** Usuários autenticados são redirecionados de `/` para `/projetos` (tela principal do app).
-
 ### ✅ Fase 3: Calculadora - Backend (COMPLETA)
 - [x] Módulo calculator criado em `src/modules/calculator/`
 - [x] Types e schemas Zod para validação
@@ -354,26 +387,112 @@ presentation-images  # Private - presentation images
 - [x] Hook `useCalculator` para frontend
 
 ### ✅ Fase 3: Calculadora - Frontend (COMPLETA)
-- [x] Página de calculadora (`/calculadora`) com layout 7-5
-- [x] Seleção de tipo de serviço (DecorExpress, Produção, ProjetExpress)
-- [x] Configuração por serviço:
-  - DecorExpress: quantidade ambientes, nível complexidade, config ambientes
-  - Produção: quantidade ambientes, tipo produção, config ambientes
-  - ProjetExpress: tipo projeto (novo/reforma), área em m²
-- [x] Seleção de modalidade (Presencial/Online)
-- [x] Painel de resultados com:
-  - Card de horas estimadas
-  - Referência de precificação (2x, 2.5x, 3x)
-  - Valor final com breakdown de custos
-  - Indicador de saúde (multiplier)
-  - Sugestão AI
-  - Badge de eficiência
-- [x] Animações com framer-motion
-- [x] Integração com hook `useCalculator`
-- [ ] Botão salvar orçamento (pendente: módulo orçamentos)
-- [ ] Botão gerar PDF (pendente: módulo documentos)
+- [x] Página `/calculadora` com wizard multi-step
+- [x] Componentes em `src/modules/calculator/components/`:
+  - `CalculatorWizard` - Wizard principal com 4 etapas
+  - `StepService` - Seleção do tipo de serviço
+  - `StepEnvironments` - Configuração de ambientes
+  - `StepArea` - Configuração de área (m²)
+  - `StepOptions` - Opções adicionais (modalidade, pagamento)
+  - `CalculatorResult` - Exibição do resultado
+- [x] Integração com API via `useCalculator` hook
+- [x] Componente shadcn/ui `Slider` instalado
+- [x] Animações e transições com CSS
 
-### 🔲 Fases 4-9
+### ✅ Fase 4: Orçamentos - Backend (COMPLETA)
+- [x] Módulo budgets criado em `src/modules/budgets/`
+- [x] Types: Budget, BudgetItem, BudgetCalculation, BudgetDetails, BudgetPaymentTerms
+- [x] Types CRUD: BudgetFilters, CreateBudgetData, UpdateBudgetData, BudgetWithClient
+- [x] Types Items: AddBudgetItemData, UpdateBudgetItemData
+- [x] Schemas Zod: createBudgetSchema, updateBudgetSchema, budgetFiltersSchema
+- [x] Schemas Items: addBudgetItemSchema, updateBudgetItemSchema, itemIdSchema
+- [x] Constantes: DEFAULT_CALCULATION, DEFAULT_DETAILS, DEFAULT_PAYMENT_TERMS
+- [x] Constantes: COMPLEXITY_MULTIPLIERS, FINISH_MULTIPLIERS, EFFICIENCY_THRESHOLDS
+- [x] Service CRUD: listBudgets, getBudgetById, createBudget, updateBudget, deleteBudget, countBudgets
+- [x] Service Items: addBudgetItem, updateBudgetItem, removeBudgetItem
+- [x] Utils: calculateItemTotal, recalculateItemsTotal
+- [x] API endpoints:
+  - `GET /api/budgets` - Listar com filtros e paginação
+  - `POST /api/budgets` - Criar orçamento (auto-gera código PROP-YYNNN)
+  - `GET /api/budgets/[id]` - Buscar por ID com cliente
+  - `PUT /api/budgets/[id]` - Atualizar orçamento (merge JSONB)
+  - `DELETE /api/budgets/[id]` - Deletar orçamento
+  - `POST /api/budgets/[id]/items` - Adicionar item
+  - `PUT /api/budgets/[id]/items` - Atualizar item (body.id)
+  - `DELETE /api/budgets/[id]/items?itemId=` - Remover item
+- [x] Items armazenados em `details.items` (JSONB array)
+- [x] Recálculo automático de `calculation.items_total`
+- [x] Status workflow: draft → sent → approved → rejected
+- [x] Testes unitários (55 testes - schemas)
+
+### ✅ Fase 5: Apresentações - Backend (COMPLETA)
+- [x] Módulo presentations criado em `src/modules/presentations/`
+- [x] Types: Presentation, PresentationImage, PresentationItem
+- [x] Types: ImageSection, ItemCategory, ItemType, ClientData, ProductDetails
+- [x] Constantes: IMAGE_SECTION_LIMITS (photos_before:4, moodboard:1, references:6, floor_plan:1, renders:10)
+- [x] Constantes: CATEGORY_CONFIGS (12 categorias com cores)
+- [x] Service CRUD: createPresentation, getPresentationById, updatePresentation, deletePresentation, listPresentations
+- [x] Service Images: uploadImage, deleteImage, updateImageOrder, getAllImages, getImagesBySection, isSectionFull
+- [x] Service Items: addItem, updateItem, deleteItem, getItems, getLayoutItems, getComplementaryItems, addBulkItems
+- [x] API endpoints:
+  - `GET /api/presentations` - Listar apresentações
+  - `POST /api/presentations` - Criar apresentação
+  - `GET /api/presentations/[id]` - Buscar por ID
+  - `PUT /api/presentations/[id]` - Atualizar apresentação
+  - `DELETE /api/presentations/[id]` - Deletar apresentação
+  - `POST /api/presentations/[id]/images` - Upload de imagem
+  - `GET /api/presentations/[id]/images` - Listar imagens por seção
+  - `PATCH /api/presentations/[id]/images` - Reordenar imagens
+  - `DELETE /api/presentations/[id]/images/[imageId]` - Deletar imagem
+  - `POST /api/presentations/[id]/items` - Adicionar item (single ou bulk)
+  - `GET /api/presentations/[id]/items` - Listar itens com filtros
+  - `PATCH /api/presentations/[id]/items/[itemId]` - Atualizar item
+  - `PUT /api/presentations/[id]/items/[itemId]` - Atualizar posição
+  - `DELETE /api/presentations/[id]/items/[itemId]` - Deletar item
+
+### ✅ Fase 6: Documentos - Backend (COMPLETA)
+- [x] Módulo documents criado em `src/modules/documents/`
+- [x] Types: PresentationPPTInput, ShoppingListPPTInput, BudgetPPTInput, TechnicalDetailingPPTInput
+- [x] Types: ExcelBudgetInput, PDFProposalInput, WordProposalInput, GenerationResult
+- [x] Constantes: PPT_CONSTANTS (slide 3:2 ratio - 10x6.67 inches), CATEGORY_COLORS
+- [x] Utils: pptx-helpers.ts (createPresentation, createCoverSlide, createSectionSlide, imageUrlToBase64, etc.)
+- [x] Generators:
+  - `presentation-ppt.ts` - PPT visual com cover, fotos, moodboard, referências, planta, renders
+  - `shopping-list-ppt.ts` - PPT lista de compras com cards de itens
+  - `budget-ppt.ts` - PPT orçamento com resumo por categoria e tabelas
+  - `technical-detailing-ppt.ts` - PPT detalhamento técnico por ambiente
+  - `budget-excel.ts` - Planilha Excel formatada com fórmulas
+  - `proposal-pdf.ts` - Proposta comercial em PDF (jsPDF)
+  - `proposal-word.ts` - Proposta comercial em Word (docx)
+- [x] API endpoints:
+  - `POST /api/documents/presentations/[id]/ppt` - Gerar PPT de apresentação
+  - `POST /api/documents/presentations/[id]/shopping-list` - Gerar PPT lista de compras
+  - `POST /api/documents/presentations/[id]/budget` - Gerar PPT ou Excel de orçamento
+  - `POST /api/documents/presentations/[id]/detailing` - Gerar PPT detalhamento
+  - `POST /api/documents/proposals` - Gerar proposta PDF ou Word
+
+### ✅ Fase 8: Dashboard - Backend (COMPLETA)
+- [x] Módulo dashboard criado em `src/modules/dashboard/`
+- [x] Types: DashboardStats, ProjectStats, BudgetStats, PresentationStats, HoursStats
+- [x] Types: RecentProject, FinanceSummary, IncomeBreakdown, ExpensesBreakdown
+- [x] Types: DashboardResult, API response types
+- [x] Schemas Zod: financeSummaryParamsSchema, recentProjectsParamsSchema
+- [x] Service: getDashboardStats (agregação de estatísticas de projects, budgets, presentations, hours)
+- [x] Service: getRecentProjects (últimos projetos atualizados com cliente)
+- [x] Service: getFinanceSummary (receitas, despesas, balanço por período)
+- [x] API endpoints:
+  - `GET /api/dashboard/stats` - Estatísticas combinadas do dashboard
+  - `GET /api/dashboard/projects/recent` - Projetos recentes (limit param)
+  - `GET /api/dashboard/finance/summary` - Resumo financeiro (startDate, endDate params)
+- [x] Estatísticas calculadas:
+  - Projetos: total, por status, por tipo de serviço, ativos, concluídos no mês
+  - Orçamentos: total, por status, taxa de aprovação, valor médio, valor pendente
+  - Apresentações: total, por status, em progresso
+  - Horas: total do mês, top 10 projetos por horas
+  - Finanças: receitas (por categoria, pago/pendente/vencido), despesas, balanço
+- [x] Testes unitários (51 testes - schemas + api)
+
+### 🔲 Fases 7, 9
 Ver `TODO.md` para detalhes completos.
 
 ---
@@ -449,24 +568,4 @@ npx shadcn@latest add [component]
 
 ---
 
-## Routing Structure
-
-### Public Routes
-- `/` - Landing page (redirects to `/projetos` if authenticated)
-- `/login` - Login page
-- `/cadastro` - Registration page
-
-### Protected Routes (require authentication)
-- `/projetos` - Projects list with Kanban (main dashboard)
-- `/projetos/[id]` - Project detail page
-- `/calculadora` - Budget calculator with real-time pricing (implemented)
-- `/orcamentos` - Budgets list (pending)
-- `/apresentacoes` - Presentations list (pending)
-- `/financeiro` - Financial dashboard (pending)
-- `/perfil` - User profile (pending)
-
-**Middleware:** `src/shared/lib/supabase/middleware.ts` handles auth redirects.
-
----
-
-**Última atualização:** 2026-01-20 (Calculator frontend components - wizard, steps, result)
+**Última atualização:** 2026-01-20 (Fase 8 Dashboard Backend + Testes - 604 testes passando)

@@ -132,7 +132,7 @@
 
 ---
 
-## ✅ FASE 2: PROJETOS (Backend + Frontend COMPLETO)
+## 📁 FASE 2: PROJETOS
 
 ### Banco de Dados ✅
 - [x] 🟢 Criar tabela de projetos
@@ -147,63 +147,65 @@
 - [x] 🟢 Criar índice para busca por status
 
 ### Lógica de Projetos ✅
-- [x] 🟢 Criar lógica para listar projetos com filtros
-- [x] 🟢 Criar lógica para buscar projeto por id
-- [x] 🟢 Criar lógica para criar novo projeto
-- [x] 🟢 Criar lógica para atualizar projeto
-- [x] 🟢 Criar lógica para deletar projeto
-- [x] 🟢 Criar endpoint para listar projetos
-- [x] 🟢 Criar endpoint para criar projeto
-- [x] 🟢 Criar endpoint para buscar projeto específico
-- [x] 🟢 Criar endpoint para atualizar projeto
-- [x] 🟢 Criar endpoint para deletar projeto
+- [x] 🟢 Criar lógica para listar projetos com filtros (`listProjects`)
+- [x] 🟢 Criar lógica para buscar projeto por id (`getProjectById`)
+- [x] 🟢 Criar lógica para criar novo projeto (`createProject`)
+- [x] 🟢 Criar lógica para atualizar projeto (`updateProject`)
+- [x] 🟢 Criar lógica para deletar projeto (`deleteProject`)
+- [x] 🟢 Criar endpoint para listar projetos (`GET /api/projects`)
+- [x] 🟢 Criar endpoint para criar projeto (`POST /api/projects`)
+- [x] 🟢 Criar endpoint para buscar projeto específico (`GET /api/projects/[id]`)
+- [x] 🟢 Criar endpoint para atualizar projeto (`PUT /api/projects/[id]`)
+- [x] 🟢 Criar endpoint para deletar projeto (`DELETE /api/projects/[id]`)
 
 ### Lógica do Kanban ✅
-- [x] 🟢 Criar lógica para mover projeto entre etapas
-- [x] 🟢 Criar lógica para registrar horas na etapa
-- [x] 🟢 Criar endpoint para mover etapa
-- [x] 🟢 Criar endpoint para adicionar etapa
+- [x] 🟢 Criar lógica para mover projeto entre etapas (`kanban.ts`)
+- [x] 🟢 Criar lógica para registrar horas na etapa (`addTimeEntry`)
+- [x] 🟢 Criar endpoint para mover etapa (`POST /api/projects/[id]/stage`)
+- [x] 🟢 Criar endpoint para adicionar etapa (`POST /api/projects/[id]/stages`)
+- [x] 🟢 Criar endpoint para timeline (`GET /api/projects/[id]/timeline`)
+- [x] 🟢 Criar endpoint para time entry (`POST /api/projects/[id]/time-entry`)
 
-### Tela de Lista de Projetos ✅
-- [x] 🔵 Criar página de projetos
-- [x] 🔵 Criar cabeçalho da página
-- [x] 🔵 Criar botão alternar visualização Lista/Kanban
-- [x] 🔵 Criar card de projeto
-- [x] 🔵 Criar filtro por status
-- [x] 🔵 Criar busca por nome ou cliente
-- [x] 🔵 Criar tela vazia "nenhum projeto"
+### Tela de Lista de Projetos
+- [ ] 🔵 Criar página de projetos
+- [ ] 🔵 Criar cabeçalho da página
+- [ ] 🔵 Criar botão alternar visualização Lista/Kanban
+- [ ] 🔵 Criar card de projeto
+- [ ] 🔵 Criar filtro por status
+- [ ] 🔵 Criar busca por nome ou cliente
+- [ ] 🔵 Criar tela vazia "nenhum projeto"
 
-### Tela do Kanban ✅
-- [x] 🔵 Criar visualização Kanban
-- [x] 🔵 Criar colunas por etapa
-- [x] 🔵 Implementar arrastar e soltar
-- [x] 🔵 Criar modal para informar horas ao mover
-- [x] 🔵 Criar indicador visual de progresso
+### Tela do Kanban
+- [ ] 🔵 Criar visualização Kanban
+- [ ] 🔵 Criar colunas por etapa
+- [ ] 🔵 Implementar arrastar e soltar
+- [ ] 🔵 Criar modal para informar horas ao mover
+- [ ] 🔵 Criar indicador visual de progresso
 
-### Tela de Detalhe do Projeto ✅
-- [x] 🔵 Criar página de detalhe do projeto
-- [x] 🔵 Criar cabeçalho com nome e status
-- [x] 🔵 Criar seção com dados do cliente
-- [x] 🔵 Criar linha do tempo das etapas
-- [x] 🔵 Criar botões de editar e deletar
+### Tela de Detalhe do Projeto
+- [ ] 🔵 Criar página de detalhe do projeto
+- [ ] 🔵 Criar cabeçalho com nome e status
+- [ ] 🔵 Criar seção com dados do cliente
+- [ ] 🔵 Criar linha do tempo das etapas
+- [ ] 🔵 Criar botões de editar e deletar
 
-### Modais de Projeto ✅
-- [x] 🔵 Criar modal de criar/editar projeto
-- [x] 🔵 Criar formulário (nome, cliente, fase)
-- [x] 🔵 Criar modal de confirmação de exclusão
-- [x] 🔵 Criar hook para gerenciar lista de projetos
+### Modais de Projeto
+- [ ] 🔵 Criar modal de criar/editar projeto
+- [ ] 🔵 Criar formulário (nome, cliente, fase)
+- [ ] 🔵 Criar modal de confirmação de exclusão
+- [ ] 🔵 Criar hook para gerenciar lista de projetos
 - [ ] 🔵 Criar hook para gerenciar projeto individual
 
-### Testes de Projetos
-- [ ] 🟡 Testar lógica de projetos
-- [ ] 🟡 Testar endpoints de projetos
-- [ ] 🟡 Testar criar projeto
-- [ ] 🟡 Testar mover no Kanban
-- [ ] 🟡 Testar editar projeto
+### Testes de Projetos ✅
+- [x] 🟡 Testar lógica de projetos (33 schema tests)
+- [x] 🟡 Testar endpoints de projetos (41 API tests)
+- [x] 🟡 Testar criar projeto (covered in `api.test.ts`)
+- [x] 🟡 Testar mover no Kanban (covered in `api.test.ts`)
+- [x] 🟡 Testar editar projeto (covered in `api.test.ts`)
 
 ---
 
-## ✅ FASE 3: CALCULADORA (Backend + Frontend COMPLETO)
+## 🧮 FASE 3: CALCULADORA
 
 ### Banco de Dados ✅
 - [x] 🟢 Criar tabela de configuração de preços (`lookup_data`)
@@ -224,22 +226,24 @@
 - [x] 🟢 Criar endpoint para buscar configuração de preços
 
 ### Tela da Calculadora ✅
-- [x] 🔵 Criar página de calculadora (`/calculadora`)
-- [x] 🔵 Seleção de tipo de serviço (DecorExpress, Produção, ProjetExpress)
-- [x] 🔵 Configuração por serviço (ambientes, complexidade, área)
-- [x] 🔵 Seleção de modalidade (Presencial/Online)
-- [x] 🔵 Painel de resultados (horas, preços referência, valor final)
-- [x] 🔵 Animações com framer-motion
-- [x] 🔵 Integração com `useCalculator` hook
-- [ ] 🔵 Criar botão salvar orçamento (depende do módulo orçamentos)
-- [ ] 🔵 Criar botão gerar PDF (depende do módulo documentos)
+- [x] 🔵 Criar página de novo orçamento (`/calculadora`)
+- [x] 🔵 Criar wizard de orçamento em etapas (`CalculatorWizard`)
+- [x] 🔵 Etapa 1: Seleção do tipo de serviço (`StepService`)
+- [x] 🔵 Etapa 2: Configuração de ambientes (`StepEnvironments`)
+- [x] 🔵 Etapa 3: Configuração de área/m² (`StepArea`)
+- [x] 🔵 Etapa 4: Opções extras (modalidade, pagamento) (`StepOptions`)
+- [x] 🔵 Etapa 5: Resultado final com valor (`CalculatorResult`)
+- [ ] 🔵 Criar botão salvar orçamento (pendente)
+- [ ] 🔵 Criar botão gerar PDF (pendente)
+- [x] 🔵 Criar hook para gerenciar calculadora (`useCalculator`)
 
-### Testes da Calculadora
-- [ ] 🟡 Testar cálculo por m²
-- [ ] 🟡 Testar cálculo por cômodo
-- [ ] 🟡 Testar multiplicadores
-- [ ] 🟡 Testar endpoint de cálculo
-- [ ] 🟡 Testar fluxo completo da calculadora
+### Testes da Calculadora ✅
+- [x] 🟡 Testar schemas de validação (65 testes)
+- [x] 🟡 Testar cálculo por m² (ProjetExpress)
+- [x] 🟡 Testar cálculo por cômodo (DecorExpress/Producao)
+- [x] 🟡 Testar multiplicadores (tipo, tamanho, combinados)
+- [x] 🟡 Testar endpoint de cálculo (23 testes API)
+- [x] 🟡 Testar motor de cálculo completo (73 testes)
 
 ---
 
@@ -257,21 +261,21 @@
 - [x] 🟢 Criar regras de acesso aos orçamentos (RLS)
 - [x] 🟢 Criar regras de acesso aos itens (RLS)
 
-### Lógica de Orçamentos
-- [ ] 🟢 Criar lógica para listar orçamentos
-- [ ] 🟢 Criar lógica para buscar orçamento com itens
-- [ ] 🟢 Criar lógica para criar orçamento
-- [ ] 🟢 Criar lógica para atualizar orçamento
-- [ ] 🟢 Criar lógica para adicionar item ao orçamento
-- [ ] 🟢 Criar lógica para atualizar item
-- [ ] 🟢 Criar lógica para remover item
-- [ ] 🟢 Criar endpoint para listar orçamentos
-- [ ] 🟢 Criar endpoint para criar orçamento
-- [ ] 🟢 Criar endpoint para buscar orçamento
-- [ ] 🟢 Criar endpoint para atualizar orçamento
-- [ ] 🟢 Criar endpoint para adicionar item
-- [ ] 🟢 Criar endpoint para atualizar item
-- [ ] 🟢 Criar endpoint para remover item
+### Lógica de Orçamentos ✅
+- [x] 🟢 Criar lógica para listar orçamentos (`listBudgets`)
+- [x] 🟢 Criar lógica para buscar orçamento com itens (`getBudgetById`)
+- [x] 🟢 Criar lógica para criar orçamento (`createBudget`)
+- [x] 🟢 Criar lógica para atualizar orçamento (`updateBudget`)
+- [x] 🟢 Criar lógica para adicionar item ao orçamento (`addBudgetItem`)
+- [x] 🟢 Criar lógica para atualizar item (`updateBudgetItem`)
+- [x] 🟢 Criar lógica para remover item (`removeBudgetItem`)
+- [x] 🟢 Criar endpoint para listar orçamentos (`GET /api/budgets`)
+- [x] 🟢 Criar endpoint para criar orçamento (`POST /api/budgets`)
+- [x] 🟢 Criar endpoint para buscar orçamento (`GET /api/budgets/[id]`)
+- [x] 🟢 Criar endpoint para atualizar orçamento (`PUT /api/budgets/[id]`)
+- [x] 🟢 Criar endpoint para adicionar item (`POST /api/budgets/[id]/items`)
+- [x] 🟢 Criar endpoint para atualizar item (`PUT /api/budgets/[id]/items`)
+- [x] 🟢 Criar endpoint para remover item (`DELETE /api/budgets/[id]/items`)
 
 ### Tela de Lista de Orçamentos
 - [ ] 🔵 Criar página de orçamentos
@@ -291,12 +295,12 @@
 - [ ] 🔵 Criar botão exportar Excel
 - [ ] 🔵 Criar botão exportar PDF
 
-### Testes de Orçamentos
-- [ ] 🟡 Testar lógica de orçamentos
-- [ ] 🟡 Testar CRUD de itens
-- [ ] 🟡 Testar criar orçamento
-- [ ] 🟡 Testar adicionar itens
-- [ ] 🟡 Testar exportar
+### Testes de Orçamentos ✅
+- [x] 🟡 Testar lógica de orçamentos (55 schema + 16 calculation + 33 default tests)
+- [x] 🟡 Testar CRUD de itens (45 API tests)
+- [x] 🟡 Testar criar orçamento (covered in `api.test.ts`)
+- [x] 🟡 Testar adicionar itens (covered in `api.test.ts`)
+- [x] 🟡 Testar exportar (covered in `documents/__tests__`)
 
 ---
 
@@ -316,20 +320,21 @@
 - [x] 🟢 Criar bucket `presentation-images` (10MB, jpg/png/webp)
 - [x] 🟢 Criar regras de acesso ao storage (RLS por org)
 
-### Lógica de Apresentações
-- [ ] 🟢 Criar lógica para criar apresentação
-- [ ] 🟢 Criar lógica para buscar apresentação completa
-- [ ] 🟢 Criar lógica para atualizar apresentação
-- [ ] 🟢 Criar lógica para upload de imagem
-- [ ] 🟢 Criar lógica para deletar imagem
-- [ ] 🟢 Criar lógica para adicionar item
-- [ ] 🟢 Criar lógica para atualizar item
-- [ ] 🟢 Criar endpoint para criar apresentação
-- [ ] 🟢 Criar endpoint para buscar apresentação
-- [ ] 🟢 Criar endpoint para atualizar apresentação
-- [ ] 🟢 Criar endpoint para upload de imagem
-- [ ] 🟢 Criar endpoint para deletar imagem
-- [ ] 🟢 Criar endpoint para adicionar item
+### Lógica de Apresentações ✅
+- [x] 🟢 Criar lógica para criar apresentação (`presentations.service.ts`)
+- [x] 🟢 Criar lógica para buscar apresentação completa (`getPresentationById`)
+- [x] 🟢 Criar lógica para atualizar apresentação (`updatePresentation`)
+- [x] 🟢 Criar lógica para upload de imagem (`images.service.ts`)
+- [x] 🟢 Criar lógica para deletar imagem (`deleteImage`)
+- [x] 🟢 Criar lógica para adicionar item (`items.service.ts`)
+- [x] 🟢 Criar lógica para atualizar item (`updateItem`)
+- [x] 🟢 Criar endpoint para criar apresentação (`POST /api/presentations`)
+- [x] 🟢 Criar endpoint para buscar apresentação (`GET /api/presentations/[id]`)
+- [x] 🟢 Criar endpoint para atualizar apresentação (`PUT /api/presentations/[id]`)
+- [x] 🟢 Criar endpoint para upload de imagem (`POST /api/presentations/[id]/images`)
+- [x] 🟢 Criar endpoint para deletar imagem (`DELETE /api/presentations/[id]/images/[imageId]`)
+- [x] 🟢 Criar endpoint para adicionar item (`POST /api/presentations/[id]/items`)
+- [x] 🟢 Criar endpoint para atualizar item (`PATCH /api/presentations/[id]/items/[itemId]`)
 
 ### Tela de Lista de Apresentações
 - [ ] 🔵 Criar página de apresentações
@@ -387,34 +392,36 @@
 - [ ] 🔵 Criar preview dos slides
 - [ ] 🔵 Criar botão gerar todos os documentos
 
-### Testes de Apresentações
-- [ ] 🟡 Testar lógica de apresentações
-- [ ] 🟡 Testar upload de imagens
-- [ ] 🟡 Testar criar apresentação
-- [ ] 🟡 Testar upload + adicionar itens
+### Testes de Apresentações ✅
+- [x] 🟡 Testar lógica de apresentações (36 tests in `services.test.ts`)
+- [x] 🟡 Testar upload de imagens (images service tests)
+- [x] 🟡 Testar criar apresentação (presentations service tests)
+- [x] 🟡 Testar upload + adicionar itens (items service tests)
 
 ---
 
 ## 📄 FASE 6: DOCUMENTOS
 
-### Lógica de Geração
-- [ ] 🟢 Criar gerador de PowerPoint
-- [ ] 🟢 Gerar PPT de apresentação (capa + renders)
-- [ ] 🟢 Gerar PPT de lista de compras
-- [ ] 🟢 Gerar PPT de orçamento
-- [ ] 🟢 Gerar PPT de detalhamento técnico
-- [ ] 🟢 Criar gerador de Excel
-- [ ] 🟢 Gerar planilha de orçamento formatada
-- [ ] 🟢 Criar gerador de PDF
-- [ ] 🟢 Gerar proposta comercial em PDF
-- [ ] 🟢 Criar gerador de Word
-- [ ] 🟢 Gerar proposta comercial em Word
+### Lógica de Geração ✅
+- [x] 🟢 Criar gerador de PowerPoint (`pptxgenjs`)
+- [x] 🟢 Gerar PPT de apresentação (capa + renders) (`presentation-ppt.ts`)
+- [x] 🟢 Gerar PPT de lista de compras (`shopping-list-ppt.ts`)
+- [x] 🟢 Gerar PPT de orçamento (`budget-ppt.ts`)
+- [x] 🟢 Gerar PPT de detalhamento técnico (`technical-detailing-ppt.ts`)
+- [x] 🟢 Criar gerador de Excel (`xlsx`)
+- [x] 🟢 Gerar planilha de orçamento formatada (`budget-excel.ts`)
+- [x] 🟢 Criar gerador de PDF (`jsPDF`)
+- [x] 🟢 Gerar proposta comercial em PDF (`proposal-pdf.ts`)
+- [x] 🟢 Criar gerador de Word (`docx`)
+- [x] 🟢 Gerar proposta comercial em Word (`proposal-word.ts`)
 
-### Endpoints de Documentos
-- [ ] 🟢 Criar endpoint para gerar PowerPoint
-- [ ] 🟢 Criar endpoint para gerar Excel
-- [ ] 🟢 Criar endpoint para gerar PDF
-- [ ] 🟢 Criar endpoint para gerar Word
+### Endpoints de Documentos ✅
+- [x] 🟢 Criar endpoint para gerar PowerPoint (`POST /api/documents/presentations/[id]/ppt`)
+- [x] 🟢 Criar endpoint para gerar Excel (`POST /api/documents/presentations/[id]/budget?format=xlsx`)
+- [x] 🟢 Criar endpoint para gerar PDF (`POST /api/documents/proposals?format=pdf`)
+- [x] 🟢 Criar endpoint para gerar Word (`POST /api/documents/proposals?format=docx`)
+- [x] 🟢 Criar endpoint para lista de compras (`POST /api/documents/presentations/[id]/shopping-list`)
+- [x] 🟢 Criar endpoint para detalhamento (`POST /api/documents/presentations/[id]/detailing`)
 
 ### Tela de Exportação
 - [ ] 🔵 Criar botão de exportar com loading
@@ -423,38 +430,38 @@
 - [ ] 🔵 Integrar na página de orçamentos
 - [ ] 🔵 Criar feedback de download concluído
 
-### Testes de Documentos
-- [ ] 🟡 Testar cada gerador de documento
-- [ ] 🟡 Testar endpoints retornam arquivo
-- [ ] 🟡 Testar gerar e baixar documento
+### Testes de Documentos ✅
+- [x] 🟡 Testar cada gerador de documento (39 tests in `generators.test.ts`)
+- [x] 🟡 Testar endpoints retornam arquivo (31 tests in `api.test.ts`)
+- [x] 🟡 Testar gerar e baixar documento
 
 ---
 
 ## 🤖 FASE 7: AI
 
-### Configuração OpenRouter
-- [ ] 🟣 Criar cliente de conexão com OpenRouter
-- [ ] 🟣 Configurar variável de ambiente da API
-- [ ] 🟣 Criar tratamento de erros da API
-- [ ] 🟣 Criar tipos de resposta da IA
+### Configuração OpenRouter ✅
+- [x] 🟣 Criar cliente de conexão com OpenRouter (`src/shared/lib/openrouter.ts`)
+- [x] 🟣 Configurar variável de ambiente da API (`OPENROUTER_API_KEY`)
+- [x] 🟣 Criar tratamento de erros da API (AIError class)
+- [x] 🟣 Criar tipos de resposta da IA (`src/modules/ai/types.ts`)
 
-### AI para Briefing
-- [ ] 🟣 Criar lógica de briefing com IA
-- [ ] 🟣 Criar prompt para gerar memorial de briefing
-- [ ] 🟣 Criar prompt para gerar descrição de moodboard
-- [ ] 🟣 Criar prompt para gerar descrição de referência visual
-- [ ] 🟣 Criar endpoint de briefing com IA
+### AI para Briefing ✅
+- [x] 🟣 Criar lógica de briefing com IA (`briefing.service.ts`)
+- [x] 🟣 Criar prompt para gerar memorial de briefing
+- [x] 🟣 Criar prompt para gerar descrição de moodboard
+- [x] 🟣 Criar prompt para gerar descrição de referência visual
+- [x] 🟣 Criar endpoint de briefing com IA (`POST /api/ai/briefing`)
 
-### AI para Brandbook
-- [ ] 🟣 Criar lógica de brandbook com IA
-- [ ] 🟣 Criar prompt para gerar brandbook completo
-- [ ] 🟣 Criar endpoint de brandbook com IA
+### AI para Brandbook ✅
+- [x] 🟣 Criar lógica de brandbook com IA (`brandbook.service.ts`)
+- [x] 🟣 Criar prompt para gerar brandbook completo
+- [x] 🟣 Criar endpoint de brandbook com IA (`POST /api/ai/brandbook`)
 
-### AI para Extração de Produtos
-- [ ] 🟣 Criar lógica de extração de produtos
-- [ ] 🟣 Criar prompt para extrair dados de link de produto
-- [ ] 🟣 Extrair: nome, preço, fornecedor, imagem
-- [ ] 🟣 Criar endpoint de extração de produto
+### AI para Extração de Produtos ✅
+- [x] 🟣 Criar lógica de extração de produtos (`product-extraction.service.ts`)
+- [x] 🟣 Criar prompt para extrair dados de link de produto
+- [x] 🟣 Extrair: nome, preço, fornecedor, imagem
+- [x] 🟣 Criar endpoint de extração de produto (`POST /api/ai/extract-product`)
 
 ### Telas de AI
 - [ ] 🔵 Criar modal de briefing com IA
@@ -466,45 +473,50 @@
 - [ ] 🔵 Criar campo de link de produto
 - [ ] 🔵 Criar preenchimento automático ao colar link
 
-### Testes de AI
-- [ ] 🟡 Testar lógicas com mock da API
-- [ ] 🟡 Testar endpoints de AI
-- [ ] 🟡 Testar usar briefing com IA
+### Testes de AI ✅
+- [x] 🟡 Testar schemas de validação (48 testes)
+- [x] 🟡 Testar services com mock da API (25 testes)
+- [x] 🟡 Testar briefing (memorial, moodboard, reference)
+- [x] 🟡 Testar brandbook generation
+- [x] 🟡 Testar product extraction
 
 ---
 
 ## 📊 FASE 8: DASHBOARD
 
-### Lógica do Dashboard
-- [ ] 🟢 Criar lógica de estatísticas do dashboard
-- [ ] 🟢 Criar função para calcular totais gerais
-- [ ] 🟢 Criar função para listar projetos recentes
-- [ ] 🟢 Criar função para calcular financeiro
-- [ ] 🟢 Criar endpoint de estatísticas
-- [ ] 🟢 Criar endpoint de projetos recentes
-- [ ] 🟢 Criar endpoint de resumo financeiro
+### Lógica do Dashboard ✅
+- [x] 🟢 Criar lógica de estatísticas do dashboard (`dashboard.service.ts`)
+- [x] 🟢 Criar função para calcular totais gerais (`getDashboardStats`)
+- [x] 🟢 Criar função para listar projetos recentes (`getRecentProjects`)
+- [x] 🟢 Criar função para calcular financeiro (`getFinanceSummary`)
+- [x] 🟢 Criar endpoint de estatísticas (`GET /api/dashboard/stats`)
+- [x] 🟢 Criar endpoint de projetos recentes (`GET /api/dashboard/projects/recent`)
+- [x] 🟢 Criar endpoint de resumo financeiro (`GET /api/dashboard/finance/summary`)
 
-### Tela do Dashboard
-- [ ] 🔵 Criar página inicial (dashboard)
-- [ ] 🔵 Criar cards de estatísticas
-- [ ] 🔵 Card: total de projetos
-- [ ] 🔵 Card: valor total faturado
-- [ ] 🔵 Card: projetos entregues
-- [ ] 🔵 Card: projetos em andamento
-- [ ] 🔵 Criar lista de projetos recentes
-- [ ] 🔵 Criar ações rápidas
+### Tela do Dashboard ✅
+- [x] 🔵 Criar página inicial (dashboard)
+- [x] 🔵 Criar cards de estatísticas
+- [x] 🔵 Card: total de projetos
+- [x] 🔵 Card: valor total faturado
+- [x] 🔵 Card: projetos entregues
+- [x] 🔵 Card: projetos em andamento
+- [x] 🔵 Criar lista de projetos recentes
+- [x] 🔵 Criar ações rápidas
 
-### Tela Financeira
-- [ ] 🔵 Criar página financeira
-- [ ] 🔵 Criar resumo financeiro
-- [ ] 🔵 Criar gráfico de receitas
-- [ ] 🔵 Criar filtro por período
-- [ ] 🔵 Criar tabela de entradas
+### Tela Financeira ✅
+- [x] 🔵 Criar página financeira (`/dashboard/financeiro`)
+- [x] 🔵 Criar resumo financeiro (5 cards: Saldo, Recebido, Pendente, Vencido, Despesas)
+- [x] 🔵 Criar gráfico de receitas (recharts - bar chart horizontal)
+- [x] 🔵 Criar filtro por período (Este Mês, Mês Anterior, 3 Meses, Ano, Personalizado)
+- [x] 🔵 Criar tabela de entradas (Receita por Projeto)
+- [x] 🔵 Criar breakdown por categoria (Receitas e Despesas com progress bars)
 
-### Testes do Dashboard
-- [ ] 🟡 Testar cálculos de estatísticas
-- [ ] 🟡 Testar endpoint de estatísticas
-- [ ] 🟡 Testar dashboard carrega corretamente
+### Testes do Dashboard ✅
+- [x] 🟡 Testar schemas de validação (23 testes em `schemas.test.ts`)
+- [x] 🟡 Testar endpoints de estatísticas (28 testes em `api.test.ts`)
+- [x] 🟡 Testar projetos recentes com filtros
+- [x] 🟡 Testar resumo financeiro com período
+- [ ] 🟡 Testar dashboard carrega corretamente (E2E - pendente frontend)
 
 ---
 
@@ -526,10 +538,10 @@
 - [ ] 🔵 Carregar componentes pesados sob demanda
 
 ### Deploy
-- [ ] 🟠 Criar projeto na Vercel
-- [ ] 🟠 Configurar variáveis de ambiente de produção
+- [ ] 🟣 Criar projeto na Vercel
+- [ ] 🟣 Configurar variáveis de ambiente de produção
 - [ ] 🟠 Configurar domínio customizado
-- [ ] 🟠 Configurar Supabase de produção
+- [ ] 🟣 Configurar Supabase de produção
 - [ ] 🟠 Testar fluxos em produção
 
 ### Documentação
@@ -537,17 +549,6 @@
 - [ ] 🟠 Documentar endpoints da API
 - [ ] 🟠 Criar guia de contribuição
 - [ ] 🟠 Atualizar arquivo CLAUDE.md
-
----
-
-## 📋 BACKLOG (Futuro)
-
-- [ ] Colaboração em tempo real
-- [ ] Histórico de versões dos projetos
-- [ ] Notificações push
-- [ ] Multi-tenancy (múltiplos escritórios)
-- [ ] Integração com APIs de fornecedores
-- [ ] Aplicativo mobile
 
 ---
 
@@ -572,4 +573,4 @@
 
 ---
 
-**Última atualização:** 2026-01-20 (Fase 3 Calculadora - Backend + Frontend concluída)
+**Última atualização:** 2026-01-20 (Fase 8 Dashboard + Financeiro Frontend completos - 640 testes)
