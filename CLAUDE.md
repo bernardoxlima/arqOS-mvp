@@ -2,29 +2,29 @@
 
 ## Project Overview
 
-**ArqExpress** - Sistema unificado para escritórios de arquitetura e design de interiores.
+**ArqOS** - Sistema unificado para escritórios de arquitetura e design de interiores.
 
-Unificação de 3 repositórios:
+Unificação de 3 repositórios (agora em `/legacy/`):
 - `arqflow-ai` - Gestão de projetos, AI (briefing, brandbook), calculadora
 - `manual-de-apreenta-o-arqexpress-duplicado-v2` - Apresentações, upload de imagens, geração PPTX/Excel
 - `remix-of-budget-buddy` - Orçamentação, Kanban, geração PDF/Word
 
 ---
 
-## Tech Stack
+## Tech Stack (Implementado)
 
-| Layer | Technology |
-|-------|------------|
-| **Framework** | Next.js 16.1.4 (App Router) |
-| **Language** | TypeScript (strict) |
-| **Styling** | Tailwind CSS 4.0 |
-| **UI Components** | shadcn/ui + Radix UI |
-| **State Management** | TanStack React Query + Context |
-| **Forms** | React Hook Form + Zod |
-| **Database/Auth** | Supabase (SSR) |
-| **AI Provider** | OpenRouter (Claude, GPT, Gemini) |
-| **Document Generation** | pptxgenjs, xlsx, jsPDF, docx |
-| **Testing** | Vitest + Testing Library + Playwright |
+| Layer | Technology | Version |
+|-------|------------|---------|
+| **Framework** | Next.js (App Router) | 15.5.9 |
+| **Language** | TypeScript (strict) | 5.7.3 |
+| **Styling** | Tailwind CSS | 4.0.0 |
+| **UI Components** | shadcn/ui + Radix UI | latest |
+| **State Management** | TanStack React Query + Context | - |
+| **Forms** | React Hook Form + Zod | 7.71.1 / 4.3.5 |
+| **Database/Auth** | Supabase (SSR) | 2.91.0 |
+| **AI Provider** | OpenRouter (Claude, GPT, Gemini) | - |
+| **Document Generation** | pptxgenjs, xlsx, jsPDF, docx | - |
+| **Testing** | Vitest + Testing Library + Playwright | 4.0.17 / 1.57.0 |
 
 ---
 
@@ -66,23 +66,26 @@ For each feature, implement in this mandatory sequence:
 
 ---
 
-## Project Structure
+## Project Structure (Implementado)
 
 ```
-arqexpress/
+arqOS-mvp/
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── (auth)/             # Auth routes (login, register)
-│   │   ├── (dashboard)/        # Protected routes
+│   ├── app/                      # Next.js App Router
+│   │   ├── (auth)/               # Auth routes (login, register)
+│   │   ├── (dashboard)/          # Protected routes
 │   │   │   ├── projetos/
 │   │   │   ├── orcamentos/
 │   │   │   ├── apresentacoes/
 │   │   │   └── financeiro/
-│   │   └── api/                # API Routes
-│   │       ├── ai/             # OpenRouter integrations
-│   │       └── documents/      # PDF, PPTX, Excel generation
+│   │   ├── api/                  # API Routes
+│   │   │   ├── ai/               # OpenRouter integrations
+│   │   │   └── documents/        # PDF, PPTX, Excel generation
+│   │   ├── globals.css           # Tailwind + shadcn/ui theme
+│   │   ├── layout.tsx            # Root layout
+│   │   └── page.tsx              # Home page
 │   │
-│   ├── modules/                # Feature modules (DDD-like)
+│   ├── modules/                  # Feature modules (DDD-like)
 │   │   ├── budgets/
 │   │   ├── projects/
 │   │   ├── presentations/
@@ -90,23 +93,61 @@ arqexpress/
 │   │   ├── documents/
 │   │   └── ai/
 │   │
-│   └── shared/                 # Shared code
-│       ├── components/ui/      # shadcn/ui components
-│       ├── hooks/
-│       ├── lib/
-│       │   ├── supabase/
-│       │   ├── openrouter.ts
-│       │   └── utils.ts
-│       ├── types/
-│       └── constants/
+│   ├── shared/                   # Shared code
+│   │   ├── components/ui/        # 23 shadcn/ui components
+│   │   ├── hooks/
+│   │   │   └── use-mobile.ts
+│   │   ├── lib/
+│   │   │   ├── supabase/
+│   │   │   │   ├── client.ts     # Browser client
+│   │   │   │   ├── server.ts     # Server client
+│   │   │   │   ├── middleware.ts # Auth middleware
+│   │   │   │   └── database.types.ts
+│   │   │   └── utils.ts          # cn() helper
+│   │   ├── types/
+│   │   └── constants/
+│   │
+│   └── middleware.ts             # Next.js middleware (auth)
+│
+├── __tests__/
+│   ├── e2e/                      # Playwright tests
+│   │   └── home.spec.ts
+│   ├── integration/
+│   ├── setup.ts                  # Vitest setup
+│   └── smoke.test.ts             # Smoke test
 │
 ├── supabase/
 │   ├── migrations/
 │   └── functions/
 │
-└── __tests__/
-    ├── e2e/
-    └── integration/
+├── legacy/                       # Original repos (reference)
+│   ├── arqflow-ai/
+│   ├── manual-de-apreenta-o-arqexpress-duplicado-v2/
+│   └── remix-of-budget-buddy/
+│
+├── .env.example                  # Environment template
+├── components.json               # shadcn/ui config
+├── vitest.config.ts              # Vitest config
+├── playwright.config.ts          # Playwright config
+├── tailwind.config.ts            # Tailwind config (if needed)
+├── tsconfig.json
+└── package.json
+```
+
+---
+
+## shadcn/ui Components (23 installed)
+
+```
+accordion, alert-dialog, avatar, badge, button, card, checkbox,
+dialog, dropdown-menu, form, input, label, scroll-area, select,
+separator, sheet, sidebar, skeleton, sonner (toast), table, tabs,
+textarea, tooltip
+```
+
+**Add new components:**
+```bash
+npx shadcn@latest add [component-name]
 ```
 
 ---
@@ -114,7 +155,7 @@ arqexpress/
 ## AI Integration (OpenRouter)
 
 ```typescript
-// src/shared/lib/openrouter.ts
+// src/shared/lib/openrouter.ts (to be created)
 import OpenAI from 'openai';
 
 export const openrouter = new OpenAI({
@@ -132,22 +173,24 @@ export const openrouter = new OpenAI({
 
 ---
 
-## Current Features Status
+## Implementation Status
 
-### Working (from original repos)
-- Auth with Supabase (manual-apresentacao)
-- AI Briefing & Brandbook generation (arqflow-ai)
-- PPTX generation - 4 types (manual-apresentacao)
-- Excel budget export (manual-apresentacao)
-- PDF proposal generation (remix-budget-buddy)
-- Word proposal generation (remix-budget-buddy)
-- Pricing calculator (arqflow-ai, remix-budget-buddy)
+### ✅ Fase 0: Setup (CONCLUÍDA)
+- [x] Next.js 15.5.9 + TypeScript + Tailwind CSS 4
+- [x] Estrutura de pastas completa
+- [x] shadcn/ui com 23 componentes
+- [x] Supabase SSR (client, server, middleware)
+- [x] Vitest + Playwright configurados
+- [x] Teste de sanidade passando
 
-### To Implement
-- Unified Supabase schema for all modules
-- Persistent Kanban (currently localStorage only)
-- Real-time collaboration
-- Project versioning
+### 🔲 Fase 1: Auth (PRÓXIMA)
+- [ ] Tabela de perfis de usuário
+- [ ] Páginas de login/cadastro
+- [ ] Proteção de rotas
+- [ ] Context de autenticação
+
+### 🔲 Fases 2-9
+Ver `TODO.md` para detalhes completos.
 
 ---
 
@@ -171,12 +214,14 @@ export const openrouter = new OpenAI({
 
 ```env
 # Supabase
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 # OpenRouter
-OPENROUTER_API_KEY=
+OPENROUTER_API_KEY=your-openrouter-api-key
+
+# App
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
@@ -186,12 +231,19 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ```bash
 # Development
-npm run dev
+npm run dev           # Start dev server
+
+# Building
+npm run build         # Production build
+npm run start         # Start production server
+npm run lint          # Run ESLint
 
 # Testing
-npm run test          # Unit tests
-npm run test:e2e      # E2E tests
+npm run test          # Unit tests (watch mode)
+npm run test:run      # Unit tests (single run)
 npm run test:coverage # Coverage report
+npm run test:e2e      # E2E tests (Playwright)
+npm run test:e2e:ui   # E2E tests with UI
 
 # Database
 npx supabase db push
@@ -205,6 +257,12 @@ npx shadcn@latest add [component]
 
 ## Related Files
 
+- `TODO.md` - Task list with all phases
 - `PLANO_UNIFICACAO_NEXTJS.md` - Full migration plan
 - `supabase/migrations/` - Database schema
 - `src/shared/lib/supabase/` - Supabase client config
+- `legacy/` - Original repositories for reference
+
+---
+
+**Última atualização:** 2026-01-20

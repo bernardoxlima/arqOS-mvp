@@ -17,7 +17,14 @@
       "Bash(tree:*)",
       "Bash(cargo build:*)",
       "Bash(where:*)",
-      "Bash(git remote remove:*)"
+      "Bash(git remote remove:*)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --yes)",
+      "Bash(npm install)",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest:*)",
+      "Bash(npm run test:run:*)"
     ]
   }
 }
