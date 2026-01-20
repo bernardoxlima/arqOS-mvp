@@ -5,7 +5,19 @@
       "Bash(gh repo create:*)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git rm:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.warp.dev)",
+      "WebFetch(domain:www.warp.dev)",
+      "Bash(tree:*)",
+      "Bash(cargo build:*)",
+      "Bash(where:*)",
+      "Bash(git remote remove:*)"
     ]
   }
 }
