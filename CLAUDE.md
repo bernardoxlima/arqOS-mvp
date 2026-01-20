@@ -85,6 +85,17 @@ arqOS-mvp/
 │   │   │   └── financeiro/
 │   │   ├── api/                  # API Routes
 │   │   │   ├── auth/callback/    # Auth callback route
+│   │   │   ├── projects/         # Projects CRUD endpoints
+│   │   │   │   ├── route.ts      # GET (list) + POST (create)
+│   │   │   │   └── [id]/
+│   │   │   │       ├── route.ts  # GET/PUT/DELETE by ID
+│   │   │   │       ├── stage/    # POST - Move to stage
+│   │   │   │       ├── stages/   # GET - Get workflow stages
+│   │   │   │       ├── time-entry/ # POST - Add time entry
+│   │   │   │       └── timeline/ # GET - Project timeline
+│   │   │   ├── calculator/       # Budget calculation endpoints
+│   │   │   │   ├── calculate/    # POST - Calculate budget
+│   │   │   │   └── config/       # GET - Get pricing config
 │   │   │   ├── ai/               # OpenRouter integrations
 │   │   │   └── documents/        # PDF, PPTX, Excel generation
 │   │   ├── globals.css           # Tailwind + shadcn/ui theme
@@ -99,9 +110,24 @@ arqOS-mvp/
 │   │   │   ├── types.ts          # TypeScript types
 │   │   │   └── index.ts          # Public exports
 │   │   ├── budgets/
-│   │   ├── projects/
+│   │   ├── projects/             # Projects module (Kanban + CRUD)
+│   │   │   ├── types/index.ts    # TypeScript types
+│   │   │   ├── schemas.ts        # Zod validation schemas
+│   │   │   ├── constants/stages.ts # Workflow stages by service type
+│   │   │   ├── services/
+│   │   │   │   ├── projects.service.ts # CRUD operations
+│   │   │   │   └── kanban.ts     # Kanban operations
+│   │   │   ├── __tests__/        # Unit tests
+│   │   │   └── index.ts          # Public exports
 │   │   ├── presentations/
-│   │   ├── calculator/
+│   │   ├── calculator/           # Budget calculator module
+│   │   │   ├── types.ts          # TypeScript types
+│   │   │   ├── schemas.ts        # Zod validation schemas
+│   │   │   ├── pricing-data.ts   # Default pricing configuration
+│   │   │   ├── calculator-engine.ts # Core calculation logic
+│   │   │   ├── hooks/            # React hooks
+│   │   │   │   └── use-calculator.ts
+│   │   │   └── index.ts          # Public exports
 │   │   ├── documents/
 │   │   └── ai/
 │   │
@@ -250,7 +276,44 @@ presentation-images  # Private - presentation images
 - [x] Testes unitários (26 testes - schemas + context)
 - [x] Testes E2E (18 testes - login, cadastro, rotas)
 
-### 🔲 Fases 2-9
+### ✅ Fase 2: Projetos - Backend (COMPLETA)
+- [x] Módulo projects criado em `src/modules/projects/`
+- [x] Types: Project, ProjectStatus, ServiceType, Modality, Workflow, etc.
+- [x] Types CRUD: ProjectFilters, CreateProjectData, UpdateProjectData, ProjectWithClient
+- [x] Schemas Zod: createProjectSchema, updateProjectSchema, projectFiltersSchema
+- [x] Constantes de workflow por tipo de serviço:
+  - DecorExpress Presencial: 15 etapas
+  - DecorExpress Online: 12 etapas
+  - Produção: 5 etapas
+  - ProjetExpress: 9 etapas
+- [x] Service CRUD: listProjects, getProjectById, createProject, updateProject, deleteProject
+- [x] Service Kanban: moveProjectToStage, addTimeEntry, addCustomStage, getProjectStages, getProjectTimeline
+- [x] API endpoints:
+  - `GET /api/projects` - Listar com filtros e paginação
+  - `POST /api/projects` - Criar projeto (auto-gera código e workflow)
+  - `GET /api/projects/[id]` - Buscar por ID
+  - `PUT /api/projects/[id]` - Atualizar projeto
+  - `DELETE /api/projects/[id]` - Deletar projeto
+  - `POST /api/projects/[id]/stage` - Mover para etapa
+  - `GET /api/projects/[id]/stages` - Listar etapas do workflow
+  - `POST /api/projects/[id]/time-entry` - Registrar horas
+  - `GET /api/projects/[id]/timeline` - Timeline do projeto
+- [x] Testes unitários (33 testes - schemas)
+
+### ✅ Fase 3: Calculadora - Backend (COMPLETA)
+- [x] Módulo calculator criado em `src/modules/calculator/`
+- [x] Types e schemas Zod para validação
+- [x] Dados de preços DecorExpress (1-3 ambientes, níveis 1-3)
+- [x] Dados de preços Produção (1-3 ambientes, simples/completa)
+- [x] Dados de preços ProjetExpress por m² (novo/reforma)
+- [x] Multiplicadores: tipo ambiente (1.0-1.4x), tamanho P/M/G (1.0-1.15x)
+- [x] Multiplicadores: complexidade (0.8-1.5x), acabamento (0.9-1.4x)
+- [x] Motor de cálculo com estimativa de horas e eficiência
+- [x] Endpoint POST `/api/calculator/calculate`
+- [x] Endpoint GET `/api/calculator/config`
+- [x] Hook `useCalculator` para frontend
+
+### 🔲 Fases 4-9
 Ver `TODO.md` para detalhes completos.
 
 ---
@@ -326,4 +389,4 @@ npx shadcn@latest add [component]
 
 ---
 
-**Última atualização:** 2026-01-20
+**Última atualização:** 2026-01-20 (Projects module backend complete)

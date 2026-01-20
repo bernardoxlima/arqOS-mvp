@@ -209,19 +209,19 @@
 - [x] 🟢 Criar tabela de configuração de preços (`lookup_data`)
 - [x] 🟢 Estrutura para tipo de serviço, faixa, preço base
 - [x] 🟢 Estrutura para multiplicadores (JSONB)
-- [ ] 🟢 Popular dados padrão de preços
-- [ ] 🟢 Popular preços DecorExpress (P, M, G)
-- [ ] 🟢 Popular preços ProjetExpress por m²
-- [ ] 🟢 Popular multiplicadores (complexidade, acabamento)
+- [x] 🟢 Popular dados padrão de preços
+- [x] 🟢 Popular preços DecorExpress (P, M, G)
+- [x] 🟢 Popular preços ProjetExpress por m²
+- [x] 🟢 Popular multiplicadores (complexidade, acabamento)
 
-### Lógica de Cálculo
-- [ ] 🟢 Criar motor de cálculo de preços
-- [ ] 🟢 Criar lógica de cálculo por m²
-- [ ] 🟢 Criar lógica de cálculo por cômodo
-- [ ] 🟢 Criar lógica de aplicar multiplicadores
-- [ ] 🟢 Criar lógica de estimar horas
-- [ ] 🟢 Criar endpoint para calcular orçamento
-- [ ] 🟢 Criar endpoint para buscar configuração de preços
+### Lógica de Cálculo ✅
+- [x] 🟢 Criar motor de cálculo de preços
+- [x] 🟢 Criar lógica de cálculo por m²
+- [x] 🟢 Criar lógica de cálculo por cômodo
+- [x] 🟢 Criar lógica de aplicar multiplicadores
+- [x] 🟢 Criar lógica de estimar horas
+- [x] 🟢 Criar endpoint para calcular orçamento
+- [x] 🟢 Criar endpoint para buscar configuração de preços
 
 ### Tela da Calculadora
 - [ ] 🔵 Criar página de novo orçamento
@@ -233,7 +233,7 @@
 - [ ] 🔵 Etapa 5: Resultado final com valor
 - [ ] 🔵 Criar botão salvar orçamento
 - [ ] 🔵 Criar botão gerar PDF
-- [ ] 🔵 Criar hook para gerenciar calculadora
+- [x] 🔵 Criar hook para gerenciar calculadora (`useCalculator`)
 
 ### Testes da Calculadora
 - [ ] 🟡 Testar cálculo por m²
