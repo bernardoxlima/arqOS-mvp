@@ -239,7 +239,7 @@ presentation-images  # Private - presentation images
 - [x] RLS policies for multi-tenant isolation
 - [x] Triggers and helper functions
 
-### ✅ Fase 1: Auth (FRONTEND CONCLUÍDO)
+### ✅ Fase 1: Auth (COMPLETA)
 - [x] Tabela de perfis de usuário (já criada via migrations)
 - [x] Trigger de auto-create profile no signup
 - [x] Páginas de login/cadastro (frontend)
@@ -247,6 +247,8 @@ presentation-images  # Private - presentation images
 - [x] Context de autenticação + hook useAuth
 - [x] Layout do dashboard com sidebar
 - [x] API route de callback
+- [x] Testes unitários (26 testes - schemas + context)
+- [x] Testes E2E (18 testes - login, cadastro, rotas)
 
 ### 🔲 Fases 2-9
 Ver `TODO.md` para detalhes completos.

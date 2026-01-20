@@ -124,11 +124,11 @@
 - [x] 🔵 Redirecionar usuário não logado para login
 
 ### Testes de Auth ✅
-- [x] 🟡 Testar validação do formulário de login (schemas.test.ts)
-- [x] 🟡 Testar validação do formulário de cadastro (schemas.test.ts)
-- [x] 🟡 Testar contexto de autenticação (context.test.tsx)
-- [x] 🟡 Testar fluxo completo de login (auth.spec.ts - E2E)
-- [x] 🟡 Testar fluxo completo de cadastro (auth.spec.ts - E2E)
+- [x] 🟡 Testar validação do formulário de login (`schemas.test.ts`)
+- [x] 🟡 Testar validação do formulário de cadastro (`schemas.test.ts`)
+- [x] 🟡 Testar contexto de autenticação (`context.test.tsx`)
+- [x] 🟡 Testar fluxo completo de login (`auth.spec.ts` - E2E)
+- [x] 🟡 Testar fluxo completo de cadastro (`auth.spec.ts` - E2E)
 
 ---
 
