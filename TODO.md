@@ -90,7 +90,7 @@
 
 ---
 
-## 🔐 FASE 1: AUTH
+## ✅ FASE 1: AUTH (CONCLUÍDA)
 
 ### Banco de Dados ✅
 - [x] 🟢 Criar tabela de perfis de usuário
@@ -100,28 +100,28 @@
 - [x] 🟢 Criar regra: usuário só edita próprio perfil
 - [x] 🟢 Criar perfil automático ao cadastrar
 
-### Lógica de Autenticação
-- [ ] 🟢 Criar lógica de callback após login
-- [ ] 🟢 Criar função para buscar sessão atual
-- [ ] 🟢 Criar função para buscar dados do usuário
-- [ ] 🟢 Criar função de logout
+### Lógica de Autenticação ✅
+- [x] 🟢 Criar lógica de callback após login (`/api/auth/callback`)
+- [x] 🟢 Criar função para buscar sessão atual (AuthContext)
+- [x] 🟢 Criar função para buscar dados do usuário (fetchProfile)
+- [x] 🟢 Criar função de logout (signOut)
 
-### Tela de Login
-- [ ] 🔵 Criar página de login
-- [ ] 🔵 Criar formulário com email e senha
-- [ ] 🔵 Criar página de cadastro
-- [ ] 🔵 Criar formulário de cadastro (nome, email, senha)
-- [ ] 🔵 Adicionar validação nos campos
-- [ ] 🔵 Mostrar erros de validação
-- [ ] 🔵 Adicionar loading nos botões
+### Tela de Login ✅
+- [x] 🔵 Criar página de login (`/login`)
+- [x] 🔵 Criar formulário com email e senha
+- [x] 🔵 Criar página de cadastro (`/cadastro`)
+- [x] 🔵 Criar formulário de cadastro (nome, email, senha)
+- [x] 🔵 Adicionar validação nos campos (Zod schemas)
+- [x] 🔵 Mostrar erros de validação (FormMessage)
+- [x] 🔵 Adicionar loading nos botões (Loader2 spinner)
 
-### Proteção de Rotas
-- [ ] 🔵 Criar contexto de autenticação
-- [ ] 🔵 Criar hook useAuth
-- [ ] 🔵 Criar componente que protege páginas
-- [ ] 🔵 Criar layout para páginas públicas (login, cadastro)
-- [ ] 🔵 Criar layout para páginas protegidas (dashboard)
-- [ ] 🔵 Redirecionar usuário não logado para login
+### Proteção de Rotas ✅
+- [x] 🔵 Criar contexto de autenticação (AuthProvider)
+- [x] 🔵 Criar hook useAuth
+- [x] 🔵 Criar componente que protege páginas (middleware)
+- [x] 🔵 Criar layout para páginas públicas (`(auth)/layout.tsx`)
+- [x] 🔵 Criar layout para páginas protegidas (`(dashboard)/layout.tsx`)
+- [x] 🔵 Redirecionar usuário não logado para login
 
 ### Testes de Auth
 - [ ] 🟡 Testar validação do formulário de login
@@ -573,4 +573,4 @@
 
 ---
 
-**Última atualização:** 2026-01-20 (migrations aplicadas)
+**Última atualização:** 2026-01-20 (Fase 1 Auth concluída)

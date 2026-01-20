@@ -72,20 +72,32 @@ Unificação de 3 repositórios (agora em `/legacy/`):
 arqOS-mvp/
 ├── src/
 │   ├── app/                      # Next.js App Router
-│   │   ├── (auth)/               # Auth routes (login, register)
+│   │   ├── (auth)/               # Auth routes (public)
+│   │   │   ├── layout.tsx        # Auth layout
+│   │   │   ├── login/page.tsx    # Login page
+│   │   │   └── cadastro/page.tsx # Register page
 │   │   ├── (dashboard)/          # Protected routes
+│   │   │   ├── layout.tsx        # Dashboard layout with sidebar
+│   │   │   ├── dashboard/page.tsx # Dashboard home
 │   │   │   ├── projetos/
 │   │   │   ├── orcamentos/
 │   │   │   ├── apresentacoes/
 │   │   │   └── financeiro/
 │   │   ├── api/                  # API Routes
+│   │   │   ├── auth/callback/    # Auth callback route
 │   │   │   ├── ai/               # OpenRouter integrations
 │   │   │   └── documents/        # PDF, PPTX, Excel generation
 │   │   ├── globals.css           # Tailwind + shadcn/ui theme
-│   │   ├── layout.tsx            # Root layout
+│   │   ├── layout.tsx            # Root layout with AuthProvider
 │   │   └── page.tsx              # Home page
 │   │
 │   ├── modules/                  # Feature modules (DDD-like)
+│   │   ├── auth/                 # Authentication module
+│   │   │   ├── context.tsx       # AuthProvider + useAuthContext
+│   │   │   ├── hooks/use-auth.ts # useAuth hook
+│   │   │   ├── schemas.ts        # Zod validation schemas
+│   │   │   ├── types.ts          # TypeScript types
+│   │   │   └── index.ts          # Public exports
 │   │   ├── budgets/
 │   │   ├── projects/
 │   │   ├── presentations/
@@ -94,7 +106,9 @@ arqOS-mvp/
 │   │   └── ai/
 │   │
 │   ├── shared/                   # Shared code
-│   │   ├── components/ui/        # 23 shadcn/ui components
+│   │   ├── components/
+│   │   │   ├── ui/               # 23 shadcn/ui components
+│   │   │   └── app-sidebar.tsx   # Main app sidebar
 │   │   ├── hooks/
 │   │   │   └── use-mobile.ts
 │   │   ├── lib/
@@ -225,12 +239,14 @@ presentation-images  # Private - presentation images
 - [x] RLS policies for multi-tenant isolation
 - [x] Triggers and helper functions
 
-### 🔲 Fase 1: Auth (PRÓXIMA)
+### ✅ Fase 1: Auth (FRONTEND CONCLUÍDO)
 - [x] Tabela de perfis de usuário (já criada via migrations)
 - [x] Trigger de auto-create profile no signup
-- [ ] Páginas de login/cadastro (frontend)
-- [ ] Proteção de rotas (frontend)
-- [ ] Context de autenticação (frontend)
+- [x] Páginas de login/cadastro (frontend)
+- [x] Proteção de rotas (middleware)
+- [x] Context de autenticação + hook useAuth
+- [x] Layout do dashboard com sidebar
+- [x] API route de callback
 
 ### 🔲 Fases 2-9
 Ver `TODO.md` para detalhes completos.
