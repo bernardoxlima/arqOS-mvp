@@ -132,7 +132,7 @@
 
 ---
 
-## 📁 FASE 2: PROJETOS
+## ✅ FASE 2: PROJETOS (Backend + Frontend COMPLETO)
 
 ### Banco de Dados ✅
 - [x] 🟢 Criar tabela de projetos
@@ -146,52 +146,52 @@
 - [x] 🟢 Criar índice para busca por organização
 - [x] 🟢 Criar índice para busca por status
 
-### Lógica de Projetos
-- [ ] 🟢 Criar lógica para listar projetos com filtros
-- [ ] 🟢 Criar lógica para buscar projeto por id
-- [ ] 🟢 Criar lógica para criar novo projeto
-- [ ] 🟢 Criar lógica para atualizar projeto
-- [ ] 🟢 Criar lógica para deletar projeto
-- [ ] 🟢 Criar endpoint para listar projetos
-- [ ] 🟢 Criar endpoint para criar projeto
-- [ ] 🟢 Criar endpoint para buscar projeto específico
-- [ ] 🟢 Criar endpoint para atualizar projeto
-- [ ] 🟢 Criar endpoint para deletar projeto
+### Lógica de Projetos ✅
+- [x] 🟢 Criar lógica para listar projetos com filtros
+- [x] 🟢 Criar lógica para buscar projeto por id
+- [x] 🟢 Criar lógica para criar novo projeto
+- [x] 🟢 Criar lógica para atualizar projeto
+- [x] 🟢 Criar lógica para deletar projeto
+- [x] 🟢 Criar endpoint para listar projetos
+- [x] 🟢 Criar endpoint para criar projeto
+- [x] 🟢 Criar endpoint para buscar projeto específico
+- [x] 🟢 Criar endpoint para atualizar projeto
+- [x] 🟢 Criar endpoint para deletar projeto
 
-### Lógica do Kanban
-- [ ] 🟢 Criar lógica para mover projeto entre etapas
-- [ ] 🟢 Criar lógica para registrar horas na etapa
-- [ ] 🟢 Criar endpoint para mover etapa
-- [ ] 🟢 Criar endpoint para adicionar etapa
+### Lógica do Kanban ✅
+- [x] 🟢 Criar lógica para mover projeto entre etapas
+- [x] 🟢 Criar lógica para registrar horas na etapa
+- [x] 🟢 Criar endpoint para mover etapa
+- [x] 🟢 Criar endpoint para adicionar etapa
 
-### Tela de Lista de Projetos
-- [ ] 🔵 Criar página de projetos
-- [ ] 🔵 Criar cabeçalho da página
-- [ ] 🔵 Criar botão alternar visualização Lista/Kanban
-- [ ] 🔵 Criar card de projeto
-- [ ] 🔵 Criar filtro por status
-- [ ] 🔵 Criar busca por nome ou cliente
-- [ ] 🔵 Criar tela vazia "nenhum projeto"
+### Tela de Lista de Projetos ✅
+- [x] 🔵 Criar página de projetos
+- [x] 🔵 Criar cabeçalho da página
+- [x] 🔵 Criar botão alternar visualização Lista/Kanban
+- [x] 🔵 Criar card de projeto
+- [x] 🔵 Criar filtro por status
+- [x] 🔵 Criar busca por nome ou cliente
+- [x] 🔵 Criar tela vazia "nenhum projeto"
 
-### Tela do Kanban
-- [ ] 🔵 Criar visualização Kanban
-- [ ] 🔵 Criar colunas por etapa
-- [ ] 🔵 Implementar arrastar e soltar
-- [ ] 🔵 Criar modal para informar horas ao mover
-- [ ] 🔵 Criar indicador visual de progresso
+### Tela do Kanban ✅
+- [x] 🔵 Criar visualização Kanban
+- [x] 🔵 Criar colunas por etapa
+- [x] 🔵 Implementar arrastar e soltar
+- [x] 🔵 Criar modal para informar horas ao mover
+- [x] 🔵 Criar indicador visual de progresso
 
-### Tela de Detalhe do Projeto
-- [ ] 🔵 Criar página de detalhe do projeto
-- [ ] 🔵 Criar cabeçalho com nome e status
-- [ ] 🔵 Criar seção com dados do cliente
-- [ ] 🔵 Criar linha do tempo das etapas
-- [ ] 🔵 Criar botões de editar e deletar
+### Tela de Detalhe do Projeto ✅
+- [x] 🔵 Criar página de detalhe do projeto
+- [x] 🔵 Criar cabeçalho com nome e status
+- [x] 🔵 Criar seção com dados do cliente
+- [x] 🔵 Criar linha do tempo das etapas
+- [x] 🔵 Criar botões de editar e deletar
 
-### Modais de Projeto
-- [ ] 🔵 Criar modal de criar/editar projeto
-- [ ] 🔵 Criar formulário (nome, cliente, fase)
-- [ ] 🔵 Criar modal de confirmação de exclusão
-- [ ] 🔵 Criar hook para gerenciar lista de projetos
+### Modais de Projeto ✅
+- [x] 🔵 Criar modal de criar/editar projeto
+- [x] 🔵 Criar formulário (nome, cliente, fase)
+- [x] 🔵 Criar modal de confirmação de exclusão
+- [x] 🔵 Criar hook para gerenciar lista de projetos
 - [ ] 🔵 Criar hook para gerenciar projeto individual
 
 ### Testes de Projetos
@@ -203,7 +203,7 @@
 
 ---
 
-## 🧮 FASE 3: CALCULADORA
+## ✅ FASE 3: CALCULADORA (Backend + Frontend COMPLETO)
 
 ### Banco de Dados ✅
 - [x] 🟢 Criar tabela de configuração de preços (`lookup_data`)
@@ -223,17 +223,16 @@
 - [x] 🟢 Criar endpoint para calcular orçamento
 - [x] 🟢 Criar endpoint para buscar configuração de preços
 
-### Tela da Calculadora
-- [ ] 🔵 Criar página de novo orçamento
-- [ ] 🔵 Criar wizard de orçamento em etapas
-- [ ] 🔵 Etapa 1: Dados do cliente (nome, telefone, email)
-- [ ] 🔵 Etapa 2: Seleção do tipo de serviço
-- [ ] 🔵 Etapa 3: Configuração de área (m² ou cômodos)
-- [ ] 🔵 Etapa 4: Opções extras (multiplicadores)
-- [ ] 🔵 Etapa 5: Resultado final com valor
-- [ ] 🔵 Criar botão salvar orçamento
-- [ ] 🔵 Criar botão gerar PDF
-- [x] 🔵 Criar hook para gerenciar calculadora (`useCalculator`)
+### Tela da Calculadora ✅
+- [x] 🔵 Criar página de calculadora (`/calculadora`)
+- [x] 🔵 Seleção de tipo de serviço (DecorExpress, Produção, ProjetExpress)
+- [x] 🔵 Configuração por serviço (ambientes, complexidade, área)
+- [x] 🔵 Seleção de modalidade (Presencial/Online)
+- [x] 🔵 Painel de resultados (horas, preços referência, valor final)
+- [x] 🔵 Animações com framer-motion
+- [x] 🔵 Integração com `useCalculator` hook
+- [ ] 🔵 Criar botão salvar orçamento (depende do módulo orçamentos)
+- [ ] 🔵 Criar botão gerar PDF (depende do módulo documentos)
 
 ### Testes da Calculadora
 - [ ] 🟡 Testar cálculo por m²
@@ -573,4 +572,4 @@
 
 ---
 
-**Última atualização:** 2026-01-20 (Fase 1 Auth concluída)
+**Última atualização:** 2026-01-20 (Fase 3 Calculadora - Backend + Frontend concluída)

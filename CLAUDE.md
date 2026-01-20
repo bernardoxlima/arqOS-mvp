@@ -78,11 +78,14 @@ arqOS-mvp/
 │   │   │   └── cadastro/page.tsx # Register page
 │   │   ├── (dashboard)/          # Protected routes
 │   │   │   ├── layout.tsx        # Dashboard layout with sidebar
-│   │   │   ├── dashboard/page.tsx # Dashboard home
-│   │   │   ├── projetos/
-│   │   │   ├── orcamentos/
-│   │   │   ├── apresentacoes/
-│   │   │   └── financeiro/
+│   │   │   ├── projetos/         # Projects module (implemented)
+│   │   │   │   ├── page.tsx      # Projects list with Kanban
+│   │   │   │   └── [id]/page.tsx # Project detail page
+│   │   │   ├── calculadora/      # Calculator module (implemented)
+│   │   │   │   └── page.tsx      # Calculator with real-time pricing
+│   │   │   ├── orcamentos/       # Budgets module (pending)
+│   │   │   ├── apresentacoes/    # Presentations module (pending)
+│   │   │   └── financeiro/       # Financial module (pending)
 │   │   ├── api/                  # API Routes
 │   │   │   ├── auth/callback/    # Auth callback route
 │   │   │   ├── projects/         # Projects CRUD endpoints
@@ -117,6 +120,16 @@ arqOS-mvp/
 │   │   │   ├── services/
 │   │   │   │   ├── projects.service.ts # CRUD operations
 │   │   │   │   └── kanban.ts     # Kanban operations
+│   │   │   ├── components/       # UI components
+│   │   │   │   ├── project-card.tsx    # Project card with progress
+│   │   │   │   ├── project-modal.tsx   # Create/edit modal
+│   │   │   │   ├── kanban-board.tsx    # Kanban board with DnD
+│   │   │   │   ├── kanban-column.tsx   # Kanban column
+│   │   │   │   ├── kanban-card.tsx     # Kanban card
+│   │   │   │   ├── time-entry-modal.tsx # Time entry modal
+│   │   │   │   └── empty-state.tsx     # Empty state component
+│   │   │   ├── hooks/
+│   │   │   │   └── use-projects.ts # Projects state management
 │   │   │   ├── __tests__/        # Unit tests
 │   │   │   └── index.ts          # Public exports
 │   │   ├── presentations/
@@ -125,6 +138,14 @@ arqOS-mvp/
 │   │   │   ├── schemas.ts        # Zod validation schemas
 │   │   │   ├── pricing-data.ts   # Default pricing configuration
 │   │   │   ├── calculator-engine.ts # Core calculation logic
+│   │   │   ├── components/       # UI components
+│   │   │   │   ├── calculator-wizard.tsx  # Main wizard with steps
+│   │   │   │   ├── step-service.tsx       # Service selection step
+│   │   │   │   ├── step-environments.tsx  # Environment config step
+│   │   │   │   ├── step-area.tsx          # Area config step (ProjetExpress)
+│   │   │   │   ├── step-options.tsx       # Options step (modality, payment)
+│   │   │   │   ├── calculator-result.tsx  # Result display card
+│   │   │   │   └── index.ts               # Component exports
 │   │   │   ├── hooks/            # React hooks
 │   │   │   │   └── use-calculator.ts
 │   │   │   └── index.ts          # Public exports
@@ -176,13 +197,13 @@ arqOS-mvp/
 
 ---
 
-## shadcn/ui Components (23 installed)
+## shadcn/ui Components (24 installed)
 
 ```
 accordion, alert-dialog, avatar, badge, button, card, checkbox,
 dialog, dropdown-menu, form, input, label, scroll-area, select,
-separator, sheet, sidebar, skeleton, sonner (toast), table, tabs,
-textarea, tooltip
+separator, sheet, sidebar, skeleton, slider, sonner (toast), table,
+tabs, textarea, tooltip
 ```
 
 **Add new components:**
@@ -300,6 +321,25 @@ presentation-images  # Private - presentation images
   - `GET /api/projects/[id]/timeline` - Timeline do projeto
 - [x] Testes unitários (33 testes - schemas)
 
+### ✅ Fase 2: Projetos - Frontend (COMPLETA)
+- [x] Página de listagem de projetos (`/projetos`)
+- [x] Visualizações: Grade, Lista e Kanban
+- [x] Hook `useProjects` para gerenciamento de estado
+- [x] Componentes em `src/modules/projects/components/`:
+  - `ProjectCard` - Card de projeto com progresso
+  - `ProjectModal` - Modal de criar projeto
+  - `EmptyState` - Estado vazio
+  - `KanbanBoard` - Quadro Kanban com drag-and-drop
+  - `KanbanColumn` - Coluna do Kanban
+  - `KanbanCard` - Card do Kanban
+  - `TimeEntryModal` - Modal de registro de horas
+- [x] Filtros por status e busca por nome/cliente
+- [x] Página de detalhe do projeto (`/projetos/[id]`)
+- [x] Linha do tempo visual das etapas
+- [x] Confirmação de exclusão com AlertDialog
+
+**Nota:** Usuários autenticados são redirecionados de `/` para `/projetos` (tela principal do app).
+
 ### ✅ Fase 3: Calculadora - Backend (COMPLETA)
 - [x] Módulo calculator criado em `src/modules/calculator/`
 - [x] Types e schemas Zod para validação
@@ -312,6 +352,26 @@ presentation-images  # Private - presentation images
 - [x] Endpoint POST `/api/calculator/calculate`
 - [x] Endpoint GET `/api/calculator/config`
 - [x] Hook `useCalculator` para frontend
+
+### ✅ Fase 3: Calculadora - Frontend (COMPLETA)
+- [x] Página de calculadora (`/calculadora`) com layout 7-5
+- [x] Seleção de tipo de serviço (DecorExpress, Produção, ProjetExpress)
+- [x] Configuração por serviço:
+  - DecorExpress: quantidade ambientes, nível complexidade, config ambientes
+  - Produção: quantidade ambientes, tipo produção, config ambientes
+  - ProjetExpress: tipo projeto (novo/reforma), área em m²
+- [x] Seleção de modalidade (Presencial/Online)
+- [x] Painel de resultados com:
+  - Card de horas estimadas
+  - Referência de precificação (2x, 2.5x, 3x)
+  - Valor final com breakdown de custos
+  - Indicador de saúde (multiplier)
+  - Sugestão AI
+  - Badge de eficiência
+- [x] Animações com framer-motion
+- [x] Integração com hook `useCalculator`
+- [ ] Botão salvar orçamento (pendente: módulo orçamentos)
+- [ ] Botão gerar PDF (pendente: módulo documentos)
 
 ### 🔲 Fases 4-9
 Ver `TODO.md` para detalhes completos.
@@ -389,4 +449,24 @@ npx shadcn@latest add [component]
 
 ---
 
-**Última atualização:** 2026-01-20 (Projects module backend complete)
+## Routing Structure
+
+### Public Routes
+- `/` - Landing page (redirects to `/projetos` if authenticated)
+- `/login` - Login page
+- `/cadastro` - Registration page
+
+### Protected Routes (require authentication)
+- `/projetos` - Projects list with Kanban (main dashboard)
+- `/projetos/[id]` - Project detail page
+- `/calculadora` - Budget calculator with real-time pricing (implemented)
+- `/orcamentos` - Budgets list (pending)
+- `/apresentacoes` - Presentations list (pending)
+- `/financeiro` - Financial dashboard (pending)
+- `/perfil` - User profile (pending)
+
+**Middleware:** `src/shared/lib/supabase/middleware.ts` handles auth redirects.
+
+---
+
+**Última atualização:** 2026-01-20 (Calculator frontend components - wizard, steps, result)

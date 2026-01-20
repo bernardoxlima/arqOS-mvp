@@ -70,3 +70,23 @@ export {
   deleteProject,
   countProjects,
 } from "./services/projects.service";
+
+// Hooks
+export {
+  useProjects,
+  useProject,
+  projectKeys,
+  getCurrentStageName,
+  getWorkflowProgress,
+} from "./hooks";
+
+// Components
+export {
+  ProjectCard,
+  EmptyState,
+  ProjectModal,
+  KanbanBoard,
+  KanbanColumn,
+  KanbanCard,
+  TimeEntryModal,
+} from "./components";

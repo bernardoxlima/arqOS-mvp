@@ -63,14 +63,21 @@ export default function LoginPage() {
   }
 
   return (
-    <Card>
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">
-          ArqOS
-        </CardTitle>
-        <CardDescription className="text-center">
-          Entre com sua conta para continuar
-        </CardDescription>
+    <Card className="border-border shadow-sm">
+      <CardHeader className="space-y-4 pb-4">
+        <div className="flex justify-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xl font-bold">
+            A
+          </div>
+        </div>
+        <div className="space-y-1 text-center">
+          <CardTitle className="text-2xl font-light tracking-tight">
+            ArqOS
+          </CardTitle>
+          <CardDescription>
+            Entre com sua conta para continuar
+          </CardDescription>
+        </div>
       </CardHeader>
       <CardContent>
         <Form {...form}>

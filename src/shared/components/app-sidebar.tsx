@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
   FolderKanban,
   Calculator,
   FileText,
@@ -38,33 +37,28 @@ import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 
 const navItems = [
   {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
     title: "Projetos",
-    url: "/dashboard/projetos",
+    url: "/projetos",
     icon: FolderKanban,
   },
   {
     title: "Calculadora",
-    url: "/dashboard/calculadora",
+    url: "/calculadora",
     icon: Calculator,
   },
   {
     title: "Orçamentos",
-    url: "/dashboard/orcamentos",
+    url: "/orcamentos",
     icon: FileText,
   },
   {
     title: "Apresentações",
-    url: "/dashboard/apresentacoes",
+    url: "/apresentacoes",
     icon: Presentation,
   },
   {
     title: "Financeiro",
-    url: "/dashboard/financeiro",
+    url: "/financeiro",
     icon: DollarSign,
   },
 ];
@@ -108,7 +102,7 @@ export function AppSidebar() {
                     asChild
                     isActive={
                       pathname === item.url ||
-                      (item.url !== "/dashboard" && pathname.startsWith(item.url))
+                      (item.url !== "/" && pathname.startsWith(item.url))
                     }
                     tooltip={item.title}
                   >
@@ -156,7 +150,7 @@ export function AppSidebar() {
                 sideOffset={4}
               >
                 <DropdownMenuItem asChild>
-                  <Link href="/dashboard/perfil">
+                  <Link href="/perfil">
                     <User className="mr-2 h-4 w-4" />
                     Meu Perfil
                   </Link>

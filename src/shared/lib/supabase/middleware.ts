@@ -38,20 +38,36 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Protected routes - redirect to login if not authenticated
-  if (
-    !user &&
-    request.nextUrl.pathname.startsWith("/dashboard")
-  ) {
+  const protectedRoutes = [
+    "/projetos",
+    "/orcamentos",
+    "/calculadora",
+    "/apresentacoes",
+    "/financeiro",
+    "/perfil",
+  ];
+  const isProtectedRoute = protectedRoutes.some(
+    (route) => request.nextUrl.pathname === route || request.nextUrl.pathname.startsWith(`${route}/`)
+  );
+
+  if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
-  // Auth routes - redirect to dashboard if already authenticated
+  // Auth routes - redirect to projetos if already authenticated
   const authRoutes = ["/login", "/cadastro"];
   if (user && authRoutes.includes(request.nextUrl.pathname)) {
     const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
+    url.pathname = "/projetos";
+    return NextResponse.redirect(url);
+  }
+
+  // Home page - redirect to projetos if already authenticated
+  if (user && request.nextUrl.pathname === "/") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/projetos";
     return NextResponse.redirect(url);
   }
 
