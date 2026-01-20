@@ -488,4 +488,111 @@
   .progress-fill {
     @apply h-full transition-all duration-300;
   }
+
+  /* Dark Card */
+  .arq-card-dark {
+    @apply bg-primary text-primary-foreground rounded-xl;
+  }
+  .arq-card-dark .text-muted-foreground {
+    @apply text-primary-foreground/60;
+  }
+
+  /* Info Card */
+  .arq-card-info {
+    @apply bg-blue-50 border-blue-200 text-blue-900;
+  }
+  .dark .arq-card-info {
+    @apply bg-blue-950 border-blue-800 text-blue-100;
+  }
+
+  /* Status Badges */
+  .status-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-sm;
+  }
+  .status-draft {
+    @apply bg-amber-100 text-amber-800;
+  }
+  .dark .status-draft {
+    @apply bg-amber-900/30 text-amber-200;
+  }
+  .status-sent {
+    @apply bg-blue-100 text-blue-800;
+  }
+  .dark .status-sent {
+    @apply bg-blue-900/30 text-blue-200;
+  }
+  .status-approved {
+    @apply bg-emerald-100 text-emerald-800;
+  }
+  .dark .status-approved {
+    @apply bg-emerald-900/30 text-emerald-200;
+  }
+  .status-rejected {
+    @apply bg-red-100 text-red-800;
+  }
+  .dark .status-rejected {
+    @apply bg-red-900/30 text-red-200;
+  }
+
+  /* Buttons - Base styles must be repeated since @apply can't reference classes in same layer */
+  .arq-btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium
+           rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .arq-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium
+           rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary;
+  }
+  .arq-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium
+           rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           bg-secondary text-secondary-foreground hover:bg-secondary/80 focus:ring-secondary;
+  }
+  .arq-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium
+           rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           hover:bg-accent hover:text-accent-foreground;
+  }
+  .arq-btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium
+           rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           border border-border hover:bg-accent hover:text-accent-foreground;
+  }
+
+  /* Inputs */
+  .arq-input {
+    @apply w-full px-3 py-2 border border-border bg-background text-sm rounded-lg
+           focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary
+           placeholder:text-muted-foreground;
+  }
+  .arq-select {
+    @apply w-full px-3 py-2 border border-border bg-background text-sm rounded-lg
+           focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary
+           placeholder:text-muted-foreground appearance-none cursor-pointer;
+  }
+
+  /* Timeline */
+  .timeline-item {
+    @apply relative pl-6 pb-4 border-l-2 border-border last:border-0 last:pb-0;
+  }
+  .timeline-dot {
+    @apply absolute -left-[5px] top-1 w-2 h-2 rounded-full bg-primary;
+  }
+
+  /* Editable Table Cell */
+  .editable-cell {
+    @apply px-2 py-1 -mx-2 -my-1 rounded hover:bg-muted/50 cursor-text transition-colors;
+  }
+  .editable-cell:focus-within {
+    @apply bg-muted ring-1 ring-primary;
+  }
+  .editable-cell input {
+    @apply bg-transparent border-none outline-none w-full text-right;
+  }
 }

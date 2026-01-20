@@ -80,3 +80,41 @@ export {
   calculateItemTotal,
   recalculateItemsTotal,
 } from "./utils/calculations";
+
+// Hooks
+export {
+  useBudgets,
+  useBudget,
+} from "./hooks";
+export type {
+  UseBudgetsReturn,
+  BudgetListItem,
+  BudgetStats,
+  UseBudgetReturn,
+  BudgetDetail,
+} from "./hooks";
+
+// Components
+export {
+  BudgetCard,
+  StatusFilter,
+  BudgetsEmptyState,
+  BudgetsSkeleton,
+  BudgetDetailHeader,
+  ItemsTable,
+  CategorySummary,
+  BudgetValueCard,
+  AddEditItemModal,
+  BudgetDetailSkeleton,
+} from "./components";
+export type {
+  BudgetCardProps,
+  StatusFilterProps,
+  StatusFilterValue,
+  BudgetsEmptyStateProps,
+  BudgetDetailHeaderProps,
+  ItemsTableProps,
+  CategorySummaryProps,
+  BudgetValueCardProps,
+  AddEditItemModalProps,
+} from "./components";

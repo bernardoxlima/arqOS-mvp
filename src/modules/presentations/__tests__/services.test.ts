@@ -233,7 +233,8 @@ describe("Presentations Service", () => {
       });
 
       // Need to properly mock the chain for images and items
-      let callCount = 0;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const _callCount = 0;
       (supabase.from as ReturnType<typeof vi.fn>).mockImplementation((table: string) => {
         const orderMock = vi.fn().mockImplementation(() => {
           if (table === "presentation_images") {

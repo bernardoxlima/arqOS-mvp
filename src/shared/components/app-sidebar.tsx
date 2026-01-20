@@ -10,6 +10,7 @@ import {
   DollarSign,
   LogOut,
   User,
+  Sparkles,
 } from "lucide-react";
 
 import { useAuth } from "@/modules/auth";
@@ -55,6 +56,11 @@ const navItems = [
     title: "Apresentações",
     url: "/apresentacoes",
     icon: Presentation,
+  },
+  {
+    title: "Brandbook",
+    url: "/dashboard/brandbook",
+    icon: Sparkles,
   },
   {
     title: "Financeiro",
