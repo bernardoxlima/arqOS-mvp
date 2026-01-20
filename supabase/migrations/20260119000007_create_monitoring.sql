@@ -6,6 +6,14 @@
 -- ============================================================================
 
 -- ============================================================================
+-- DROP EXISTING FUNCTIONS (to handle return type changes)
+-- ============================================================================
+DROP FUNCTION IF EXISTS check_overdue_finance_records();
+DROP FUNCTION IF EXISTS cleanup_old_activity_logs();
+DROP FUNCTION IF EXISTS update_table_statistics();
+DROP FUNCTION IF EXISTS get_organizations_needing_attention();
+
+-- ============================================================================
 -- ENABLE EXTENSIONS
 -- ============================================================================
 

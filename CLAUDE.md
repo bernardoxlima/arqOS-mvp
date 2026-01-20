@@ -226,10 +226,11 @@ presentation-images  # Private - presentation images
 - [x] Triggers and helper functions
 
 ### 🔲 Fase 1: Auth (PRÓXIMA)
-- [ ] Tabela de perfis de usuário
-- [ ] Páginas de login/cadastro
-- [ ] Proteção de rotas
-- [ ] Context de autenticação
+- [x] Tabela de perfis de usuário (já criada via migrations)
+- [x] Trigger de auto-create profile no signup
+- [ ] Páginas de login/cadastro (frontend)
+- [ ] Proteção de rotas (frontend)
+- [ ] Context de autenticação (frontend)
 
 ### 🔲 Fases 2-9
 Ver `TODO.md` para detalhes completos.

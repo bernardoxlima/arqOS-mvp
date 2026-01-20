@@ -46,15 +46,59 @@
 
 ---
 
+## ✅ BANCO DE DADOS (COMPLETO)
+
+> **14 migrations aplicadas** em 2026-01-20
+>
+> Todas as tabelas, índices, RLS policies, triggers e storage buckets foram criados.
+
+### Tabelas Criadas (13 total)
+- [x] 🟢 `organizations` - Multi-tenant root entity
+- [x] 🟢 `profiles` - Usuários vinculados ao Supabase Auth
+- [x] 🟢 `clients` - Base de clientes
+- [x] 🟢 `budgets` - Orçamentos/Propostas
+- [x] 🟢 `projects` - Projetos com workflow Kanban
+- [x] 🟢 `time_entries` - Registro de horas
+- [x] 🟢 `project_items` - Itens de projeto (18 categorias)
+- [x] 🟢 `finance_records` - Registros financeiros
+- [x] 🟢 `lookup_data` - Dados de referência
+- [x] 🟢 `activity_log` - Auditoria (append-only)
+- [x] 🟢 `presentations` - Apresentações de projeto
+- [x] 🟢 `presentation_images` - Imagens por seção
+- [x] 🟢 `presentation_items` - Itens de layout/complementares
+
+### Infraestrutura de Banco
+- [x] 🟢 Índices para performance em todas as tabelas
+- [x] 🟢 RLS policies para isolamento multi-tenant
+- [x] 🟢 Triggers de `updated_at` automático
+- [x] 🟢 Trigger de auto-create profile no signup
+- [x] 🟢 Trigger de auto-generate codes (PROP-YYNNN, ARQ-YYNNN)
+- [x] 🟢 Trigger de snapshot de cliente em budgets/projects
+- [x] 🟢 Trigger de validação de limites de imagens por seção
+- [x] 🟢 Função `get_user_organization_id()` para RLS
+- [x] 🟢 Views de monitoramento (db_health, table_sizes, etc.)
+
+### Storage Buckets
+- [x] 🟢 `avatars` (public) - Fotos de perfil
+- [x] 🟢 `project-images` (private) - Imagens de projeto
+- [x] 🟢 `project-files` (private) - Documentos
+- [x] 🟢 `proposals` (private) - Propostas geradas
+- [x] 🟢 `presentation-images` (private) - Imagens de apresentação
+
+### Tipos TypeScript
+- [x] 🟢 Gerado `database.types.ts` com tipos de todas as tabelas
+
+---
+
 ## 🔐 FASE 1: AUTH
 
-### Banco de Dados
-- [ ] 🟢 Criar tabela de perfis de usuário
-- [ ] 🟢 Adicionar campos nome, email e role
-- [ ] 🟢 Adicionar campo de foto de perfil
-- [ ] 🟢 Criar regra: usuário só vê próprio perfil
-- [ ] 🟢 Criar regra: usuário só edita próprio perfil
-- [ ] 🟢 Criar perfil automático ao cadastrar
+### Banco de Dados ✅
+- [x] 🟢 Criar tabela de perfis de usuário
+- [x] 🟢 Adicionar campos nome, email e role
+- [x] 🟢 Adicionar campo de foto de perfil (em settings.avatar_url)
+- [x] 🟢 Criar regra: usuário só vê próprio perfil
+- [x] 🟢 Criar regra: usuário só edita próprio perfil
+- [x] 🟢 Criar perfil automático ao cadastrar
 
 ### Lógica de Autenticação
 - [ ] 🟢 Criar lógica de callback após login
@@ -90,17 +134,17 @@
 
 ## 📁 FASE 2: PROJETOS
 
-### Banco de Dados
-- [ ] 🟢 Criar tabela de projetos
-- [ ] 🟢 Adicionar campos nome, cliente, status
-- [ ] 🟢 Adicionar campos fase, valor total, criado por
-- [ ] 🟢 Adicionar campos de data (criação, atualização)
-- [ ] 🟢 Criar tabela de etapas do projeto (Kanban)
-- [ ] 🟢 Adicionar campos da etapa: nome, ordem, horas
-- [ ] 🟢 Adicionar campo de conclusão da etapa
-- [ ] 🟢 Criar regras de acesso aos projetos
-- [ ] 🟢 Criar índice para busca por usuário
-- [ ] 🟢 Criar índice para busca por status
+### Banco de Dados ✅
+- [x] 🟢 Criar tabela de projetos
+- [x] 🟢 Adicionar campos nome, cliente, status
+- [x] 🟢 Adicionar campos fase, valor total, criado por
+- [x] 🟢 Adicionar campos de data (criação, atualização)
+- [x] 🟢 Criar workflow Kanban (stages em JSON)
+- [x] 🟢 Adicionar campos de horas estimadas/usadas
+- [x] 🟢 Adicionar campo completed_at auto-set
+- [x] 🟢 Criar regras de acesso aos projetos (RLS)
+- [x] 🟢 Criar índice para busca por organização
+- [x] 🟢 Criar índice para busca por status
 
 ### Lógica de Projetos
 - [ ] 🟢 Criar lógica para listar projetos com filtros
@@ -161,10 +205,10 @@
 
 ## 🧮 FASE 3: CALCULADORA
 
-### Banco de Dados
-- [ ] 🟢 Criar tabela de configuração de preços
-- [ ] 🟢 Adicionar campos tipo de serviço, faixa, preço base
-- [ ] 🟢 Adicionar campo de multiplicadores
+### Banco de Dados ✅
+- [x] 🟢 Criar tabela de configuração de preços (`lookup_data`)
+- [x] 🟢 Estrutura para tipo de serviço, faixa, preço base
+- [x] 🟢 Estrutura para multiplicadores (JSONB)
 - [ ] 🟢 Popular dados padrão de preços
 - [ ] 🟢 Popular preços DecorExpress (P, M, G)
 - [ ] 🟢 Popular preços ProjetExpress por m²
@@ -202,17 +246,17 @@
 
 ## 💰 FASE 4: ORÇAMENTOS
 
-### Banco de Dados
-- [ ] 🟢 Criar tabela de orçamentos
-- [ ] 🟢 Adicionar campos id, projeto, status
-- [ ] 🟢 Adicionar campo de dados do cliente (JSON)
-- [ ] 🟢 Adicionar campos tipo de serviço, valor total
-- [ ] 🟢 Criar tabela de itens do orçamento
-- [ ] 🟢 Adicionar campos do item: nome, categoria, quantidade
-- [ ] 🟢 Adicionar campos do item: preço, fornecedor
-- [ ] 🟢 Adicionar campos do item: link, imagem
-- [ ] 🟢 Criar regras de acesso aos orçamentos
-- [ ] 🟢 Criar regras de acesso aos itens
+### Banco de Dados ✅
+- [x] 🟢 Criar tabela de orçamentos (`budgets`)
+- [x] 🟢 Adicionar campos id, projeto (via client_id), status
+- [x] 🟢 Adicionar campo de dados do cliente (client_snapshot)
+- [x] 🟢 Adicionar campos tipo de serviço, cálculo (JSONB)
+- [x] 🟢 Criar tabela de itens (`project_items`)
+- [x] 🟢 Adicionar campos do item: nome, categoria (18 tipos), quantidade
+- [x] 🟢 Adicionar campos do item: preço unitário/total
+- [x] 🟢 Adicionar campos do item: fornecedor, link, imagem
+- [x] 🟢 Criar regras de acesso aos orçamentos (RLS)
+- [x] 🟢 Criar regras de acesso aos itens (RLS)
 
 ### Lógica de Orçamentos
 - [ ] 🟢 Criar lógica para listar orçamentos
@@ -259,18 +303,19 @@
 
 ## 🎨 FASE 5: APRESENTAÇÕES
 
-### Banco de Dados
-- [ ] 🟢 Criar tabela de apresentações
-- [ ] 🟢 Adicionar campos id, projeto, nome, fase
-- [ ] 🟢 Adicionar campo de dados do cliente (JSON)
-- [ ] 🟢 Criar tabela de imagens da apresentação
-- [ ] 🟢 Adicionar campos: seção, url, ordem
-- [ ] 🟢 Criar tabela de itens da apresentação
-- [ ] 🟢 Adicionar campos: nome, categoria, ambiente
-- [ ] 🟢 Adicionar campo de posição na planta (JSON)
-- [ ] 🟢 Adicionar campos: preço, fornecedor, link
-- [ ] 🟢 Criar bucket de storage para imagens
-- [ ] 🟢 Criar regras de acesso ao storage
+### Banco de Dados ✅
+- [x] 🟢 Criar tabela de apresentações (`presentations`)
+- [x] 🟢 Adicionar campos id, projeto, nome, fase, status
+- [x] 🟢 Adicionar campo de dados do cliente (client_data JSONB)
+- [x] 🟢 Criar tabela de imagens (`presentation_images`)
+- [x] 🟢 Adicionar campos: seção (5 tipos), url, ordem
+- [x] 🟢 Criar trigger de validação de limites por seção
+- [x] 🟢 Criar tabela de itens (`presentation_items`)
+- [x] 🟢 Adicionar campos: nome, categoria (12 tipos), ambiente
+- [x] 🟢 Adicionar campo de posição na planta (JSONB x,y,rotation,scale)
+- [x] 🟢 Adicionar campos: preço, fornecedor, link (em product JSONB)
+- [x] 🟢 Criar bucket `presentation-images` (10MB, jpg/png/webp)
+- [x] 🟢 Criar regras de acesso ao storage (RLS por org)
 
 ### Lógica de Apresentações
 - [ ] 🟢 Criar lógica para criar apresentação
@@ -528,4 +573,4 @@
 
 ---
 
-**Última atualização:** 2026-01-20
+**Última atualização:** 2026-01-20 (migrations aplicadas)
