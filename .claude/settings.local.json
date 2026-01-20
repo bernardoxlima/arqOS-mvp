@@ -24,7 +24,9 @@
       "Bash(npm run build:*)",
       "Bash(npm install:*)",
       "Bash(npx shadcn@latest:*)",
-      "Bash(npm run test:run:*)"
+      "Bash(npm run test:run:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)"
     ]
   }
 }

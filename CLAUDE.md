@@ -1,33 +1,6 @@
 # CLAUDE.md - Project Context & Development Guidelines
 
-## Project Overview
-
-**ArqOS** - Sistema unificado para escritórios de arquitetura e design de interiores.
-
-Unificação de 3 repositórios (agora em `/legacy/`):
-- `arqflow-ai` - Gestão de projetos, AI (briefing, brandbook), calculadora
-- `manual-de-apreenta-o-arqexpress-duplicado-v2` - Apresentações, upload de imagens, geração PPTX/Excel
-- `remix-of-budget-buddy` - Orçamentação, Kanban, geração PDF/Word
-
----
-
-## Tech Stack (Implementado)
-
-| Layer | Technology | Version |
-|-------|------------|---------|
-| **Framework** | Next.js (App Router) | 15.5.9 |
-| **Language** | TypeScript (strict) | 5.7.3 |
-| **Styling** | Tailwind CSS | 4.0.0 |
-| **UI Components** | shadcn/ui + Radix UI | latest |
-| **State Management** | TanStack React Query + Context | - |
-| **Forms** | React Hook Form + Zod | 7.71.1 / 4.3.5 |
-| **Database/Auth** | Supabase (SSR) | 2.91.0 |
-| **AI Provider** | OpenRouter (Claude, GPT, Gemini) | - |
-| **Document Generation** | pptxgenjs, xlsx, jsPDF, docx | - |
-| **Testing** | Vitest + Testing Library + Playwright | 4.0.17 / 1.57.0 |
-
----
-
+<DEVCORE>
 ## Development Principles
 
 ### Core Philosophy
@@ -63,6 +36,33 @@ For each feature, implement in this mandatory sequence:
 - Document what was created/modified
 - Update relevant context files (CLAUDE.md, README, docs, etc.)
 - Always keep the documentation and CLAUDE.md files up to date with updated info, implementations, techs about the application
+</DEVCORE>
+
+## Project Overview
+
+**ArqOS** - Sistema unificado para escritórios de arquitetura e design de interiores.
+
+Unificação de 3 repositórios (agora em `/legacy/`):
+- `arqflow-ai` - Gestão de projetos, AI (briefing, brandbook), calculadora
+- `manual-de-apreenta-o-arqexpress-duplicado-v2` - Apresentações, upload de imagens, geração PPTX/Excel
+- `remix-of-budget-buddy` - Orçamentação, Kanban, geração PDF/Word
+
+---
+
+## Tech Stack (Implementado)
+
+| Layer | Technology | Version |
+|-------|------------|---------|
+| **Framework** | Next.js (App Router) | 15.5.9 |
+| **Language** | TypeScript (strict) | 5.7.3 |
+| **Styling** | Tailwind CSS | 4.0.0 |
+| **UI Components** | shadcn/ui + Radix UI | latest |
+| **State Management** | TanStack React Query + Context | - |
+| **Forms** | React Hook Form + Zod | 7.71.1 / 4.3.5 |
+| **Database/Auth** | Supabase (SSR) | 2.91.0 |
+| **AI Provider** | OpenRouter (Claude, GPT, Gemini) | - |
+| **Document Generation** | pptxgenjs, xlsx, jsPDF, docx | - |
+| **Testing** | Vitest + Testing Library + Playwright | 4.0.17 / 1.57.0 |
 
 ---
 
@@ -173,6 +173,42 @@ export const openrouter = new OpenAI({
 
 ---
 
+## Database Schema (Supabase)
+
+### Tables (13 total)
+```
+organizations        # Multi-tenant root entity
+profiles             # Users linked to Supabase Auth
+clients              # Client database
+budgets              # Proposals and quotes
+projects             # Projects with Kanban workflow
+time_entries         # Time tracking per project
+project_items        # Products/items linked to projects
+finance_records      # Income and expenses
+lookup_data          # Reference data (environments, categories, etc)
+activity_log         # Audit trail (append-only)
+presentations        # Presentation grouping entity
+presentation_images  # Images by section (photos_before, moodboard, etc)
+presentation_items   # Layout and complementary items
+```
+
+### Storage Buckets
+```
+avatars              # Public - user avatars
+project-images       # Private - project images
+project-files        # Private - documents (PDF, Word, etc)
+proposals            # Private - generated proposals
+presentation-images  # Private - presentation images
+```
+
+### Key Features
+- **RLS (Row Level Security)** - Multi-tenant isolation by organization_id
+- **Auto-generated codes** - PROP-YYNNN, ARQ-YYNNN, APRES-YYNNN
+- **Triggers** - Auto updated_at, client snapshots, activity logging
+- **Image limits per section** - photos_before(4), moodboard(1), references(6), floor_plan(1), renders(10)
+
+---
+
 ## Implementation Status
 
 ### ✅ Fase 0: Setup (CONCLUÍDA)
@@ -182,6 +218,12 @@ export const openrouter = new OpenAI({
 - [x] Supabase SSR (client, server, middleware)
 - [x] Vitest + Playwright configurados
 - [x] Teste de sanidade passando
+
+### ✅ Database Schema (COMPLETO)
+- [x] Unified Supabase schema for all modules (13 tables + 5 storage buckets)
+- [x] Presentations module tables (presentations, presentation_images, presentation_items)
+- [x] RLS policies for multi-tenant isolation
+- [x] Triggers and helper functions
 
 ### 🔲 Fase 1: Auth (PRÓXIMA)
 - [ ] Tabela de perfis de usuário

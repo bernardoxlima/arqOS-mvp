@@ -50,6 +50,44 @@ export type ItemCategory =
   | 'textil'
   | 'paisagismo'
   | 'arte'
+  // New categories
+  | 'marmoraria'
+  | 'cortinas'
+  | 'materiais_revestimentos'
+  | 'eletrica'
+  | 'hidraulica'
+  | 'mao_de_obra'
+  | 'acabamentos'
+  | 'outros'
+
+export type PresentationPhase = 'apresentacao' | 'revisao' | 'manual' | 'entrega'
+
+export type PresentationStatus = 'draft' | 'in_progress' | 'ready' | 'delivered'
+
+export type PresentationImageSection =
+  | 'photos_before'
+  | 'moodboard'
+  | 'references'
+  | 'floor_plan'
+  | 'renders'
+
+export type PresentationItemCategory =
+  | 'mobiliario'
+  | 'marcenaria'
+  | 'marmoraria'
+  | 'iluminacao'
+  | 'decoracao'
+  | 'cortinas'
+  | 'materiais_revestimentos'
+  | 'eletrica'
+  | 'hidraulica'
+  | 'mao_de_obra'
+  | 'acabamentos'
+  | 'outros'
+
+export type PresentationItemType = 'layout' | 'complementary'
+
+export type PresentationItemStatus = 'pending' | 'complete'
 
 export type LookupType =
   | 'environment'
@@ -64,6 +102,7 @@ export type ActivityEntityType =
   | 'client'
   | 'finance_record'
   | 'time_entry'
+  | 'presentation'
 
 export type ActivityAction =
   | 'created'
@@ -253,6 +292,53 @@ export interface ActivityChanges {
 }
 
 // ============================================================================
+// PRESENTATION JSONB TYPES
+// ============================================================================
+
+export interface PresentationClientData {
+  name: string | null
+  phone: string | null
+  email: string | null
+  address: string | null
+  cpf: string | null
+  project_code: string | null
+}
+
+export interface PresentationSettings {
+  architect_name: string | null
+  start_date: string | null
+  delivery_date: string | null
+  total_area_m2: number
+  environments: string[]
+}
+
+export interface PresentationImageMetadata {
+  width: number | null
+  height: number | null
+  format: string | null
+  alt_text: string | null
+}
+
+export interface PresentationProduct {
+  description: string | null
+  quantity: number
+  unit: string
+  unit_price: number
+  total_price: number
+  supplier: string | null
+  supplier_url: string | null
+  product_link: string | null
+  image_url: string | null
+}
+
+export interface PresentationItemPosition {
+  x: number | null
+  y: number | null
+  rotation: number
+  scale: number
+}
+
+// ============================================================================
 // TABLE TYPES
 // ============================================================================
 
@@ -389,6 +475,55 @@ export interface ActivityLog {
 }
 
 // ============================================================================
+// PRESENTATION TABLE TYPES
+// ============================================================================
+
+export interface Presentation {
+  id: string
+  organization_id: string
+  project_id: string | null
+  name: string
+  code: string | null
+  phase: PresentationPhase
+  status: PresentationStatus
+  client_data: PresentationClientData
+  settings: PresentationSettings
+  created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface PresentationImage {
+  id: string
+  organization_id: string
+  presentation_id: string
+  section: PresentationImageSection
+  image_url: string
+  thumbnail_url: string | null
+  filename: string | null
+  file_size: number | null
+  display_order: number
+  metadata: PresentationImageMetadata
+  created_at: string
+}
+
+export interface PresentationItem {
+  id: string
+  organization_id: string
+  presentation_id: string
+  number: number
+  name: string
+  ambiente: string | null
+  category: PresentationItemCategory
+  item_type: PresentationItemType
+  product: PresentationProduct
+  position: PresentationItemPosition
+  status: PresentationItemStatus
+  created_at: string
+  updated_at: string
+}
+
+// ============================================================================
 // DATABASE INTERFACE
 // ============================================================================
 
@@ -482,6 +617,37 @@ export interface Database {
         }
         Update: never // Activity log is append-only
       }
+      // Presentations Module
+      presentations: {
+        Row: Presentation
+        Insert: Omit<Presentation, 'id' | 'code' | 'created_at' | 'updated_at'> & {
+          id?: string
+          code?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<Omit<Presentation, 'id' | 'organization_id'>>
+      }
+      presentation_images: {
+        Row: PresentationImage
+        Insert: Omit<PresentationImage, 'id' | 'created_at'> & {
+          id?: string
+          created_at?: string
+          display_order?: number
+        }
+        Update: Partial<Omit<PresentationImage, 'id' | 'organization_id'>>
+      }
+      presentation_items: {
+        Row: PresentationItem
+        Insert: Omit<PresentationItem, 'id' | 'number' | 'created_at' | 'updated_at' | 'status'> & {
+          id?: string
+          number?: number
+          created_at?: string
+          updated_at?: string
+          status?: PresentationItemStatus
+        }
+        Update: Partial<Omit<PresentationItem, 'id' | 'organization_id'>>
+      }
     }
     Views: {}
     Functions: {
@@ -509,6 +675,18 @@ export interface Database {
         Args: Record<string, never>
         Returns: void
       }
+      generate_presentation_code: {
+        Args: { org_id: string }
+        Returns: string
+      }
+      calculate_presentation_progress: {
+        Args: { pres_id: string }
+        Returns: Json
+      }
+      get_presentation_summary: {
+        Args: { pres_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       user_role: UserRole
@@ -522,6 +700,13 @@ export interface Database {
       lookup_type: LookupType
       activity_entity_type: ActivityEntityType
       activity_action: ActivityAction
+      // Presentations Module
+      presentation_phase: PresentationPhase
+      presentation_status: PresentationStatus
+      presentation_image_section: PresentationImageSection
+      presentation_item_category: PresentationItemCategory
+      presentation_item_type: PresentationItemType
+      presentation_item_status: PresentationItemStatus
     }
   }
 }
@@ -551,6 +736,10 @@ export type ProjectItemRow = Tables<'project_items'>
 export type FinanceRecordRow = Tables<'finance_records'>
 export type LookupDataRow = Tables<'lookup_data'>
 export type ActivityLogRow = Tables<'activity_log'>
+// Presentations
+export type PresentationRow = Tables<'presentations'>
+export type PresentationImageRow = Tables<'presentation_images'>
+export type PresentationItemRow = Tables<'presentation_items'>
 
 // Insert types
 export type OrganizationInsert = InsertTables<'organizations'>
@@ -563,6 +752,10 @@ export type ProjectItemInsert = InsertTables<'project_items'>
 export type FinanceRecordInsert = InsertTables<'finance_records'>
 export type LookupDataInsert = InsertTables<'lookup_data'>
 export type ActivityLogInsert = InsertTables<'activity_log'>
+// Presentations
+export type PresentationInsert = InsertTables<'presentations'>
+export type PresentationImageInsert = InsertTables<'presentation_images'>
+export type PresentationItemInsert = InsertTables<'presentation_items'>
 
 // Update types
 export type OrganizationUpdate = UpdateTables<'organizations'>
@@ -574,3 +767,7 @@ export type TimeEntryUpdate = UpdateTables<'time_entries'>
 export type ProjectItemUpdate = UpdateTables<'project_items'>
 export type FinanceRecordUpdate = UpdateTables<'finance_records'>
 export type LookupDataUpdate = UpdateTables<'lookup_data'>
+// Presentations
+export type PresentationUpdate = UpdateTables<'presentations'>
+export type PresentationImageUpdate = UpdateTables<'presentation_images'>
+export type PresentationItemUpdate = UpdateTables<'presentation_items'>
