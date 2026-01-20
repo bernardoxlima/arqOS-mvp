@@ -336,61 +336,63 @@
 - [x] 🟢 Criar endpoint para adicionar item (`POST /api/presentations/[id]/items`)
 - [x] 🟢 Criar endpoint para atualizar item (`PATCH /api/presentations/[id]/items/[itemId]`)
 
-### Tela de Lista de Apresentações
-- [ ] 🔵 Criar página de apresentações
-- [ ] 🔵 Criar card de apresentação
-- [ ] 🔵 Criar filtros e busca
-- [ ] 🔵 Criar botão nova apresentação
+### Tela de Lista de Apresentações ✅
+- [x] 🔵 Criar página de apresentações (`/dashboard/apresentacoes/page.tsx`)
+- [x] 🔵 Criar card de apresentação (`presentation-card.tsx`)
+- [x] 🔵 Criar filtros e busca (`presentations-filters.tsx`)
+- [x] 🔵 Criar botão nova apresentação (`new-presentation-modal.tsx`)
+- [x] 🔵 Criar skeleton de loading (`presentations-skeleton.tsx`)
+- [x] 🔵 Criar estado vazio (`presentations-empty.tsx`)
 
-### Tela da Apresentação - Tab Imagens
-- [ ] 🔵 Criar página de detalhe da apresentação
-- [ ] 🔵 Criar sistema de abas (6 abas)
-- [ ] 🔵 Criar aba de Apresentação
-- [ ] 🔵 Criar zona de upload de imagens
-- [ ] 🔵 Criar seção Fotos Antes (max 4)
-- [ ] 🔵 Criar seção Moodboard (max 1)
-- [ ] 🔵 Criar seção Referências (max 6)
-- [ ] 🔵 Criar seção Planta Baixa (max 1)
-- [ ] 🔵 Criar seção Renders (max 10, min 1)
-- [ ] 🔵 Criar formulário dados do cliente
+### Tela da Apresentação - Tab Imagens ✅
+- [x] 🔵 Criar página de detalhe da apresentação (`/dashboard/apresentacoes/[id]/page.tsx`)
+- [x] 🔵 Criar sistema de abas (6 abas)
+- [x] 🔵 Criar aba de Imagens (`tab-imagens.tsx`)
+- [x] 🔵 Criar zona de upload de imagens
+- [x] 🔵 Criar seção Fotos Antes (max 4)
+- [x] 🔵 Criar seção Moodboard (max 1)
+- [x] 🔵 Criar seção Referências (max 6)
+- [x] 🔵 Criar seção Planta Baixa (max 1)
+- [x] 🔵 Criar seção Renders (max 10, min 1)
+- [x] 🔵 Criar formulário dados do cliente
 
-### Tela da Apresentação - Tab Layout
-- [ ] 🔵 Criar aba de Layout
-- [ ] 🔵 Criar editor de planta baixa
-- [ ] 🔵 Criar visualização da planta com itens
-- [ ] 🔵 Criar marcadores numerados coloridos por categoria
-- [ ] 🔵 Criar formulário de adicionar item de layout
-- [ ] 🔵 Criar lista de itens de layout
-- [ ] 🔵 Criar seção de itens complementares
-- [ ] 🔵 Criar formulário de adicionar item complementar
+### Tela da Apresentação - Tab Layout ✅
+- [x] 🔵 Criar aba de Layout (`tab-layout.tsx`)
+- [x] 🔵 Criar editor de planta baixa
+- [x] 🔵 Criar visualização da planta com itens
+- [x] 🔵 Criar marcadores numerados coloridos por categoria
+- [x] 🔵 Criar formulário de adicionar item de layout
+- [x] 🔵 Criar lista de itens de layout
+- [x] 🔵 Criar seção de itens complementares
+- [x] 🔵 Criar formulário de adicionar item complementar
 
-### Tela da Apresentação - Tab Compras
-- [ ] 🔵 Criar aba de Compras
-- [ ] 🔵 Criar tabela com todos os itens
-- [ ] 🔵 Criar filtro por ambiente
-- [ ] 🔵 Criar filtro por categoria
-- [ ] 🔵 Criar indicador de status (completo/pendente)
-- [ ] 🔵 Criar botão gerar PPT de lista de compras
+### Tela da Apresentação - Tab Compras ✅
+- [x] 🔵 Criar aba de Compras (`tab-compras.tsx`)
+- [x] 🔵 Criar tabela com todos os itens
+- [x] 🔵 Criar filtro por ambiente
+- [x] 🔵 Criar filtro por categoria
+- [x] 🔵 Criar indicador de status (completo/pendente)
+- [x] 🔵 Criar botão gerar PPT de lista de compras
 
-### Tela da Apresentação - Tab Detalhamento
-- [ ] 🔵 Criar aba de Detalhamento
-- [ ] 🔵 Criar visualização por categoria
-- [ ] 🔵 Criar layout planta + itens lado a lado
-- [ ] 🔵 Criar botão gerar PPT de detalhamento
+### Tela da Apresentação - Tab Detalhamento ✅
+- [x] 🔵 Criar aba de Detalhamento (`tab-detalhamento.tsx`)
+- [x] 🔵 Criar visualização por categoria
+- [x] 🔵 Criar layout planta + itens lado a lado
+- [x] 🔵 Criar botão gerar PPT de detalhamento
 
-### Tela da Apresentação - Tab Orçamento
-- [ ] 🔵 Criar aba de Orçamento
-- [ ] 🔵 Criar totais por categoria
-- [ ] 🔵 Criar valor por m² por ambiente
-- [ ] 🔵 Permitir edição inline de valores
-- [ ] 🔵 Criar botão exportar Excel
+### Tela da Apresentação - Tab Orçamento ✅
+- [x] 🔵 Criar aba de Orçamento (`tab-orcamento.tsx`)
+- [x] 🔵 Criar totais por categoria
+- [x] 🔵 Criar valor por m² por ambiente
+- [x] 🔵 Permitir edição inline de valores
+- [x] 🔵 Criar botão exportar Excel
 
-### Tela da Apresentação - Tab Exportar
-- [ ] 🔵 Criar aba de Exportar
-- [ ] 🔵 Criar checklist de completude do projeto
-- [ ] 🔵 Criar checkboxes para selecionar exports
-- [ ] 🔵 Criar preview dos slides
-- [ ] 🔵 Criar botão gerar todos os documentos
+### Tela da Apresentação - Tab Exportar ✅
+- [x] 🔵 Criar aba de Exportar (`tab-exportar.tsx`)
+- [x] 🔵 Criar checklist de completude do projeto
+- [x] 🔵 Criar checkboxes para selecionar exports
+- [x] 🔵 Criar preview dos slides
+- [x] 🔵 Criar botão gerar todos os documentos
 
 ### Testes de Apresentações ✅
 - [x] 🟡 Testar lógica de apresentações (36 tests in `services.test.ts`)
@@ -573,4 +575,4 @@
 
 ---
 
-**Última atualização:** 2026-01-20 (Fase 8 Dashboard + Financeiro Frontend completos - 640 testes)
+**Última atualização:** 2026-01-20 (Fase 5 Apresentações Frontend completa + Fase 8 Dashboard + Financeiro)

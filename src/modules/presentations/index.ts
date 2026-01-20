@@ -33,6 +33,34 @@ export {
   getComplementaryCategories,
 } from "./types";
 
+// Hooks
+export { usePresentations, usePresentation } from "./hooks/use-presentations";
+
+// Constants
+export {
+  STATUS_CONFIGS,
+  getStatusConfig,
+  PHASE_OPTIONS,
+  IMAGE_SECTION_LABELS,
+  IMAGE_SECTION_DESCRIPTIONS,
+  PRESENTATION_TABS,
+} from "./constants";
+
+// Components
+export {
+  PresentationCard,
+  PresentationsFilters,
+  PresentationsSkeleton,
+  PresentationsEmpty,
+  NewPresentationModal,
+  TabImagens,
+  TabLayout,
+  TabCompras,
+  TabDetalhamento,
+  TabOrcamento,
+  TabExportar,
+} from "./components";
+
 // Presentation service
 export {
   createPresentation,
