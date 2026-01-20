@@ -1,11 +1,11 @@
 # TODO - ArqOS MVP
 
-> **Formato:** Tasks atômicas divisíveis entre 2 devs
+> **Formato:** Tasks atômicas orientadas a features
 >
-> **Legenda de cores/categorias:**
-> - 🟢 **BACKEND** - Schema, API, Services
-> - 🔵 **FRONTEND** - Pages, Components, UI
-> - 🟣 **AI/INTEGRAÇÃO** - OpenRouter, Supabase Functions
+> **Legenda:**
+> - 🟢 **BACKEND** - Banco, API, Lógica
+> - 🔵 **FRONTEND** - Telas, Componentes, UI
+> - 🟣 **AI/INTEGRAÇÃO** - OpenRouter, Automações
 > - 🟡 **TESTES** - Unit, Integration, E2E
 > - 🟠 **INFRA/DEPLOY** - Config, CI/CD, Env
 
@@ -14,518 +14,514 @@
 ## 🚀 FASE 0: SETUP
 
 ### Projeto Base
-- [ ] 🟠 Criar projeto Next.js 16.1.4 com TypeScript
-- [ ] 🟠 Configurar Tailwind CSS 4.0
-- [ ] 🟠 Configurar ESLint + Prettier
-- [ ] 🟠 Configurar path aliases (@/)
-- [ ] 🟠 Criar estrutura de pastas (modules/, shared/, app/)
-- [ ] 🟠 Configurar .env.example
-- [ ] 🟠 Criar .gitignore adequado
+- [ ] 🟠 Inicializar projeto Next.js com TypeScript
+- [ ] 🟠 Configurar Tailwind para estilização
+- [ ] 🟠 Configurar linting e formatação de código
+- [ ] 🟠 Definir estrutura de pastas do projeto
+- [ ] 🟠 Criar arquivo de variáveis de ambiente exemplo
+- [ ] 🟠 Configurar gitignore adequado
 
-### shadcn/ui
-- [ ] 🔵 Rodar npx shadcn@latest init
-- [ ] 🔵 Instalar button, card, input, label
-- [ ] 🔵 Instalar dialog, sheet, dropdown-menu
-- [ ] 🔵 Instalar form, select, checkbox, switch
-- [ ] 🔵 Instalar tabs, accordion, toast
-- [ ] 🔵 Instalar table, skeleton, avatar
-- [ ] 🔵 Instalar sidebar (novo componente)
+### Biblioteca de Componentes
+- [ ] 🔵 Inicializar shadcn/ui no projeto
+- [ ] 🔵 Adicionar componentes básicos (botão, card, input)
+- [ ] 🔵 Adicionar componentes de modal e dropdown
+- [ ] 🔵 Adicionar componentes de formulário
+- [ ] 🔵 Adicionar componentes de navegação (tabs, accordion)
+- [ ] 🔵 Adicionar componentes de tabela e loading
+- [ ] 🔵 Adicionar componente de sidebar
 
-### Supabase
+### Conexão com Banco
 - [ ] 🟢 Criar projeto no Supabase
-- [ ] 🟢 Configurar supabase/client.ts (browser)
-- [ ] 🟢 Configurar supabase/server.ts (SSR)
-- [ ] 🟢 Configurar supabase/middleware.ts
-- [ ] 🟢 Gerar types do banco (database.types.ts)
+- [ ] 🟢 Configurar conexão do frontend com Supabase
+- [ ] 🟢 Configurar conexão server-side com Supabase
+- [ ] 🟢 Criar middleware de autenticação
+- [ ] 🟢 Gerar tipos TypeScript do banco
 
-### Testing
-- [ ] 🟡 Instalar e configurar Vitest
-- [ ] 🟡 Instalar Testing Library
-- [ ] 🟡 Instalar Playwright
-- [ ] 🟡 Criar scripts npm (test, test:e2e)
+### Testes
+- [ ] 🟡 Configurar framework de testes unitários
+- [ ] 🟡 Configurar testes de componentes
+- [ ] 🟡 Configurar testes end-to-end
+- [ ] 🟡 Criar scripts de teste no package.json
 - [ ] 🟡 Criar primeiro teste de sanidade
 
 ---
 
 ## 🔐 FASE 1: AUTH
 
-### Database
-- [ ] 🟢 Criar migration tabela profiles
-- [ ] 🟢 Criar campos: id, user_id, full_name, email, role
-- [ ] 🟢 Criar campo avatar_url
-- [ ] 🟢 Criar RLS policy SELECT para próprio user
-- [ ] 🟢 Criar RLS policy UPDATE para próprio user
-- [ ] 🟢 Criar trigger auto-create profile on signup
+### Banco de Dados
+- [ ] 🟢 Criar tabela de perfis de usuário
+- [ ] 🟢 Adicionar campos nome, email e role
+- [ ] 🟢 Adicionar campo de foto de perfil
+- [ ] 🟢 Criar regra: usuário só vê próprio perfil
+- [ ] 🟢 Criar regra: usuário só edita próprio perfil
+- [ ] 🟢 Criar perfil automático ao cadastrar
 
-### API
-- [ ] 🟢 Criar route /api/auth/callback
-- [ ] 🟢 Criar função getSession server-side
-- [ ] 🟢 Criar função getUser server-side
-- [ ] 🟢 Criar função signOut server action
+### Lógica de Autenticação
+- [ ] 🟢 Criar lógica de callback após login
+- [ ] 🟢 Criar função para buscar sessão atual
+- [ ] 🟢 Criar função para buscar dados do usuário
+- [ ] 🟢 Criar função de logout
 
-### Frontend Auth
-- [ ] 🔵 Criar página /login
-- [ ] 🔵 Criar form de login (email + senha)
-- [ ] 🔵 Criar página /register
-- [ ] 🔵 Criar form de registro (nome + email + senha)
-- [ ] 🔵 Criar validação Zod para forms
-- [ ] 🔵 Criar feedback de erro no form
-- [ ] 🔵 Criar loading state nos botões
+### Tela de Login
+- [ ] 🔵 Criar página de login
+- [ ] 🔵 Criar formulário com email e senha
+- [ ] 🔵 Criar página de cadastro
+- [ ] 🔵 Criar formulário de cadastro (nome, email, senha)
+- [ ] 🔵 Adicionar validação nos campos
+- [ ] 🔵 Mostrar erros de validação
+- [ ] 🔵 Adicionar loading nos botões
 
-### Context & Guards
-- [ ] 🔵 Criar AuthContext
+### Proteção de Rotas
+- [ ] 🔵 Criar contexto de autenticação
 - [ ] 🔵 Criar hook useAuth
-- [ ] 🔵 Criar componente AuthGuard
-- [ ] 🔵 Criar layout (auth) para páginas públicas
-- [ ] 🔵 Criar layout (dashboard) para páginas protegidas
-- [ ] 🔵 Criar redirect automático se não logado
+- [ ] 🔵 Criar componente que protege páginas
+- [ ] 🔵 Criar layout para páginas públicas (login, cadastro)
+- [ ] 🔵 Criar layout para páginas protegidas (dashboard)
+- [ ] 🔵 Redirecionar usuário não logado para login
 
-### Testes Auth
-- [ ] 🟡 Test unit: validação Zod login
-- [ ] 🟡 Test unit: validação Zod register
-- [ ] 🟡 Test integration: AuthContext
-- [ ] 🟡 Test E2E: fluxo login completo
-- [ ] 🟡 Test E2E: fluxo registro completo
+### Testes de Auth
+- [ ] 🟡 Testar validação do formulário de login
+- [ ] 🟡 Testar validação do formulário de cadastro
+- [ ] 🟡 Testar contexto de autenticação
+- [ ] 🟡 Testar fluxo completo de login
+- [ ] 🟡 Testar fluxo completo de cadastro
 
 ---
 
 ## 📁 FASE 2: PROJETOS
 
-### Database
-- [ ] 🟢 Criar migration tabela projects
-- [ ] 🟢 Campos: id, name, client_name, status
-- [ ] 🟢 Campos: phase, total_value, created_by
-- [ ] 🟢 Campos: created_at, updated_at
-- [ ] 🟢 Criar migration tabela project_stages
-- [ ] 🟢 Campos stage: id, project_id, stage_name, order
-- [ ] 🟢 Campos stage: hours_spent, completed_at
-- [ ] 🟢 Criar RLS policies projects
-- [ ] 🟢 Criar índice por created_by
-- [ ] 🟢 Criar índice por status
+### Banco de Dados
+- [ ] 🟢 Criar tabela de projetos
+- [ ] 🟢 Adicionar campos nome, cliente, status
+- [ ] 🟢 Adicionar campos fase, valor total, criado por
+- [ ] 🟢 Adicionar campos de data (criação, atualização)
+- [ ] 🟢 Criar tabela de etapas do projeto (Kanban)
+- [ ] 🟢 Adicionar campos da etapa: nome, ordem, horas
+- [ ] 🟢 Adicionar campo de conclusão da etapa
+- [ ] 🟢 Criar regras de acesso aos projetos
+- [ ] 🟢 Criar índice para busca por usuário
+- [ ] 🟢 Criar índice para busca por status
 
-### API Projects
-- [ ] 🟢 Criar project-service.ts
-- [ ] 🟢 Função listProjects com filtros
-- [ ] 🟢 Função getProject por id
-- [ ] 🟢 Função createProject
-- [ ] 🟢 Função updateProject
-- [ ] 🟢 Função deleteProject
-- [ ] 🟢 API route GET /api/projects
-- [ ] 🟢 API route POST /api/projects
-- [ ] 🟢 API route GET /api/projects/[id]
-- [ ] 🟢 API route PATCH /api/projects/[id]
-- [ ] 🟢 API route DELETE /api/projects/[id]
+### Lógica de Projetos
+- [ ] 🟢 Criar lógica para listar projetos com filtros
+- [ ] 🟢 Criar lógica para buscar projeto por id
+- [ ] 🟢 Criar lógica para criar novo projeto
+- [ ] 🟢 Criar lógica para atualizar projeto
+- [ ] 🟢 Criar lógica para deletar projeto
+- [ ] 🟢 Criar endpoint para listar projetos
+- [ ] 🟢 Criar endpoint para criar projeto
+- [ ] 🟢 Criar endpoint para buscar projeto específico
+- [ ] 🟢 Criar endpoint para atualizar projeto
+- [ ] 🟢 Criar endpoint para deletar projeto
 
-### API Kanban
-- [ ] 🟢 Função moveProjectStage
-- [ ] 🟢 Função updateStageHours
-- [ ] 🟢 API route PATCH /api/projects/[id]/stage
-- [ ] 🟢 API route POST /api/projects/[id]/stages
+### Lógica do Kanban
+- [ ] 🟢 Criar lógica para mover projeto entre etapas
+- [ ] 🟢 Criar lógica para registrar horas na etapa
+- [ ] 🟢 Criar endpoint para mover etapa
+- [ ] 🟢 Criar endpoint para adicionar etapa
 
-### Frontend Lista
-- [ ] 🔵 Criar página /projetos
-- [ ] 🔵 Criar componente ProjectsHeader
-- [ ] 🔵 Criar toggle Lista/Kanban
-- [ ] 🔵 Criar componente ProjectCard
+### Tela de Lista de Projetos
+- [ ] 🔵 Criar página de projetos
+- [ ] 🔵 Criar cabeçalho da página
+- [ ] 🔵 Criar botão alternar visualização Lista/Kanban
+- [ ] 🔵 Criar card de projeto
 - [ ] 🔵 Criar filtro por status
-- [ ] 🔵 Criar busca por nome/cliente
-- [ ] 🔵 Criar empty state "sem projetos"
+- [ ] 🔵 Criar busca por nome ou cliente
+- [ ] 🔵 Criar tela vazia "nenhum projeto"
 
-### Frontend Kanban
-- [ ] 🔵 Criar componente ProjectKanban
-- [ ] 🔵 Criar colunas por stage
-- [ ] 🔵 Implementar drag & drop
-- [ ] 🔵 Criar modal input de horas ao mover
+### Tela do Kanban
+- [ ] 🔵 Criar visualização Kanban
+- [ ] 🔵 Criar colunas por etapa
+- [ ] 🔵 Implementar arrastar e soltar
+- [ ] 🔵 Criar modal para informar horas ao mover
 - [ ] 🔵 Criar indicador visual de progresso
 
-### Frontend Detalhe
-- [ ] 🔵 Criar página /projetos/[id]
-- [ ] 🔵 Criar header com nome + status
-- [ ] 🔵 Criar seção dados do cliente
-- [ ] 🔵 Criar timeline de stages
-- [ ] 🔵 Criar ações (editar, deletar)
+### Tela de Detalhe do Projeto
+- [ ] 🔵 Criar página de detalhe do projeto
+- [ ] 🔵 Criar cabeçalho com nome e status
+- [ ] 🔵 Criar seção com dados do cliente
+- [ ] 🔵 Criar linha do tempo das etapas
+- [ ] 🔵 Criar botões de editar e deletar
 
-### Frontend Modais
-- [ ] 🔵 Criar ProjectModal (criar/editar)
-- [ ] 🔵 Criar form projeto (nome, cliente, fase)
-- [ ] 🔵 Criar DeleteConfirmModal
-- [ ] 🔵 Criar hook useProjects (React Query)
-- [ ] 🔵 Criar hook useProject (single)
+### Modais de Projeto
+- [ ] 🔵 Criar modal de criar/editar projeto
+- [ ] 🔵 Criar formulário (nome, cliente, fase)
+- [ ] 🔵 Criar modal de confirmação de exclusão
+- [ ] 🔵 Criar hook para gerenciar lista de projetos
+- [ ] 🔵 Criar hook para gerenciar projeto individual
 
-### Testes Projetos
-- [ ] 🟡 Test unit: project-service
-- [ ] 🟡 Test integration: API routes
-- [ ] 🟡 Test E2E: criar projeto
-- [ ] 🟡 Test E2E: mover no Kanban
-- [ ] 🟡 Test E2E: editar projeto
+### Testes de Projetos
+- [ ] 🟡 Testar lógica de projetos
+- [ ] 🟡 Testar endpoints de projetos
+- [ ] 🟡 Testar criar projeto
+- [ ] 🟡 Testar mover no Kanban
+- [ ] 🟡 Testar editar projeto
 
 ---
 
 ## 🧮 FASE 3: CALCULADORA
 
-### Database
-- [ ] 🟢 Criar migration tabela pricing_config
-- [ ] 🟢 Campos: service_type, tier, base_price
-- [ ] 🟢 Campo multipliers (JSONB)
-- [ ] 🟢 Criar seed dados pricing padrão
-- [ ] 🟢 Seed: DecorExpress tiers (P, M, G)
-- [ ] 🟢 Seed: ProjetExpress por m²
-- [ ] 🟢 Seed: multiplicadores (complexidade, acabamento)
+### Banco de Dados
+- [ ] 🟢 Criar tabela de configuração de preços
+- [ ] 🟢 Adicionar campos tipo de serviço, faixa, preço base
+- [ ] 🟢 Adicionar campo de multiplicadores
+- [ ] 🟢 Popular dados padrão de preços
+- [ ] 🟢 Popular preços DecorExpress (P, M, G)
+- [ ] 🟢 Popular preços ProjetExpress por m²
+- [ ] 🟢 Popular multiplicadores (complexidade, acabamento)
 
-### API Calculadora
-- [ ] 🟢 Criar pricing-engine.ts
-- [ ] 🟢 Função calcular por m²
-- [ ] 🟢 Função calcular por cômodo
-- [ ] 🟢 Função aplicar multiplicadores
-- [ ] 🟢 Função calcular horas estimadas
-- [ ] 🟢 API route POST /api/calculator/calculate
-- [ ] 🟢 API route GET /api/calculator/config
+### Lógica de Cálculo
+- [ ] 🟢 Criar motor de cálculo de preços
+- [ ] 🟢 Criar lógica de cálculo por m²
+- [ ] 🟢 Criar lógica de cálculo por cômodo
+- [ ] 🟢 Criar lógica de aplicar multiplicadores
+- [ ] 🟢 Criar lógica de estimar horas
+- [ ] 🟢 Criar endpoint para calcular orçamento
+- [ ] 🟢 Criar endpoint para buscar configuração de preços
 
-### Frontend Calculadora
-- [ ] 🔵 Criar página /orcamentos/novo
-- [ ] 🔵 Criar componente CalculatorWizard
-- [ ] 🔵 Step 1: ClientForm (nome, telefone, email)
-- [ ] 🔵 Step 2: ServiceSelector (tipo serviço)
-- [ ] 🔵 Step 3: AreaConfig (m² ou cômodos)
-- [ ] 🔵 Step 4: OptionsConfig (multiplicadores)
-- [ ] 🔵 Step 5: ResultDisplay (valor final)
-- [ ] 🔵 Criar botão "Salvar Orçamento"
-- [ ] 🔵 Criar botão "Gerar PDF"
-- [ ] 🔵 Criar hook useCalculator
+### Tela da Calculadora
+- [ ] 🔵 Criar página de novo orçamento
+- [ ] 🔵 Criar wizard de orçamento em etapas
+- [ ] 🔵 Etapa 1: Dados do cliente (nome, telefone, email)
+- [ ] 🔵 Etapa 2: Seleção do tipo de serviço
+- [ ] 🔵 Etapa 3: Configuração de área (m² ou cômodos)
+- [ ] 🔵 Etapa 4: Opções extras (multiplicadores)
+- [ ] 🔵 Etapa 5: Resultado final com valor
+- [ ] 🔵 Criar botão salvar orçamento
+- [ ] 🔵 Criar botão gerar PDF
+- [ ] 🔵 Criar hook para gerenciar calculadora
 
-### Testes Calculadora
-- [ ] 🟡 Test unit: cálculo por m²
-- [ ] 🟡 Test unit: cálculo por cômodo
-- [ ] 🟡 Test unit: multiplicadores
-- [ ] 🟡 Test integration: API calculate
-- [ ] 🟡 Test E2E: fluxo completo calculadora
+### Testes da Calculadora
+- [ ] 🟡 Testar cálculo por m²
+- [ ] 🟡 Testar cálculo por cômodo
+- [ ] 🟡 Testar multiplicadores
+- [ ] 🟡 Testar endpoint de cálculo
+- [ ] 🟡 Testar fluxo completo da calculadora
 
 ---
 
 ## 💰 FASE 4: ORÇAMENTOS
 
-### Database
-- [ ] 🟢 Criar migration tabela budgets
-- [ ] 🟢 Campos: id, project_id, status
-- [ ] 🟢 Campo client_data (JSONB)
-- [ ] 🟢 Campos: service_type, total_value
-- [ ] 🟢 Criar migration tabela budget_items
-- [ ] 🟢 Campos item: name, category, quantity
-- [ ] 🟢 Campos item: unit_price, supplier
-- [ ] 🟢 Campos item: link, image_url
-- [ ] 🟢 Criar RLS policies budgets
-- [ ] 🟢 Criar RLS policies budget_items
+### Banco de Dados
+- [ ] 🟢 Criar tabela de orçamentos
+- [ ] 🟢 Adicionar campos id, projeto, status
+- [ ] 🟢 Adicionar campo de dados do cliente (JSON)
+- [ ] 🟢 Adicionar campos tipo de serviço, valor total
+- [ ] 🟢 Criar tabela de itens do orçamento
+- [ ] 🟢 Adicionar campos do item: nome, categoria, quantidade
+- [ ] 🟢 Adicionar campos do item: preço, fornecedor
+- [ ] 🟢 Adicionar campos do item: link, imagem
+- [ ] 🟢 Criar regras de acesso aos orçamentos
+- [ ] 🟢 Criar regras de acesso aos itens
 
-### API Orçamentos
-- [ ] 🟢 Criar budget-service.ts
-- [ ] 🟢 Função listBudgets
-- [ ] 🟢 Função getBudget com items
-- [ ] 🟢 Função createBudget
-- [ ] 🟢 Função updateBudget
-- [ ] 🟢 Função addBudgetItem
-- [ ] 🟢 Função updateBudgetItem
-- [ ] 🟢 Função deleteBudgetItem
-- [ ] 🟢 API route GET /api/budgets
-- [ ] 🟢 API route POST /api/budgets
-- [ ] 🟢 API route GET /api/budgets/[id]
-- [ ] 🟢 API route PATCH /api/budgets/[id]
-- [ ] 🟢 API route POST /api/budgets/[id]/items
-- [ ] 🟢 API route PATCH /api/budgets/[id]/items/[itemId]
-- [ ] 🟢 API route DELETE /api/budgets/[id]/items/[itemId]
+### Lógica de Orçamentos
+- [ ] 🟢 Criar lógica para listar orçamentos
+- [ ] 🟢 Criar lógica para buscar orçamento com itens
+- [ ] 🟢 Criar lógica para criar orçamento
+- [ ] 🟢 Criar lógica para atualizar orçamento
+- [ ] 🟢 Criar lógica para adicionar item ao orçamento
+- [ ] 🟢 Criar lógica para atualizar item
+- [ ] 🟢 Criar lógica para remover item
+- [ ] 🟢 Criar endpoint para listar orçamentos
+- [ ] 🟢 Criar endpoint para criar orçamento
+- [ ] 🟢 Criar endpoint para buscar orçamento
+- [ ] 🟢 Criar endpoint para atualizar orçamento
+- [ ] 🟢 Criar endpoint para adicionar item
+- [ ] 🟢 Criar endpoint para atualizar item
+- [ ] 🟢 Criar endpoint para remover item
 
-### Frontend Lista Orçamentos
-- [ ] 🔵 Criar página /orcamentos
-- [ ] 🔵 Criar componente BudgetCard
+### Tela de Lista de Orçamentos
+- [ ] 🔵 Criar página de orçamentos
+- [ ] 🔵 Criar card de orçamento
 - [ ] 🔵 Criar filtro por status
 - [ ] 🔵 Criar busca por cliente
-- [ ] 🔵 Criar empty state
+- [ ] 🔵 Criar tela vazia
 
-### Frontend Detalhe Orçamento
-- [ ] 🔵 Criar página /orcamentos/[id]
-- [ ] 🔵 Criar header com valor total
-- [ ] 🔵 Criar BudgetItemsTable
-- [ ] 🔵 Criar edição inline de preço
-- [ ] 🔵 Criar edição inline de quantidade
-- [ ] 🔵 Criar BudgetSummary por categoria
-- [ ] 🔵 Criar BudgetItemModal (add/edit)
+### Tela de Detalhe do Orçamento
+- [ ] 🔵 Criar página de detalhe do orçamento
+- [ ] 🔵 Criar cabeçalho com valor total
+- [ ] 🔵 Criar tabela de itens
+- [ ] 🔵 Permitir editar preço direto na tabela
+- [ ] 🔵 Permitir editar quantidade direto na tabela
+- [ ] 🔵 Criar resumo por categoria
+- [ ] 🔵 Criar modal de adicionar/editar item
 - [ ] 🔵 Criar botão exportar Excel
 - [ ] 🔵 Criar botão exportar PDF
 
-### Testes Orçamentos
-- [ ] 🟡 Test unit: budget-service
-- [ ] 🟡 Test integration: CRUD items
-- [ ] 🟡 Test E2E: criar orçamento
-- [ ] 🟡 Test E2E: adicionar itens
-- [ ] 🟡 Test E2E: exportar
+### Testes de Orçamentos
+- [ ] 🟡 Testar lógica de orçamentos
+- [ ] 🟡 Testar CRUD de itens
+- [ ] 🟡 Testar criar orçamento
+- [ ] 🟡 Testar adicionar itens
+- [ ] 🟡 Testar exportar
 
 ---
 
 ## 🎨 FASE 5: APRESENTAÇÕES
 
-### Database
-- [ ] 🟢 Criar migration tabela presentations
-- [ ] 🟢 Campos: id, project_id, name, phase
-- [ ] 🟢 Campo client_data (JSONB)
-- [ ] 🟢 Criar migration tabela presentation_images
-- [ ] 🟢 Campos: section, image_url, order
-- [ ] 🟢 Criar migration tabela presentation_items
-- [ ] 🟢 Campos: name, category, ambiente
-- [ ] 🟢 Campo position (JSONB) para planta
-- [ ] 🟢 Campos: price, supplier, link
-- [ ] 🟢 Criar Storage bucket presentation-images
-- [ ] 🟢 Criar RLS policies Storage
+### Banco de Dados
+- [ ] 🟢 Criar tabela de apresentações
+- [ ] 🟢 Adicionar campos id, projeto, nome, fase
+- [ ] 🟢 Adicionar campo de dados do cliente (JSON)
+- [ ] 🟢 Criar tabela de imagens da apresentação
+- [ ] 🟢 Adicionar campos: seção, url, ordem
+- [ ] 🟢 Criar tabela de itens da apresentação
+- [ ] 🟢 Adicionar campos: nome, categoria, ambiente
+- [ ] 🟢 Adicionar campo de posição na planta (JSON)
+- [ ] 🟢 Adicionar campos: preço, fornecedor, link
+- [ ] 🟢 Criar bucket de storage para imagens
+- [ ] 🟢 Criar regras de acesso ao storage
 
-### API Apresentações
-- [ ] 🟢 Criar presentation-service.ts
-- [ ] 🟢 Função createPresentation
-- [ ] 🟢 Função getPresentation completa
-- [ ] 🟢 Função updatePresentation
-- [ ] 🟢 Função uploadImage (Storage)
-- [ ] 🟢 Função deleteImage
-- [ ] 🟢 Função addPresentationItem
-- [ ] 🟢 Função updatePresentationItem
-- [ ] 🟢 API route POST /api/presentations
-- [ ] 🟢 API route GET /api/presentations/[id]
-- [ ] 🟢 API route PATCH /api/presentations/[id]
-- [ ] 🟢 API route POST /api/presentations/[id]/images
-- [ ] 🟢 API route DELETE /api/presentations/[id]/images/[imageId]
-- [ ] 🟢 API route POST /api/presentations/[id]/items
+### Lógica de Apresentações
+- [ ] 🟢 Criar lógica para criar apresentação
+- [ ] 🟢 Criar lógica para buscar apresentação completa
+- [ ] 🟢 Criar lógica para atualizar apresentação
+- [ ] 🟢 Criar lógica para upload de imagem
+- [ ] 🟢 Criar lógica para deletar imagem
+- [ ] 🟢 Criar lógica para adicionar item
+- [ ] 🟢 Criar lógica para atualizar item
+- [ ] 🟢 Criar endpoint para criar apresentação
+- [ ] 🟢 Criar endpoint para buscar apresentação
+- [ ] 🟢 Criar endpoint para atualizar apresentação
+- [ ] 🟢 Criar endpoint para upload de imagem
+- [ ] 🟢 Criar endpoint para deletar imagem
+- [ ] 🟢 Criar endpoint para adicionar item
 
-### Frontend Lista
-- [ ] 🔵 Criar página /apresentacoes
-- [ ] 🔵 Criar PresentationCard
+### Tela de Lista de Apresentações
+- [ ] 🔵 Criar página de apresentações
+- [ ] 🔵 Criar card de apresentação
 - [ ] 🔵 Criar filtros e busca
 - [ ] 🔵 Criar botão nova apresentação
 
-### Frontend Tab Apresentação
-- [ ] 🔵 Criar página /apresentacoes/[id]
-- [ ] 🔵 Criar sistema de tabs (6 tabs)
-- [ ] 🔵 Criar TabApresentacao
-- [ ] 🔵 Criar ImageUploadZone
+### Tela da Apresentação - Tab Imagens
+- [ ] 🔵 Criar página de detalhe da apresentação
+- [ ] 🔵 Criar sistema de abas (6 abas)
+- [ ] 🔵 Criar aba de Apresentação
+- [ ] 🔵 Criar zona de upload de imagens
 - [ ] 🔵 Criar seção Fotos Antes (max 4)
 - [ ] 🔵 Criar seção Moodboard (max 1)
 - [ ] 🔵 Criar seção Referências (max 6)
 - [ ] 🔵 Criar seção Planta Baixa (max 1)
 - [ ] 🔵 Criar seção Renders (max 10, min 1)
-- [ ] 🔵 Criar form dados cliente
+- [ ] 🔵 Criar formulário dados do cliente
 
-### Frontend Tab Layout
-- [ ] 🔵 Criar TabLayout
-- [ ] 🔵 Criar FloorPlanEditor
-- [ ] 🔵 Criar visualização planta com itens
-- [ ] 🔵 Criar marcadores numerados coloridos
-- [ ] 🔵 Criar form adicionar item layout
-- [ ] 🔵 Criar lista itens layout
-- [ ] 🔵 Criar seção itens complementares
-- [ ] 🔵 Criar form adicionar complementar
+### Tela da Apresentação - Tab Layout
+- [ ] 🔵 Criar aba de Layout
+- [ ] 🔵 Criar editor de planta baixa
+- [ ] 🔵 Criar visualização da planta com itens
+- [ ] 🔵 Criar marcadores numerados coloridos por categoria
+- [ ] 🔵 Criar formulário de adicionar item de layout
+- [ ] 🔵 Criar lista de itens de layout
+- [ ] 🔵 Criar seção de itens complementares
+- [ ] 🔵 Criar formulário de adicionar item complementar
 
-### Frontend Tab Compras
-- [ ] 🔵 Criar TabCompras
-- [ ] 🔵 Criar tabela todos itens
+### Tela da Apresentação - Tab Compras
+- [ ] 🔵 Criar aba de Compras
+- [ ] 🔵 Criar tabela com todos os itens
 - [ ] 🔵 Criar filtro por ambiente
 - [ ] 🔵 Criar filtro por categoria
-- [ ] 🔵 Criar status (completo/pendente)
-- [ ] 🔵 Criar botão gerar PPT Shopping
+- [ ] 🔵 Criar indicador de status (completo/pendente)
+- [ ] 🔵 Criar botão gerar PPT de lista de compras
 
-### Frontend Tab Detalhamento
-- [ ] 🔵 Criar TabDetalhamento
-- [ ] 🔵 Criar view por categoria
-- [ ] 🔵 Criar planta + itens lado a lado
-- [ ] 🔵 Criar botão gerar PPT Detalhamento
+### Tela da Apresentação - Tab Detalhamento
+- [ ] 🔵 Criar aba de Detalhamento
+- [ ] 🔵 Criar visualização por categoria
+- [ ] 🔵 Criar layout planta + itens lado a lado
+- [ ] 🔵 Criar botão gerar PPT de detalhamento
 
-### Frontend Tab Orçamento
-- [ ] 🔵 Criar TabOrcamento
+### Tela da Apresentação - Tab Orçamento
+- [ ] 🔵 Criar aba de Orçamento
 - [ ] 🔵 Criar totais por categoria
-- [ ] 🔵 Criar valor/m² por ambiente
-- [ ] 🔵 Criar edição inline
+- [ ] 🔵 Criar valor por m² por ambiente
+- [ ] 🔵 Permitir edição inline de valores
 - [ ] 🔵 Criar botão exportar Excel
 
-### Frontend Tab Exportar
-- [ ] 🔵 Criar TabExportar
-- [ ] 🔵 Criar checklist completude
-- [ ] 🔵 Criar checkboxes seleção exports
-- [ ] 🔵 Criar preview slides
-- [ ] 🔵 Criar botão gerar tudo
+### Tela da Apresentação - Tab Exportar
+- [ ] 🔵 Criar aba de Exportar
+- [ ] 🔵 Criar checklist de completude do projeto
+- [ ] 🔵 Criar checkboxes para selecionar exports
+- [ ] 🔵 Criar preview dos slides
+- [ ] 🔵 Criar botão gerar todos os documentos
 
-### Testes Apresentações
-- [ ] 🟡 Test unit: presentation-service
-- [ ] 🟡 Test integration: upload imagens
-- [ ] 🟡 Test E2E: criar apresentação
-- [ ] 🟡 Test E2E: upload + adicionar itens
+### Testes de Apresentações
+- [ ] 🟡 Testar lógica de apresentações
+- [ ] 🟡 Testar upload de imagens
+- [ ] 🟡 Testar criar apresentação
+- [ ] 🟡 Testar upload + adicionar itens
 
 ---
 
 ## 📄 FASE 6: DOCUMENTOS
 
-### Geradores Backend
-- [ ] 🟢 Criar pptx-generator.ts
-- [ ] 🟢 Gerar PPT Apresentação (capa + renders)
-- [ ] 🟢 Gerar PPT Shopping List
-- [ ] 🟢 Gerar PPT Orçamento
-- [ ] 🟢 Gerar PPT Detalhamento
-- [ ] 🟢 Criar excel-generator.ts
-- [ ] 🟢 Gerar Excel orçamento formatado
-- [ ] 🟢 Criar pdf-generator.ts
-- [ ] 🟢 Gerar PDF proposta
-- [ ] 🟢 Criar docx-generator.ts
-- [ ] 🟢 Gerar Word proposta
+### Lógica de Geração
+- [ ] 🟢 Criar gerador de PowerPoint
+- [ ] 🟢 Gerar PPT de apresentação (capa + renders)
+- [ ] 🟢 Gerar PPT de lista de compras
+- [ ] 🟢 Gerar PPT de orçamento
+- [ ] 🟢 Gerar PPT de detalhamento técnico
+- [ ] 🟢 Criar gerador de Excel
+- [ ] 🟢 Gerar planilha de orçamento formatada
+- [ ] 🟢 Criar gerador de PDF
+- [ ] 🟢 Gerar proposta comercial em PDF
+- [ ] 🟢 Criar gerador de Word
+- [ ] 🟢 Gerar proposta comercial em Word
 
-### API Documentos
-- [ ] 🟢 API route POST /api/documents/pptx
-- [ ] 🟢 API route POST /api/documents/excel
-- [ ] 🟢 API route POST /api/documents/pdf
-- [ ] 🟢 API route POST /api/documents/docx
+### Endpoints de Documentos
+- [ ] 🟢 Criar endpoint para gerar PowerPoint
+- [ ] 🟢 Criar endpoint para gerar Excel
+- [ ] 🟢 Criar endpoint para gerar PDF
+- [ ] 🟢 Criar endpoint para gerar Word
 
-### Frontend Documentos
-- [ ] 🔵 Criar ExportButton com loading
-- [ ] 🔵 Criar ExportOptionsModal
-- [ ] 🔵 Integrar em TabExportar
-- [ ] 🔵 Integrar em página orçamentos
-- [ ] 🔵 Criar feedback download sucesso
+### Tela de Exportação
+- [ ] 🔵 Criar botão de exportar com loading
+- [ ] 🔵 Criar modal de opções de exportação
+- [ ] 🔵 Integrar na aba Exportar das apresentações
+- [ ] 🔵 Integrar na página de orçamentos
+- [ ] 🔵 Criar feedback de download concluído
 
-### Testes Documentos
-- [ ] 🟡 Test unit: cada generator
-- [ ] 🟡 Test integration: API retorna arquivo
-- [ ] 🟡 Test E2E: gerar + download
+### Testes de Documentos
+- [ ] 🟡 Testar cada gerador de documento
+- [ ] 🟡 Testar endpoints retornam arquivo
+- [ ] 🟡 Testar gerar e baixar documento
 
 ---
 
 ## 🤖 FASE 7: AI
 
-### OpenRouter Setup
-- [ ] 🟣 Criar openrouter.ts client
-- [ ] 🟣 Configurar env OPENROUTER_API_KEY
-- [ ] 🟣 Criar wrapper com error handling
-- [ ] 🟣 Criar tipos de resposta
+### Configuração OpenRouter
+- [ ] 🟣 Criar cliente de conexão com OpenRouter
+- [ ] 🟣 Configurar variável de ambiente da API
+- [ ] 🟣 Criar tratamento de erros da API
+- [ ] 🟣 Criar tipos de resposta da IA
 
-### AI Briefing
-- [ ] 🟣 Criar briefing-service.ts
-- [ ] 🟣 Prompt gerar memorial de briefing
-- [ ] 🟣 Prompt gerar prompt moodboard
-- [ ] 🟣 Prompt gerar prompt referência
-- [ ] 🟣 API route POST /api/ai/briefing
+### AI para Briefing
+- [ ] 🟣 Criar lógica de briefing com IA
+- [ ] 🟣 Criar prompt para gerar memorial de briefing
+- [ ] 🟣 Criar prompt para gerar descrição de moodboard
+- [ ] 🟣 Criar prompt para gerar descrição de referência visual
+- [ ] 🟣 Criar endpoint de briefing com IA
 
-### AI Brandbook
-- [ ] 🟣 Criar brandbook-service.ts
-- [ ] 🟣 Prompt gerar brandbook completo
-- [ ] 🟣 API route POST /api/ai/brandbook
+### AI para Brandbook
+- [ ] 🟣 Criar lógica de brandbook com IA
+- [ ] 🟣 Criar prompt para gerar brandbook completo
+- [ ] 🟣 Criar endpoint de brandbook com IA
 
-### AI Extrator Produto
-- [ ] 🟣 Criar product-extractor-service.ts
-- [ ] 🟣 Prompt extrair dados de link
+### AI para Extração de Produtos
+- [ ] 🟣 Criar lógica de extração de produtos
+- [ ] 🟣 Criar prompt para extrair dados de link de produto
 - [ ] 🟣 Extrair: nome, preço, fornecedor, imagem
-- [ ] 🟣 API route POST /api/ai/extract-product
+- [ ] 🟣 Criar endpoint de extração de produto
 
-### Frontend AI
-- [ ] 🔵 Criar BriefingAIModal
-- [ ] 🔵 Criar textarea transcrição
-- [ ] 🔵 Criar output memorial formatado
-- [ ] 🔵 Criar BrandbookWizard
-- [ ] 🔵 Criar questionário etapas
-- [ ] 🔵 Criar output brandbook
-- [ ] 🔵 Criar ProductLinkInput
-- [ ] 🔵 Criar auto-fill ao colar link
+### Telas de AI
+- [ ] 🔵 Criar modal de briefing com IA
+- [ ] 🔵 Criar campo de texto para transcrição
+- [ ] 🔵 Criar visualização do memorial gerado
+- [ ] 🔵 Criar wizard de brandbook
+- [ ] 🔵 Criar questionário em etapas
+- [ ] 🔵 Criar visualização do brandbook gerado
+- [ ] 🔵 Criar campo de link de produto
+- [ ] 🔵 Criar preenchimento automático ao colar link
 
-### Testes AI
-- [ ] 🟡 Test unit: services com mock
-- [ ] 🟡 Test integration: API routes
-- [ ] 🟡 Test E2E: usar briefing AI
+### Testes de AI
+- [ ] 🟡 Testar lógicas com mock da API
+- [ ] 🟡 Testar endpoints de AI
+- [ ] 🟡 Testar usar briefing com IA
 
 ---
 
 ## 📊 FASE 8: DASHBOARD
 
-### API Dashboard
-- [ ] 🟢 Criar dashboard-service.ts
-- [ ] 🟢 Função calcular stats gerais
-- [ ] 🟢 Função listar projetos recentes
-- [ ] 🟢 Função calcular financeiro
-- [ ] 🟢 API route GET /api/dashboard/stats
-- [ ] 🟢 API route GET /api/dashboard/recent
-- [ ] 🟢 API route GET /api/financial/summary
+### Lógica do Dashboard
+- [ ] 🟢 Criar lógica de estatísticas do dashboard
+- [ ] 🟢 Criar função para calcular totais gerais
+- [ ] 🟢 Criar função para listar projetos recentes
+- [ ] 🟢 Criar função para calcular financeiro
+- [ ] 🟢 Criar endpoint de estatísticas
+- [ ] 🟢 Criar endpoint de projetos recentes
+- [ ] 🟢 Criar endpoint de resumo financeiro
 
-### Frontend Dashboard
-- [ ] 🔵 Criar página /dashboard (home)
-- [ ] 🔵 Criar DashboardStats cards
-- [ ] 🔵 Card: total projetos
-- [ ] 🔵 Card: valor total
+### Tela do Dashboard
+- [ ] 🔵 Criar página inicial (dashboard)
+- [ ] 🔵 Criar cards de estatísticas
+- [ ] 🔵 Card: total de projetos
+- [ ] 🔵 Card: valor total faturado
 - [ ] 🔵 Card: projetos entregues
-- [ ] 🔵 Card: em andamento
-- [ ] 🔵 Criar RecentProjects lista
-- [ ] 🔵 Criar QuickActions
+- [ ] 🔵 Card: projetos em andamento
+- [ ] 🔵 Criar lista de projetos recentes
+- [ ] 🔵 Criar ações rápidas
 
-### Frontend Financeiro
-- [ ] 🔵 Criar página /financeiro
-- [ ] 🔵 Criar FinancialSummary
-- [ ] 🔵 Criar FinancialChart (Recharts)
+### Tela Financeira
+- [ ] 🔵 Criar página financeira
+- [ ] 🔵 Criar resumo financeiro
+- [ ] 🔵 Criar gráfico de receitas
 - [ ] 🔵 Criar filtro por período
-- [ ] 🔵 Criar tabela entradas
+- [ ] 🔵 Criar tabela de entradas
 
-### Testes Dashboard
-- [ ] 🟡 Test unit: cálculos stats
-- [ ] 🟡 Test integration: API stats
-- [ ] 🟡 Test E2E: dashboard carrega
+### Testes do Dashboard
+- [ ] 🟡 Testar cálculos de estatísticas
+- [ ] 🟡 Testar endpoint de estatísticas
+- [ ] 🟡 Testar dashboard carrega corretamente
 
 ---
 
 ## 🚢 FASE 9: DEPLOY
 
-### Polish UX
-- [ ] 🔵 Criar loading states todas páginas
-- [ ] 🔵 Criar error boundaries
-- [ ] 🔵 Configurar toast notifications
-- [ ] 🔵 Criar empty states
-- [ ] 🔵 Revisar responsivo mobile
-- [ ] 🔵 Criar 404 page
-- [ ] 🔵 Criar 500 page
+### Polish de UX
+- [ ] 🔵 Criar estados de carregamento em todas as páginas
+- [ ] 🔵 Criar tratamento de erros global
+- [ ] 🔵 Configurar notificações toast
+- [ ] 🔵 Criar telas vazias (empty states)
+- [ ] 🔵 Revisar responsividade mobile
+- [ ] 🔵 Criar página 404
+- [ ] 🔵 Criar página de erro 500
 
 ### Performance
-- [ ] 🔵 Implementar React Suspense
-- [ ] 🔵 Otimizar imagens next/image
-- [ ] 🔵 Configurar cache React Query
-- [ ] 🔵 Lazy load componentes pesados
+- [ ] 🔵 Implementar carregamento lazy
+- [ ] 🔵 Otimizar carregamento de imagens
+- [ ] 🔵 Configurar cache de dados
+- [ ] 🔵 Carregar componentes pesados sob demanda
 
 ### Deploy
-- [ ] 🟠 Criar projeto Vercel
-- [ ] 🟠 Configurar env produção
-- [ ] 🟠 Configurar domínio
-- [ ] 🟠 Setup Supabase produção
+- [ ] 🟠 Criar projeto na Vercel
+- [ ] 🟠 Configurar variáveis de ambiente de produção
+- [ ] 🟠 Configurar domínio customizado
+- [ ] 🟠 Configurar Supabase de produção
 - [ ] 🟠 Testar fluxos em produção
 
-### Docs
-- [ ] 🟠 Atualizar README
-- [ ] 🟠 Documentar API routes
-- [ ] 🟠 Criar guia contribuição
-- [ ] 🟠 Atualizar CLAUDE.md
+### Documentação
+- [ ] 🟠 Atualizar README do projeto
+- [ ] 🟠 Documentar endpoints da API
+- [ ] 🟠 Criar guia de contribuição
+- [ ] 🟠 Atualizar arquivo CLAUDE.md
 
 ---
 
 ## 📋 BACKLOG (Futuro)
 
-- [ ] Real-time collaboration
-- [ ] Project versioning
+- [ ] Colaboração em tempo real
+- [ ] Histórico de versões dos projetos
 - [ ] Notificações push
-- [ ] Multi-tenancy
-- [ ] Integração fornecedores API
-- [ ] App mobile
+- [ ] Multi-tenancy (múltiplos escritórios)
+- [ ] Integração com APIs de fornecedores
+- [ ] Aplicativo mobile
 
 ---
 
 ## Como dividir entre 2 devs
 
 **DEV 1 (Backend-focused):** 🟢 + 🟣
-- Database migrations
-- API routes
-- Services
-- AI integrations
-- Document generators
+- Banco de dados e migrations
+- Endpoints da API
+- Lógicas de negócio
+- Integrações com IA
+- Geradores de documentos
 
 **DEV 2 (Frontend-focused):** 🔵 + 🟠
-- Pages e layouts
-- Components
-- Forms e validações
-- UI/UX polish
-- Deploy e infra
+- Páginas e layouts
+- Componentes visuais
+- Formulários e validações
+- Polish de UI/UX
+- Deploy e infraestrutura
 
 **Ambos:** 🟡
 - Testes (cada um testa o que construiu)
