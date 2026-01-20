@@ -26,7 +26,9 @@
       "Bash(npx shadcn@latest:*)",
       "Bash(npm run test:run:*)",
       "Bash(git pull:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(npm run test:e2e:*)",
+      "Bash(npx playwright install:*)"
     ]
   }
 }
