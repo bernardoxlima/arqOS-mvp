@@ -206,7 +206,7 @@ arqOS-mvp/
 │   │
 │   ├── shared/                   # Shared code
 │   │   ├── components/
-│   │   │   ├── ui/               # 25 shadcn/ui components
+│   │   │   ├── ui/               # 26 shadcn/ui components
 │   │   │   └── app-sidebar.tsx   # Main app sidebar
 │   │   ├── hooks/
 │   │   │   └── use-mobile.ts
@@ -249,11 +249,11 @@ arqOS-mvp/
 
 ---
 
-## shadcn/ui Components (25 installed)
+## shadcn/ui Components (26 installed)
 
 ```
 accordion, alert, alert-dialog, avatar, badge, button, card, checkbox,
-dialog, dropdown-menu, form, input, label, scroll-area, select,
+collapsible, dialog, dropdown-menu, form, input, label, scroll-area, select,
 separator, sheet, sidebar, skeleton, slider, sonner (toast), table, tabs,
 textarea, tooltip
 ```
@@ -327,7 +327,7 @@ presentation-images  # Private - presentation images
 ### ✅ Fase 0: Setup (CONCLUÍDA)
 - [x] Next.js 15.5.9 + TypeScript + Tailwind CSS 4
 - [x] Estrutura de pastas completa
-- [x] shadcn/ui com 23 componentes
+- [x] shadcn/ui com 26 componentes
 - [x] Supabase SSR (client, server, middleware)
 - [x] Vitest + Playwright configurados
 - [x] Teste de sanidade passando
@@ -444,6 +444,24 @@ presentation-images  # Private - presentation images
 - [x] Status workflow: draft → sent → approved → rejected
 - [x] Testes unitários (55 testes - schemas)
 
+### ✅ Fase 4: Orçamentos - Frontend (COMPLETA)
+- [x] Página `/dashboard/orcamentos` com lista de orçamentos
+- [x] Página `/dashboard/orcamentos/[id]` com detalhe do orçamento
+- [x] Componentes em `src/modules/budgets/components/`:
+  - `BudgetCard` - Card de orçamento com status e valor
+  - `BudgetDetailHeader` - Cabeçalho com ações (exportar PDF/Excel)
+  - `BudgetValueCard` - Card de valor total
+  - `ItemsTable` - Tabela de itens com edição inline
+  - `CategorySummary` - Resumo por categoria
+  - `AddEditItemModal` - Modal de adicionar/editar item
+  - `StatusFilter` - Filtro por status
+  - `BudgetsEmptyState` - Estado vazio
+  - `BudgetsSkeleton` / `BudgetDetailSkeleton` - Loading states
+- [x] Hooks em `src/modules/budgets/hooks/`:
+  - `useBudgets` - Lista com filtros e busca
+  - `useBudget` - CRUD de orçamento individual
+- [x] Exportação PDF/Excel integrada
+
 ### ✅ Fase 5: Apresentações - Backend (COMPLETA)
 - [x] Módulo presentations criado em `src/modules/presentations/`
 - [x] Types: Presentation, PresentationImage, PresentationItem
@@ -469,6 +487,25 @@ presentation-images  # Private - presentation images
   - `PUT /api/presentations/[id]/items/[itemId]` - Atualizar posição
   - `DELETE /api/presentations/[id]/items/[itemId]` - Deletar item
 
+### ✅ Fase 5: Apresentações - Frontend (COMPLETA)
+- [x] Página `/dashboard/apresentacoes` com lista de apresentações
+- [x] Página `/dashboard/apresentacoes/[id]` com 6 abas
+- [x] Componentes em `src/modules/presentations/components/`:
+  - `PresentationCard` - Card de apresentação
+  - `NewPresentationModal` - Modal de criar apresentação
+  - `PresentationsFilters` - Filtros e busca
+  - `PresentationsEmpty` - Estado vazio
+  - `PresentationsSkeleton` - Loading state
+- [x] Tabs em `src/modules/presentations/components/tabs/`:
+  - `TabImagens` - Upload de imagens por seção (fotos, moodboard, referências, planta, renders)
+  - `TabLayout` - Editor de planta baixa com marcadores
+  - `TabCompras` - Lista de compras com filtros e exportação
+  - `TabDetalhamento` - Detalhamento técnico por categoria
+  - `TabOrcamento` - Orçamento com totais e edição inline
+  - `TabExportar` - Checklist e exportação de documentos
+- [x] Hook `usePresentations` para gerenciamento de estado
+- [x] Constantes em `constants.ts` (categorias, cores, limites)
+
 ### ✅ Fase 6: Documentos - Backend (COMPLETA)
 - [x] Módulo documents criado em `src/modules/documents/`
 - [x] Types: PresentationPPTInput, ShoppingListPPTInput, BudgetPPTInput, TechnicalDetailingPPTInput
@@ -490,6 +527,16 @@ presentation-images  # Private - presentation images
   - `POST /api/documents/presentations/[id]/detailing` - Gerar PPT detalhamento
   - `POST /api/documents/proposals` - Gerar proposta PDF ou Word
 
+### ✅ Fase 6: Documentos - Frontend (COMPLETA)
+- [x] Integração em `/dashboard/orcamentos/[id]` - Botões exportar PDF/Excel
+- [x] Integração em `/dashboard/apresentacoes/[id]` - Aba Exportar com:
+  - Checklist de completude do projeto
+  - Seleção de documentos para exportar
+  - Preview dos slides
+  - Botão gerar todos os documentos
+- [x] Toast notifications para feedback de download
+- [x] Loading states durante geração
+
 ### ✅ Fase 7: AI - Backend (COMPLETA)
 - [x] Módulo ai criado em `src/modules/ai/`
 - [x] Types: BriefingResult, BrandbookResult, ProductExtractionResult
@@ -509,6 +556,25 @@ presentation-images  # Private - presentation images
   - `POST /api/ai/extract-product` - Extrair dados de link de produto
 - [x] Integração com OpenRouter (`src/shared/lib/openrouter.ts`)
 - [x] Testes unitários (73 testes - schemas + services)
+
+### ✅ Fase 7: AI - Frontend (COMPLETA)
+- [x] Página `/dashboard/brandbook` com wizard completo
+- [x] Componentes em `src/modules/ai/components/`:
+  - `BriefingAIModal` - Modal de briefing com IA
+  - `BriefingTabMemorial` - Aba de memorial
+  - `BriefingTabMoodboard` - Aba de moodboard
+  - `BriefingTabReference` - Aba de referências
+  - `BrandbookWizard` - Wizard de brandbook em etapas
+  - `BrandbookStepIndicator` - Indicador de progresso
+  - `BrandbookQuestionField` - Campo de pergunta
+  - `BrandbookResultView` - Visualização do resultado
+  - `ProductLinkInput` - Input com extração automática
+- [x] Hooks em `src/modules/ai/hooks/`:
+  - `useBriefing` - Geração de briefing
+  - `useBrandbook` - Geração de brandbook
+  - `useProductExtraction` - Extração de dados de produtos
+- [x] Constantes em `constants/brandbook-questions.ts` (7 blocos de perguntas)
+- [x] Testes de hooks (387 testes)
 
 ### ✅ Fase 8: Dashboard - Backend (COMPLETA)
 - [x] Módulo dashboard criado em `src/modules/dashboard/`
@@ -530,6 +596,27 @@ presentation-images  # Private - presentation images
   - Horas: total do mês, top 10 projetos por horas
   - Finanças: receitas (por categoria, pago/pendente/vencido), despesas, balanço
 - [x] Testes unitários (51 testes - schemas + api)
+
+### ✅ Fase 8: Dashboard - Frontend (COMPLETA)
+- [x] Página `/dashboard` com estatísticas e ações rápidas
+- [x] Página `/dashboard/financeiro` com resumo financeiro
+- [x] Componentes em `src/modules/dashboard/components/`:
+  - `MetricCard` - Card de métrica com ícone
+  - `FinanceCard` - Card financeiro colorido
+  - `ActiveProjects` - Lista de projetos ativos
+  - `RecentBudgets` - Orçamentos recentes
+  - `QuickActions` - Ações rápidas
+  - `DashboardSkeleton` - Loading state
+- [x] Componentes em `src/modules/finance/components/`:
+  - `FinanceSummaryCards` - 5 cards de resumo
+  - `FinanceChart` - Gráfico de receitas (recharts)
+  - `FinancePeriodFilter` - Filtro por período
+  - `FinanceProjectsTable` - Tabela de receitas por projeto
+  - `FinanceCategoryBreakdown` - Breakdown por categoria
+  - `FinanceSkeleton` - Loading state
+- [x] Hook `useDashboard` para estatísticas
+- [x] Hook `useFinanceSummary` para financeiro
+- [x] Testes E2E (`dashboard.spec.ts` - 14 testes)
 
 ### 🔲 Fase 9: Deploy
 Ver `TODO.md` para detalhes completos (Polish UX, Performance, Deploy, Documentação).
@@ -607,4 +694,4 @@ npx shadcn@latest add [component]
 
 ---
 
-**Última atualização:** 2026-01-20 (Sync completo - Fases 2-3 Frontend + Fases 4-8 Backend - 640 testes)
+**Última atualização:** 2026-01-20 (Fases 0-8 completas - Backend + Frontend - 654+ testes)
