@@ -1,6 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+interface OrganizationSettings {
+  setup_completed_at?: string | null;
+  setup_skipped_at?: string | null;
+  [key: string]: unknown;
+}
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -37,6 +43,8 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const pathname = request.nextUrl.pathname;
+
   // Protected routes - redirect to login if not authenticated
   const protectedRoutes = [
     "/projetos",
@@ -45,9 +53,17 @@ export async function updateSession(request: NextRequest) {
     "/apresentacoes",
     "/financeiro",
     "/perfil",
+    "/dashboard",
+    "/brandbook",
   ];
   const isProtectedRoute = protectedRoutes.some(
-    (route) => request.nextUrl.pathname === route || request.nextUrl.pathname.startsWith(`${route}/`)
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  );
+
+  // Onboarding routes
+  const onboardingRoutes = ["/welcome", "/setup"];
+  const isOnboardingRoute = onboardingRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
 
   if (!user && isProtectedRoute) {
@@ -58,16 +74,79 @@ export async function updateSession(request: NextRequest) {
 
   // Auth routes - redirect to projetos if already authenticated
   const authRoutes = ["/login", "/cadastro"];
-  if (user && authRoutes.includes(request.nextUrl.pathname)) {
+  if (user && authRoutes.includes(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = "/projetos";
     return NextResponse.redirect(url);
   }
 
-  // Home page - redirect to projetos if already authenticated
-  if (user && request.nextUrl.pathname === "/") {
+  // Check onboarding status for authenticated users accessing protected routes
+  if (user && (isProtectedRoute || pathname === "/")) {
+    try {
+      // Get user's organization settings
+      const { data: profile } = await supabase.rpc("get_current_profile");
+
+      if (profile?.organization_id) {
+        const { data: org } = await supabase
+          .from("organizations")
+          .select("settings")
+          .eq("id", profile.organization_id)
+          .single();
+
+        const settings = (org?.settings as OrganizationSettings) || {};
+        const hasCompletedSetup = !!settings.setup_completed_at || !!settings.setup_skipped_at;
+
+        // If setup not completed, redirect to welcome
+        if (!hasCompletedSetup) {
+          const url = request.nextUrl.clone();
+          url.pathname = "/welcome";
+          return NextResponse.redirect(url);
+        }
+      }
+    } catch (error) {
+      // If there's an error checking setup status, allow access to avoid blocking users
+      console.error("Error checking setup status:", error);
+    }
+
+    // If on home page and setup is complete, redirect to projetos
+    if (pathname === "/") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/projetos";
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // Redirect authenticated users away from onboarding if setup is complete
+  if (user && isOnboardingRoute) {
+    try {
+      const { data: profile } = await supabase.rpc("get_current_profile");
+
+      if (profile?.organization_id) {
+        const { data: org } = await supabase
+          .from("organizations")
+          .select("settings")
+          .eq("id", profile.organization_id)
+          .single();
+
+        const settings = (org?.settings as OrganizationSettings) || {};
+        const hasCompletedSetup = !!settings.setup_completed_at || !!settings.setup_skipped_at;
+
+        // If setup is complete, redirect to projetos
+        if (hasCompletedSetup) {
+          const url = request.nextUrl.clone();
+          url.pathname = "/projetos";
+          return NextResponse.redirect(url);
+        }
+      }
+    } catch (error) {
+      console.error("Error checking setup status:", error);
+    }
+  }
+
+  // Redirect unauthenticated users away from onboarding
+  if (!user && isOnboardingRoute) {
     const url = request.nextUrl.clone();
-    url.pathname = "/projetos";
+    url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 

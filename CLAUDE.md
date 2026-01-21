@@ -84,6 +84,10 @@ arqOS-mvp/
 │   │   │   ├── apresentacoes/
 │   │   │   ├── financeiro/
 │   │   │   └── perfil/           # Profile page
+│   │   ├── (onboarding)/         # Onboarding routes (no sidebar)
+│   │   │   ├── layout.tsx        # Centered layout
+│   │   │   ├── welcome/page.tsx  # /welcome - Welcome screen
+│   │   │   └── setup/page.tsx    # /setup - Setup wizard
 │   │   ├── api/                  # API Routes
 │   │   │   ├── auth/callback/    # Auth callback route
 │   │   │   ├── projects/         # Projects CRUD endpoints
@@ -111,6 +115,9 @@ arqOS-mvp/
 │   │   │   │       └── items/    # POST (add), GET (list)
 │   │   │   │           └── [itemId]/ # PATCH/DELETE/PUT item
 │   │   │   ├── ai/               # OpenRouter integrations
+│   │   │   ├── onboarding/       # Onboarding endpoints
+│   │   │   │   ├── status/       # GET/PUT/DELETE - Setup status
+│   │   │   │   └── complete/     # POST - Complete setup
 │   │   │   ├── profile/          # Profile endpoints
 │   │   │   │   ├── route.ts      # GET/PUT - Profile CRUD
 │   │   │   │   └── avatar/       # POST/DELETE - Avatar upload
@@ -205,6 +212,31 @@ arqOS-mvp/
 │   │   │   ├── schemas.ts        # Zod validation schemas
 │   │   │   ├── services/
 │   │   │   │   └── dashboard.service.ts  # Statistics aggregation
+│   │   │   └── index.ts          # Public exports
+│   │   ├── onboarding/           # Onboarding/Setup wizard module
+│   │   │   ├── types.ts          # TypeScript types (SetupWizardState, OfficeConfig, etc.)
+│   │   │   ├── schemas.ts        # Zod validation schemas
+│   │   │   ├── constants/
+│   │   │   │   ├── office-sizes.ts # Office size options
+│   │   │   │   ├── roles.ts      # Team role options
+│   │   │   │   ├── cost-fields.ts # Cost field definitions
+│   │   │   │   ├── services.ts   # Service options
+│   │   │   │   └── index.ts      # Constants exports
+│   │   │   ├── services/
+│   │   │   │   └── onboarding.service.ts # Setup CRUD operations
+│   │   │   ├── components/
+│   │   │   │   ├── welcome-screen.tsx  # Welcome screen
+│   │   │   │   ├── setup-wizard.tsx    # Main wizard container
+│   │   │   │   ├── setup-progress.tsx  # Progress indicator
+│   │   │   │   └── steps/              # 6 step components
+│   │   │   │       ├── step-size.tsx   # Office size selection
+│   │   │   │       ├── step-name.tsx   # Office name input
+│   │   │   │       ├── step-team.tsx   # Team members form
+│   │   │   │       ├── step-costs.tsx  # Fixed costs input
+│   │   │   │       ├── step-services.tsx # Services multi-select
+│   │   │   │       └── step-margin.tsx # Profit margin slider
+│   │   │   ├── hooks/
+│   │   │   │   └── use-setup-wizard.ts # Wizard state management
 │   │   │   └── index.ts          # Public exports
 │   │   └── ai/
 │   │
@@ -632,6 +664,51 @@ presentation-images  # Private - presentation images
 - [x] Hook `useFinanceSummary` para financeiro
 - [x] Testes E2E (`dashboard.spec.ts` - 14 testes)
 
+### ✅ Onboarding: Welcome Screen + Setup Wizard (COMPLETA)
+- [x] Módulo onboarding criado em `src/modules/onboarding/`
+- [x] Types: SetupWizardState, OfficeConfig, OfficeCosts, TeamMemberData, etc.
+- [x] Schemas Zod: stepSizeSchema, stepNameSchema, stepTeamSchema, stepCostsSchema, stepServicesSchema, stepMarginSchema, completeSetupSchema
+- [x] Constantes:
+  - `office-sizes.ts` - 4 opções (solo, pequeno, médio, grande)
+  - `roles.ts` - 5 cargos com valores padrão (sócio, coordenador, arquiteto, estagiário, administrativo)
+  - `cost-fields.ts` - 7 campos de custo (aluguel, contas, software, marketing, contador, internet, outros)
+  - `services.ts` - 4 serviços (decorexpress, projetexpress, produção, consultoria)
+- [x] Service: getSetupStatus, updateSetupStep, skipSetup, completeSetup, getOrganizationConfig
+- [x] API endpoints:
+  - `GET /api/onboarding/status` - Status do setup
+  - `PUT /api/onboarding/status` - Atualizar step atual
+  - `DELETE /api/onboarding/status` - Pular setup
+  - `POST /api/onboarding/complete` - Completar setup
+- [x] Páginas:
+  - `/welcome` - Tela de boas-vindas
+  - `/setup` - Wizard de configuração
+- [x] Componentes:
+  - `WelcomeScreen` - Tela inicial com botões "Começar" e "Pular"
+  - `SetupWizard` - Container do wizard com navegação
+  - `SetupProgress` - Indicador de progresso (desktop/mobile)
+  - `StepSize` - Seleção de tamanho do escritório (grid de cards)
+  - `StepName` - Input do nome do escritório
+  - `StepTeam` - Formulário de membros da equipe
+  - `StepCosts` - Grid de inputs de custos fixos
+  - `StepServices` - Multi-select de serviços
+  - `StepMargin` - Slider de margem de lucro com preview
+- [x] Hook `useSetupWizard` - Estado do wizard com localStorage persistence
+- [x] Middleware atualizado para redirect para /welcome se setup não completado
+- [x] Auth context atualizado com organization e hasCompletedSetup
+- [x] Dados salvos em `organizations.settings`:
+  ```json
+  {
+    "setup_completed_at": "2026-01-21T10:00:00Z",
+    "setup_step": 6,
+    "office": {
+      "size": "medium",
+      "margin": 30,
+      "services": ["decorexpress", "producao"],
+      "costs": { "rent": 3000, "utilities": 500, ... }
+    }
+  }
+  ```
+
 ### 🔲 Fase 9: Deploy
 Ver `TODO.md` para detalhes completos (Polish UX, Performance, Deploy, Documentação).
 
@@ -708,4 +785,4 @@ npx shadcn@latest add [component]
 
 ---
 
-**Última atualização:** 2026-01-20 (Fases 0-8 completas - Backend + Frontend - 654+ testes)
+**Última atualização:** 2026-01-21 (Fases 0-8 + Onboarding completas - Backend + Frontend)
