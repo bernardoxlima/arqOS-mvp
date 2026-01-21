@@ -63,7 +63,6 @@ interface SettingsTeamSectionProps {
 
 interface MemberFormData {
   full_name: string;
-  email: string;
   role: TeamRole;
   salary: number;
   monthly_hours: number;
@@ -71,7 +70,6 @@ interface MemberFormData {
 
 const defaultFormData: MemberFormData = {
   full_name: "",
-  email: "",
   role: "architect",
   salary: 5000,
   monthly_hours: 160,
@@ -124,7 +122,6 @@ export function SettingsTeamSection({
   const handleOpenEditModal = (member: TeamMember) => {
     setFormData({
       full_name: member.full_name,
-      email: "",
       role: member.role,
       salary: member.salary || 0,
       monthly_hours: member.monthly_hours,
@@ -139,10 +136,9 @@ export function SettingsTeamSection({
   };
 
   const handleSubmitAdd = async () => {
-    if (formData.full_name.trim().length < 2 || !formData.email) return;
+    if (formData.full_name.trim().length < 2) return;
     const success = await onAddMember({
       full_name: formData.full_name.trim(),
-      email: formData.email.trim(),
       role: formData.role,
       salary: formData.salary,
       monthly_hours: formData.monthly_hours,
@@ -291,21 +287,6 @@ export function SettingsTeamSection({
               />
             </div>
 
-            {!editingMember && (
-              <div className="space-y-2">
-                <Label htmlFor="member-email">E-mail</Label>
-                <Input
-                  id="member-email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, email: e.target.value }))
-                  }
-                  placeholder="email@exemplo.com"
-                />
-              </div>
-            )}
-
             <div className="space-y-2">
               <Label htmlFor="member-role">Cargo</Label>
               <Select
@@ -366,11 +347,7 @@ export function SettingsTeamSection({
             </Button>
             <Button
               onClick={editingMember ? handleSubmitEdit : handleSubmitAdd}
-              disabled={
-                isSaving ||
-                formData.full_name.trim().length < 2 ||
-                (!editingMember && !formData.email)
-              }
+              disabled={isSaving || formData.full_name.trim().length < 2}
             >
               {editingMember ? "Salvar" : "Adicionar"}
             </Button>

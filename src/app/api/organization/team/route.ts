@@ -117,22 +117,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { full_name, email, role, salary, monthly_hours } = validation.data;
-
-    // Check if email already exists in the organization
-    const { data: existingMember } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("organization_id", profile.organization_id)
-      .eq("email", email)
-      .maybeSingle();
-
-    if (existingMember) {
-      return NextResponse.json(
-        { success: false, error: "Já existe um membro com este e-mail" },
-        { status: 409 }
-      );
-    }
+    const { full_name, role, salary, monthly_hours } = validation.data;
 
     // Create the team member profile
     // Note: user_id is null for members not yet registered
@@ -141,7 +126,6 @@ export async function POST(request: NextRequest) {
       .insert({
         organization_id: profile.organization_id,
         full_name,
-        email,
         role,
         metadata: {
           salary,
@@ -150,7 +134,7 @@ export async function POST(request: NextRequest) {
           added_at: new Date().toISOString(),
         },
       })
-      .select("id, full_name, email, role, metadata, settings, created_at")
+      .select("id, full_name, role, metadata, settings, created_at")
       .single();
 
     if (createError) {
@@ -170,7 +154,6 @@ export async function POST(request: NextRequest) {
       data: {
         id: newMember.id,
         full_name: newMember.full_name,
-        email: newMember.email,
         role: newMember.role,
         salary: metadata.salary ?? null,
         monthly_hours: metadata.monthly_hours ?? 160,

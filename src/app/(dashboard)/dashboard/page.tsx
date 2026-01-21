@@ -118,6 +118,9 @@ export default function DashboardPage() {
         />
       </div>
 
+      {/* Quick Actions */}
+      <QuickActions />
+
       {/* Services & Costs Section */}
       <div className="grid gap-4 md:grid-cols-2">
         <ServicesActiveCard
@@ -176,9 +179,6 @@ export default function DashboardPage() {
           hoursStats={stats?.hours}
         />
       </div>
-
-      {/* Quick Actions */}
-      <QuickActions />
     </div>
   );
 }

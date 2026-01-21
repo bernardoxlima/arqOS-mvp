@@ -13,17 +13,20 @@ import {
   Edit2,
   Trash2,
   User,
-  Check,
-  Circle,
   Loader2,
+  ListChecks,
+  CalendarDays,
+  FileText,
+  Check,
 } from "lucide-react";
 
-import type { Project, Workflow, Financials, ProjectStage, StageColor } from "@/modules/projects";
-import { getCurrentStageName, getWorkflowProgress } from "@/modules/projects";
+import type { Project, Workflow, Financials, ServiceType } from "@/modules/projects";
+import { getCurrentStageName, getWorkflowProgress, TabEtapas, TabAgenda, TabEscopo } from "@/modules/projects";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -48,18 +51,6 @@ const serviceTypeLabels: Record<string, string> = {
   decorexpress: "DecorExpress",
   producao: "Produção",
   projetexpress: "ProjetExpress",
-};
-
-const stageColorClasses: Record<StageColor, { bg: string; text: string; border: string }> = {
-  purple: { bg: "bg-purple-500", text: "text-purple-600", border: "border-purple-500" },
-  blue: { bg: "bg-blue-500", text: "text-blue-600", border: "border-blue-500" },
-  cyan: { bg: "bg-cyan-500", text: "text-cyan-600", border: "border-cyan-500" },
-  green: { bg: "bg-green-500", text: "text-green-600", border: "border-green-500" },
-  yellow: { bg: "bg-yellow-500", text: "text-yellow-600", border: "border-yellow-500" },
-  orange: { bg: "bg-orange-500", text: "text-orange-600", border: "border-orange-500" },
-  pink: { bg: "bg-pink-500", text: "text-pink-600", border: "border-pink-500" },
-  gray: { bg: "bg-gray-500", text: "text-gray-600", border: "border-gray-500" },
-  emerald: { bg: "bg-emerald-500", text: "text-emerald-600", border: "border-emerald-500" },
 };
 
 function ProjectDetailSkeleton() {
@@ -163,7 +154,6 @@ export default function ProjectDetailPage() {
   const progress = getWorkflowProgress(workflow);
   const statusInfo = statusConfig[project.status] || statusConfig.draft;
   const serviceLabel = workflow?.type ? serviceTypeLabels[workflow.type] : "Projeto";
-  const currentStageIndex = workflow?.current_stage_index ?? 0;
 
   const formatDate = (date: string | null) => {
     if (!date) return "—";
@@ -323,70 +313,46 @@ export default function ProjectDetailPage() {
         </Card>
       </div>
 
-      {/* Timeline */}
-      {workflow?.stages && workflow.stages.length > 0 && (
+      {/* Tabs: Etapas, Agenda, Escopo */}
+      {workflow && (
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Linha do Tempo</CardTitle>
-            <CardDescription>
-              Acompanhe o progresso do projeto por etapa
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-muted" />
+          <CardContent className="pt-6">
+            <Tabs defaultValue="etapas">
+              <TabsList className="grid w-full grid-cols-3 mb-6">
+                <TabsTrigger value="etapas" className="flex items-center gap-2">
+                  <ListChecks className="h-4 w-4" />
+                  <span className="hidden sm:inline">Etapas do Processo</span>
+                  <span className="sm:hidden">Etapas</span>
+                </TabsTrigger>
+                <TabsTrigger value="agenda" className="flex items-center gap-2">
+                  <CalendarDays className="h-4 w-4" />
+                  <span className="hidden sm:inline">Agenda de Entregas</span>
+                  <span className="sm:hidden">Agenda</span>
+                </TabsTrigger>
+                <TabsTrigger value="escopo" className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  <span className="hidden sm:inline">Escopo do Serviço</span>
+                  <span className="sm:hidden">Escopo</span>
+                </TabsTrigger>
+              </TabsList>
 
-              <div className="space-y-4">
-                {workflow.stages.map((stage: ProjectStage, index: number) => {
-                  const isCompleted = index < currentStageIndex;
-                  const isCurrent = index === currentStageIndex;
-                  const colors = stageColorClasses[stage.color] || stageColorClasses.gray;
+              <TabsContent value="etapas">
+                <TabEtapas workflow={workflow} startDate={project.created_at} />
+              </TabsContent>
 
-                  return (
-                    <div key={stage.id} className="relative flex items-start gap-4 pl-2">
-                      {/* Icon */}
-                      <div
-                        className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 bg-background ${
-                          isCompleted
-                            ? `${colors.bg} border-transparent`
-                            : isCurrent
-                            ? `${colors.border} bg-background`
-                            : "border-muted bg-background"
-                        }`}
-                      >
-                        {isCompleted ? (
-                          <Check className="h-4 w-4 text-white" />
-                        ) : (
-                          <Circle
-                            className={`h-3 w-3 ${
-                              isCurrent ? colors.text : "text-muted-foreground"
-                            }`}
-                          />
-                        )}
-                      </div>
+              <TabsContent value="agenda">
+                <TabAgenda
+                  workflow={workflow}
+                  projectCode={project.code}
+                  clientName={clientSnapshot?.name || "Cliente"}
+                  startDate={project.created_at}
+                />
+              </TabsContent>
 
-                      {/* Content */}
-                      <div className={`flex-1 pb-4 ${!isCurrent && !isCompleted ? "opacity-50" : ""}`}>
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{stage.name}</span>
-                          {isCurrent && (
-                            <Badge variant="secondary" className="text-xs">
-                              Atual
-                            </Badge>
-                          )}
-                        </div>
-                        {stage.description && (
-                          <p className="text-sm text-muted-foreground mt-0.5">
-                            {stage.description}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+              <TabsContent value="escopo">
+                <TabEscopo serviceType={(workflow.type || "decorexpress") as ServiceType} />
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
       )}

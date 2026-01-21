@@ -62,7 +62,6 @@ export const createTeamMemberSchema = z.object({
     .string()
     .min(2, "Nome deve ter pelo menos 2 caracteres")
     .max(100, "Nome muito longo"),
-  email: z.string().email("E-mail inválido"),
   role: teamRoleSchema,
   salary: z.number().min(0, "Salário não pode ser negativo"),
   monthly_hours: z
@@ -99,7 +98,6 @@ export const officeFormSchema = z.object({
  */
 export const teamMemberFormSchema = z.object({
   full_name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres").max(100, "Nome muito longo"),
-  email: z.string().email("E-mail inválido"),
   role: teamRoleSchema,
   salary: z.number().min(0, "Salário não pode ser negativo"),
   monthly_hours: z.number().min(1, "Horas devem ser pelo menos 1").max(744, "Máximo de horas"),

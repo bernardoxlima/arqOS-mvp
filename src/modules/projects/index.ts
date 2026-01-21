@@ -38,6 +38,12 @@ export {
   getFinalStageId,
 } from "./constants/stages";
 
+export {
+  SERVICE_SCOPES,
+  getServiceScope,
+} from "./constants/service-scope";
+export type { ScopeItem, ServiceScope } from "./constants/service-scope";
+
 // Schemas
 export {
   createProjectSchema,
@@ -90,3 +96,6 @@ export {
   KanbanCard,
   TimeEntryModal,
 } from "./components";
+
+// Tab Components
+export { TabEtapas, TabAgenda, TabEscopo } from "./components/tabs";

@@ -71,9 +71,9 @@ export function ProcessFlowCard({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center justify-center gap-2 sm:gap-4">
             {FLOW_STEPS.map((_, i) => (
-              <div key={i} className="flex items-center gap-2">
+              <div key={i} className="flex items-center gap-2 sm:gap-4">
                 <Skeleton className="h-16 w-20 rounded-lg" />
                 {i < FLOW_STEPS.length - 1 && (
                   <Skeleton className="h-4 w-4" />
@@ -94,13 +94,13 @@ export function ProcessFlowCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center justify-between gap-1 sm:gap-2">
+        <div className="flex items-center justify-center gap-2 sm:gap-4">
           {FLOW_STEPS.map((step, index) => {
             const Icon = step.icon;
             const count = counts?.[step.key] ?? 0;
 
             return (
-              <div key={step.key} className="flex items-center gap-1 sm:gap-2">
+              <div key={step.key} className="flex items-center gap-2 sm:gap-4">
                 <div
                   className={`flex flex-col items-center justify-center p-2 sm:p-3 rounded-lg min-w-[60px] sm:min-w-[80px] ${step.bgColor}`}
                 >
