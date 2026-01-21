@@ -127,6 +127,10 @@ arqOS-mvp/
 │   │   │   │   ├── stats/        # GET - Combined statistics
 │   │   │   │   ├── projects/recent/ # GET - Recent projects
 │   │   │   │   └── finance/summary/ # GET - Finance summary
+│   │   │   ├── finance/          # Finance endpoints
+│   │   │   │   └── expenses/     # Expenses CRUD
+│   │   │   │       ├── route.ts  # GET (list) + POST (create)
+│   │   │   │       └── [id]/route.ts # GET/PUT/DELETE by ID
 │   │   │   └── documents/        # Document generation endpoints
 │   │   │       ├── presentations/[id]/
 │   │   │       │   ├── ppt/      # POST - Generate presentation PPT
@@ -214,6 +218,30 @@ arqOS-mvp/
 │   │   │   ├── schemas.ts        # Zod validation schemas
 │   │   │   ├── services/
 │   │   │   │   └── dashboard.service.ts  # Statistics aggregation
+│   │   │   └── index.ts          # Public exports
+│   │   ├── finance/              # Finance module (expenses management)
+│   │   │   ├── types.ts          # TypeScript types (Expense, ExpenseCategory, etc.)
+│   │   │   ├── schemas.ts        # Zod validation schemas
+│   │   │   ├── constants.ts      # Category colors, labels, period presets
+│   │   │   ├── services/
+│   │   │   │   └── expenses.service.ts  # CRUD operations for expenses
+│   │   │   ├── hooks/
+│   │   │   │   ├── use-finance-summary.ts # Finance summary hook
+│   │   │   │   └── use-expenses.ts  # Expenses state management
+│   │   │   ├── components/
+│   │   │   │   ├── finance-summary-cards.tsx  # Summary cards
+│   │   │   │   ├── finance-chart.tsx         # Income vs expenses chart
+│   │   │   │   ├── finance-period-filter.tsx # Period filter
+│   │   │   │   ├── finance-category-breakdown.tsx # Category breakdown
+│   │   │   │   ├── finance-projects-table.tsx    # Projects table
+│   │   │   │   ├── finance-skeleton.tsx      # Loading state
+│   │   │   │   └── expenses/     # Expense-specific components
+│   │   │   │       ├── expense-summary-cards.tsx  # 4 category cards
+│   │   │   │       ├── expense-form.tsx          # Add expense form
+│   │   │   │       ├── expenses-table.tsx        # Expenses table
+│   │   │   │       ├── expense-edit-modal.tsx    # Edit modal
+│   │   │   │       ├── expense-category-filter.tsx # Category filter
+│   │   │   │       └── index.ts  # Component exports
 │   │   │   └── index.ts          # Public exports
 │   │   ├── onboarding/           # Onboarding/Setup wizard module
 │   │   │   ├── types.ts          # TypeScript types (SetupWizardState, OfficeConfig, etc.)
@@ -723,6 +751,35 @@ presentation-images  # Private - presentation images
   }
   ```
 
+### ✅ Gestão de Despesas - Finance Module (COMPLETA)
+- [x] Módulo finance expandido em `src/modules/finance/`
+- [x] Types: Expense, ExpenseCategory, ExpenseFilters, CreateExpenseData, UpdateExpenseData
+- [x] Schemas Zod: createExpenseSchema, updateExpenseSchema, expenseFiltersSchema
+- [x] Constantes: EXPENSE_CATEGORIES com 4 categorias (fixo, variavel, salario, imposto)
+- [x] Service CRUD: listExpenses, getExpenseById, createExpense, updateExpense, deleteExpense
+- [x] API endpoints:
+  - `GET /api/finance/expenses` - Listar despesas com filtros
+  - `POST /api/finance/expenses` - Criar despesa
+  - `GET /api/finance/expenses/[id]` - Buscar despesa por ID
+  - `PUT /api/finance/expenses/[id]` - Atualizar despesa
+  - `DELETE /api/finance/expenses/[id]` - Deletar despesa
+- [x] Hook `useExpenses` para gerenciamento de estado
+- [x] Componentes em `src/modules/finance/components/expenses/`:
+  - `ExpenseSummaryCards` - 4 cards de categoria com totais
+  - `ExpenseForm` - Formulário inline para adicionar despesas
+  - `ExpensesTable` - Tabela com ações de editar/excluir
+  - `ExpenseEditModal` - Modal para edição
+  - `ExpenseCategoryFilter` - Filtro por categoria e status
+- [x] Página `/financeiro` atualizada com Tabs:
+  - Tab "Resumo" - Visão geral financeira (existente)
+  - Tab "Despesas" - Gestão de despesas com CRUD completo
+- [x] Toast notifications para feedback de ações
+- [x] Categorias de despesas:
+  - **Custos Fixos** (fixo) - Aluguel, contas, assinaturas
+  - **Custos Variáveis** (variavel) - Materiais, serviços, ferramentas
+  - **Salários** (salario) - Folha de pagamento, benefícios
+  - **Impostos** (imposto) - ISS, IRPJ, CSLL, outros tributos
+
 ### ✅ Configurações do Escritório (COMPLETA)
 - [x] Módulo settings criado em `src/modules/settings/`
 - [x] Types: UpdateOrganizationData, CreateTeamMemberData, UpdateTeamMemberData, etc.
@@ -822,4 +879,4 @@ npx shadcn@latest add [component]
 
 ---
 
-**Última atualização:** 2026-01-21 (Fases 0-8 + Onboarding + Configurações completas - Backend + Frontend)
+**Última atualização:** 2026-01-21 (Fases 0-8 + Onboarding + Configurações + Gestão de Despesas completas)
