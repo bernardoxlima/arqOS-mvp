@@ -34,7 +34,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 
 const navItems = [
   {
@@ -59,7 +59,7 @@ const navItems = [
   },
   {
     title: "Brandbook",
-    url: "/dashboard/brandbook",
+    url: "/brandbook",
     icon: Sparkles,
   },
   {
@@ -85,6 +85,14 @@ export function AppSidebar() {
   const handleSignOut = async () => {
     await signOut();
   };
+
+  const getAvatarUrl = (): string | null => {
+    if (!profile?.settings) return null;
+    const settings = profile.settings as Record<string, unknown>;
+    return (settings.avatar_url as string) || null;
+  };
+
+  const avatarUrl = getAvatarUrl();
 
   return (
     <Sidebar>
@@ -135,6 +143,7 @@ export function AppSidebar() {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8">
+                    <AvatarImage src={avatarUrl || undefined} alt={profile?.full_name || "Avatar"} />
                     <AvatarFallback>
                       {profile?.full_name ? getInitials(profile.full_name) : "U"}
                     </AvatarFallback>

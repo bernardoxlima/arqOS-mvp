@@ -82,7 +82,8 @@ arqOS-mvp/
 │   │   │   ├── projetos/
 │   │   │   ├── orcamentos/
 │   │   │   ├── apresentacoes/
-│   │   │   └── financeiro/
+│   │   │   ├── financeiro/
+│   │   │   └── perfil/           # Profile page
 │   │   ├── api/                  # API Routes
 │   │   │   ├── auth/callback/    # Auth callback route
 │   │   │   ├── projects/         # Projects CRUD endpoints
@@ -110,6 +111,9 @@ arqOS-mvp/
 │   │   │   │       └── items/    # POST (add), GET (list)
 │   │   │   │           └── [itemId]/ # PATCH/DELETE/PUT item
 │   │   │   ├── ai/               # OpenRouter integrations
+│   │   │   ├── profile/          # Profile endpoints
+│   │   │   │   ├── route.ts      # GET/PUT - Profile CRUD
+│   │   │   │   └── avatar/       # POST/DELETE - Avatar upload
 │   │   │   ├── dashboard/        # Dashboard endpoints
 │   │   │   │   ├── stats/        # GET - Combined statistics
 │   │   │   │   ├── projects/recent/ # GET - Recent projects
@@ -249,13 +253,13 @@ arqOS-mvp/
 
 ---
 
-## shadcn/ui Components (25 installed)
+## shadcn/ui Components (26 installed)
 
 ```
 accordion, alert, alert-dialog, avatar, badge, button, card, checkbox,
 dialog, dropdown-menu, form, input, label, scroll-area, select,
-separator, sheet, sidebar, skeleton, slider, sonner (toast), table, tabs,
-textarea, tooltip
+separator, sheet, sidebar, skeleton, slider, sonner (toast), switch,
+table, tabs, textarea, tooltip
 ```
 
 **Add new components:**
@@ -348,6 +352,16 @@ presentation-images  # Private - presentation images
 - [x] API route de callback
 - [x] Testes unitários (26 testes - schemas + context)
 - [x] Testes E2E (18 testes - login, cadastro, rotas)
+- [x] Página de perfil `/perfil` com:
+  - [x] Visualização e edição de nome completo
+  - [x] Upload de foto de perfil (avatar) com integração ao Supabase Storage
+  - [x] Configuração de tema (claro/escuro)
+  - [x] Configuração de notificações
+- [x] API endpoints de perfil:
+  - [x] `GET /api/profile` - Buscar perfil do usuário
+  - [x] `PUT /api/profile` - Atualizar perfil (nome, settings)
+  - [x] `POST /api/profile/avatar` - Upload de avatar
+  - [x] `DELETE /api/profile/avatar` - Remover avatar
 
 ### ✅ Fase 2: Projetos - Backend (COMPLETA)
 - [x] Módulo projects criado em `src/modules/projects/`
