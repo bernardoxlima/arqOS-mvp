@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { Button } from '@/shared/components/ui/button';
 import { Card } from '@/shared/components/ui/card';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
@@ -53,9 +55,58 @@ const initialState: WizardState = {
 
 const STEP_LABELS = ['1. Servico', '2. Configuracao', '3. Opcoes', '4. Resultado'];
 
+// Helper function to get payment installments
+function getPaymentInstallments(paymentType: PaymentType) {
+  switch (paymentType) {
+    case 'cash':
+      return [{ percent: 100, description: 'Pagamento a vista' }];
+    case 'installments':
+      return [
+        { percent: 30, description: 'Entrada (30%)' },
+        { percent: 30, description: 'Durante (30%)' },
+        { percent: 40, description: 'Na entrega (40%)' },
+      ];
+    case 'custom':
+      return [{ percent: 100, description: 'Pagamento personalizado' }];
+    default:
+      return [{ percent: 100, description: 'Pagamento' }];
+  }
+}
+
+// Helper function to generate scope based on wizard state
+function generateScope(state: WizardState): string[] {
+  const scope: string[] = [];
+  const serviceNames: Record<ServiceType, string> = {
+    decorexpress: 'DecorExpress',
+    producao: 'Producao',
+    projetexpress: 'ProjetExpress',
+  };
+
+  if (state.service) {
+    scope.push(`Servico: ${serviceNames[state.service]}`);
+  }
+
+  if (state.service === 'projetexpress') {
+    scope.push(`Area: ${state.projectArea}m²`);
+    scope.push(`Tipo: ${state.projectType === 'novo' ? 'Projeto novo' : 'Reforma'}`);
+  } else {
+    scope.push(`${state.environmentCount} ambiente(s)`);
+  }
+
+  scope.push(`Modalidade: ${state.serviceModality === 'presencial' ? 'Presencial' : 'Online'}`);
+
+  if (state.includeManagement && state.service === 'projetexpress') {
+    scope.push('Inclui gerenciamento de obra');
+  }
+
+  return scope;
+}
+
 export function CalculatorWizard() {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [state, setState] = useState<WizardState>(initialState);
+  const [isSavingBudget, setIsSavingBudget] = useState(false);
   const { result, isCalculating, error, calculate, reset } = useCalculator();
 
   const updateState = useCallback((updates: Partial<WizardState>) => {
@@ -100,6 +151,98 @@ export function CalculatorWizard() {
     setStep(0);
     reset();
   }, [reset]);
+
+  const handleGenerateBudget = useCallback(async (): Promise<string | null> => {
+    if (!result || !state.service) return null;
+
+    setIsSavingBudget(true);
+    try {
+      // Map service type to budget service type
+      const serviceTypeMap: Record<ServiceType, string> = {
+        decorexpress: 'decorexpress',
+        producao: 'producao',
+        projetexpress: 'projetexpress',
+      };
+
+      // Map complexity to complexity level
+      const getComplexityLevel = () => {
+        if (state.service === 'projetexpress') return 'padrao';
+        const complexity = state.complexity;
+        if (complexity === 'decor1' || complexity === 'prod1') return 'simples';
+        if (complexity === 'decor2') return 'padrao';
+        return 'complexo';
+      };
+
+      // Get room list from environments config
+      const roomList = state.environmentsConfig.map((env, idx) => {
+        const typeLabels: Record<EnvironmentType, string> = {
+          standard: 'Ambiente padrao',
+          medium: 'Ambiente medio',
+          high: 'Ambiente complexo',
+        };
+        return `${typeLabels[env.type] || 'Ambiente'} ${idx + 1}`;
+      });
+
+      const budgetData = {
+        serviceType: serviceTypeMap[state.service],
+        details: {
+          area: state.service === 'projetexpress' ? state.projectArea : 0,
+          rooms: state.environmentCount,
+          room_list: roomList,
+          complexity: getComplexityLevel(),
+          finish: 'padrao',
+          modality: state.serviceModality,
+          project_type: state.projectType,
+        },
+        calculation: {
+          base_price: result.basePrice,
+          multipliers: {
+            complexity: 1,
+            finish: 1,
+          },
+          extras_total: result.extrasTotal || 0,
+          survey_fee: result.surveyFeeTotal || 0,
+          discount: result.discount,
+          final_price: result.priceWithDiscount,
+          estimated_hours: result.estimatedHours,
+          hour_rate: result.hourRate,
+          efficiency: result.efficiency,
+          price_per_m2: result.pricePerM2 || 0,
+        },
+        paymentTerms: {
+          type: state.paymentType,
+          installments: getPaymentInstallments(state.paymentType),
+          validity_days: 30,
+        },
+        scope: generateScope(state),
+      };
+
+      const response = await fetch('/api/budgets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(budgetData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Falha ao criar orcamento');
+      }
+
+      if (data.success && data.data?.id) {
+        toast.success('Orcamento criado com sucesso!');
+        router.push(`/dashboard/orcamentos/${data.data.id}`);
+        return data.data.id;
+      }
+
+      throw new Error('Resposta inesperada da API');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao criar orcamento');
+      return null;
+    } finally {
+      setIsSavingBudget(false);
+    }
+  }, [result, state, router]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -232,7 +375,13 @@ export function CalculatorWizard() {
 
       <div className="lg:col-span-5">
         <div className="sticky top-6">
-          <CalculatorResult result={result} service={state.service} isCalculating={isCalculating} />
+          <CalculatorResult
+            result={result}
+            service={state.service}
+            isCalculating={isCalculating}
+            onGenerateBudget={handleGenerateBudget}
+            isSavingBudget={isSavingBudget}
+          />
         </div>
       </div>
     </div>

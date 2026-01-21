@@ -86,18 +86,42 @@ export default function OrcamentoDetailPage() {
     if (!budget) return;
 
     try {
+      // Format payment terms as string
+      const formatPaymentTerms = () => {
+        if (!budget.paymentTerms?.installments) return '';
+        return budget.paymentTerms.installments
+          .map((i) => `${i.percent}% - ${i.description}`)
+          .join(', ');
+      };
+
+      // Service type labels
+      const serviceTypeLabels: Record<string, string> = {
+        decorexpress: 'DecorExpress',
+        producao: 'Producao',
+        projetexpress: 'ProjetExpress',
+        arquitetonico: 'Arquitetonico',
+        interiores: 'Interiores',
+        decoracao: 'Decoracao',
+        reforma: 'Reforma',
+        comercial: 'Comercial',
+      };
+
       const response = await fetch("/api/documents/proposals", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           format: "pdf",
-          budgetId: budget.id,
           clientName: budget.client?.name || "Cliente",
           clientEmail: budget.client?.email,
-          serviceType: budget.serviceType,
-          finalPrice: budget.calculation.final_price,
-          scope: budget.scope,
-          paymentTerms: budget.paymentTerms,
+          clientPhone: budget.client?.phone,
+          projectType: serviceTypeLabels[budget.serviceType] || budget.serviceType,
+          projectDescription: budget.scope.length > 0 ? budget.scope.join('; ') : undefined,
+          serviceType: serviceTypeLabels[budget.serviceType] || budget.serviceType,
+          totalValue: budget.calculation.final_price,
+          paymentTerms: formatPaymentTerms(),
+          includeTerms: true,
+          includeSignatureLine: true,
+          templateStyle: "formal",
         }),
       });
 

@@ -1,6 +1,7 @@
 'use client';
 
-import { Clock, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { Clock, TrendingUp, Sparkles, Loader2, Save, FileText } from 'lucide-react';
 import { Card } from '@/shared/components/ui/card';
 import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
@@ -10,6 +11,8 @@ interface CalculatorResultProps {
   result: CalculationResult | null;
   service: ServiceType | null;
   isCalculating: boolean;
+  onGenerateBudget?: () => Promise<string | null>;
+  isSavingBudget?: boolean;
 }
 
 const SERVICE_NAMES: Record<ServiceType, string> = {
@@ -51,7 +54,7 @@ function getEfficiencyBadgeVariant(efficiency: string): 'default' | 'secondary' 
   }
 }
 
-export function CalculatorResult({ result, service, isCalculating }: CalculatorResultProps) {
+export function CalculatorResult({ result, service, isCalculating, onGenerateBudget, isSavingBudget }: CalculatorResultProps) {
   if (isCalculating) {
     return (
       <Card className="p-6">
@@ -174,8 +177,22 @@ export function CalculatorResult({ result, service, isCalculating }: CalculatorR
             </div>
           </div>
 
-          <Button className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-            Gerar Orçamento
+          <Button
+            className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+            onClick={onGenerateBudget}
+            disabled={isSavingBudget || !onGenerateBudget}
+          >
+            {isSavingBudget ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Salvando...
+              </>
+            ) : (
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Salvar Orcamento
+              </>
+            )}
           </Button>
         </div>
       </Card>

@@ -52,7 +52,7 @@ export default function DashboardPage() {
   const overdueAmount = financeSummary?.income.byPaymentStatus.overdue ?? 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="dashboard-content">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold tracking-tight">

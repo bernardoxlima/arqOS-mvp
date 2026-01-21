@@ -233,8 +233,8 @@
 - [x] 🔵 Etapa 3: Configuração de área/m² (`StepArea`)
 - [x] 🔵 Etapa 4: Opções extras (modalidade, pagamento) (`StepOptions`)
 - [x] 🔵 Etapa 5: Resultado final com valor (`CalculatorResult`)
-- [ ] 🔵 Criar botão salvar orçamento (pendente)
-- [ ] 🔵 Criar botão gerar PDF (pendente)
+- [x] 🔵 Criar botão salvar orçamento (implementado em `CalculatorResult`)
+- [x] 🔵 Criar botão gerar PDF (implementado em `BudgetDetailHeader`)
 - [x] 🔵 Criar hook para gerenciar calculadora (`useCalculator`)
 
 ### Testes da Calculadora ✅
@@ -247,7 +247,7 @@
 
 ---
 
-## 💰 FASE 4: ORÇAMENTOS
+## ✅ FASE 4: ORÇAMENTOS (COMPLETA)
 
 ### Banco de Dados ✅
 - [x] 🟢 Criar tabela de orçamentos (`budgets`)
@@ -277,23 +277,23 @@
 - [x] 🟢 Criar endpoint para atualizar item (`PUT /api/budgets/[id]/items`)
 - [x] 🟢 Criar endpoint para remover item (`DELETE /api/budgets/[id]/items`)
 
-### Tela de Lista de Orçamentos
-- [ ] 🔵 Criar página de orçamentos
-- [ ] 🔵 Criar card de orçamento
-- [ ] 🔵 Criar filtro por status
-- [ ] 🔵 Criar busca por cliente
-- [ ] 🔵 Criar tela vazia
+### Tela de Lista de Orçamentos ✅
+- [x] 🔵 Criar página de orçamentos (`/dashboard/orcamentos`)
+- [x] 🔵 Criar card de orçamento (`budget-card.tsx`)
+- [x] 🔵 Criar filtro por status (`status-filter.tsx`)
+- [x] 🔵 Criar busca por cliente (searchQuery state)
+- [x] 🔵 Criar tela vazia (`budgets-empty-state.tsx`)
 
-### Tela de Detalhe do Orçamento
-- [ ] 🔵 Criar página de detalhe do orçamento
-- [ ] 🔵 Criar cabeçalho com valor total
-- [ ] 🔵 Criar tabela de itens
-- [ ] 🔵 Permitir editar preço direto na tabela
-- [ ] 🔵 Permitir editar quantidade direto na tabela
-- [ ] 🔵 Criar resumo por categoria
-- [ ] 🔵 Criar modal de adicionar/editar item
-- [ ] 🔵 Criar botão exportar Excel
-- [ ] 🔵 Criar botão exportar PDF
+### Tela de Detalhe do Orçamento ✅
+- [x] 🔵 Criar página de detalhe do orçamento (`/dashboard/orcamentos/[id]`)
+- [x] 🔵 Criar cabeçalho com valor total (`budget-detail-header.tsx` + `budget-value-card.tsx`)
+- [x] 🔵 Criar tabela de itens (`items-table.tsx`)
+- [x] 🔵 Permitir editar preço direto na tabela (inline editing)
+- [x] 🔵 Permitir editar quantidade direto na tabela (inline editing)
+- [x] 🔵 Criar resumo por categoria (`category-summary.tsx`)
+- [x] 🔵 Criar modal de adicionar/editar item (`add-edit-item-modal.tsx`)
+- [x] 🔵 Criar botão exportar Excel (`handleExportExcel`)
+- [x] 🔵 Criar botão exportar PDF (`handleExportPDF`)
 
 ### Testes de Orçamentos ✅
 - [x] 🟡 Testar lógica de orçamentos (55 schema + 16 calculation + 33 default tests)
@@ -402,7 +402,7 @@
 
 ---
 
-## 📄 FASE 6: DOCUMENTOS
+## ✅ FASE 6: DOCUMENTOS (COMPLETA)
 
 ### Lógica de Geração ✅
 - [x] 🟢 Criar gerador de PowerPoint (`pptxgenjs`)
@@ -425,12 +425,12 @@
 - [x] 🟢 Criar endpoint para lista de compras (`POST /api/documents/presentations/[id]/shopping-list`)
 - [x] 🟢 Criar endpoint para detalhamento (`POST /api/documents/presentations/[id]/detailing`)
 
-### Tela de Exportação
-- [ ] 🔵 Criar botão de exportar com loading
-- [ ] 🔵 Criar modal de opções de exportação
-- [ ] 🔵 Integrar na aba Exportar das apresentações
-- [ ] 🔵 Integrar na página de orçamentos
-- [ ] 🔵 Criar feedback de download concluído
+### Tela de Exportação ✅
+- [x] 🔵 Criar botão de exportar com loading (`Loader2` spinner)
+- [x] 🔵 Criar modal/seleção de opções de exportação (checkbox + dropdown)
+- [x] 🔵 Integrar na aba Exportar das apresentações (`tab-exportar.tsx`)
+- [x] 🔵 Integrar na página de orçamentos (`budget-detail-header.tsx`)
+- [x] 🔵 Criar feedback de download concluído (toast notifications)
 
 ### Testes de Documentos ✅
 - [x] 🟡 Testar cada gerador de documento (39 tests in `generators.test.ts`)
@@ -439,7 +439,7 @@
 
 ---
 
-## 🤖 FASE 7: AI
+## ✅ FASE 7: AI (COMPLETA)
 
 ### Configuração OpenRouter ✅
 - [x] 🟣 Criar cliente de conexão com OpenRouter (`src/shared/lib/openrouter.ts`)
@@ -465,15 +465,15 @@
 - [x] 🟣 Extrair: nome, preço, fornecedor, imagem
 - [x] 🟣 Criar endpoint de extração de produto (`POST /api/ai/extract-product`)
 
-### Telas de AI
-- [ ] 🔵 Criar modal de briefing com IA
-- [ ] 🔵 Criar campo de texto para transcrição
-- [ ] 🔵 Criar visualização do memorial gerado
-- [ ] 🔵 Criar wizard de brandbook
-- [ ] 🔵 Criar questionário em etapas
-- [ ] 🔵 Criar visualização do brandbook gerado
-- [ ] 🔵 Criar campo de link de produto
-- [ ] 🔵 Criar preenchimento automático ao colar link
+### Telas de AI ✅
+- [x] 🔵 Criar modal de briefing com IA (`briefing-ai-modal.tsx`)
+- [x] 🔵 Criar campo de texto para transcrição (`briefing-tab-memorial.tsx`)
+- [x] 🔵 Criar visualização do memorial gerado (3 abas: memorial, moodboard, referências)
+- [x] 🔵 Criar wizard de brandbook (`brandbook-wizard.tsx`)
+- [x] 🔵 Criar questionário em etapas (7 blocos com `brandbook-step-indicator.tsx`)
+- [x] 🔵 Criar visualização do brandbook gerado (`brandbook-result-view.tsx`)
+- [x] 🔵 Criar campo de link de produto (`product-link-input.tsx`)
+- [x] 🔵 Criar preenchimento automático ao colar link (`handlePaste` auto-extract)
 
 ### Testes de AI ✅
 - [x] 🟡 Testar schemas de validação (48 testes)
@@ -484,7 +484,7 @@
 
 ---
 
-## 📊 FASE 8: DASHBOARD
+## ✅ FASE 8: DASHBOARD (COMPLETA)
 
 ### Lógica do Dashboard ✅
 - [x] 🟢 Criar lógica de estatísticas do dashboard (`dashboard.service.ts`)
@@ -518,7 +518,7 @@
 - [x] 🟡 Testar endpoints de estatísticas (28 testes em `api.test.ts`)
 - [x] 🟡 Testar projetos recentes com filtros
 - [x] 🟡 Testar resumo financeiro com período
-- [ ] 🟡 Testar dashboard carrega corretamente (E2E - pendente frontend)
+- [x] 🟡 Testar dashboard carrega corretamente (`__tests__/e2e/dashboard.spec.ts` - 14 testes)
 
 ---
 
@@ -575,4 +575,4 @@
 
 ---
 
-**Última atualização:** 2026-01-20 (Fases 2-3 + 5 Frontend completas + Fases 4-8 Backend completas - 640 testes)
+**Última atualização:** 2026-01-20 (Fases 2-8 completas - 654+ testes)
