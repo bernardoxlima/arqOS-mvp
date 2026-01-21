@@ -17,10 +17,47 @@ import type {
   ComplexityLevel,
   FinishLevel,
   ProjectType,
+  PositioningMultiplier,
 } from './types';
 
-// Base hour value for calculations
+// Base hour value for calculations (fallback if not configured)
 export const HOUR_VALUE = 200;
+
+// Standard working hours per month
+export const HOURS_PER_MONTH = 160;
+
+// Positioning multipliers - determines sale price based on market position
+export const POSITIONING_MULTIPLIERS: Record<PositioningMultiplier, {
+  value: number;
+  label: string;
+  description: string;
+}> = {
+  iniciante: {
+    value: 1.0,
+    label: 'Iniciante',
+    description: 'Apenas cobre custos + margem',
+  },
+  estruturado: {
+    value: 1.5,
+    label: 'Estruturado',
+    description: 'Escritório com processos definidos',
+  },
+  bem_posicionado: {
+    value: 2.0,
+    label: 'Bem Posicionado (Recomendado)',
+    description: 'Reconhecimento no mercado',
+  },
+  premium: {
+    value: 2.5,
+    label: 'Premium',
+    description: 'Marca estabelecida',
+  },
+  ultra_premium: {
+    value: 3.0,
+    label: 'Ultra Premium',
+    description: 'Alto luxo, alta demanda',
+  },
+};
 
 // Survey fee configuration
 export const SURVEY_FEE = {

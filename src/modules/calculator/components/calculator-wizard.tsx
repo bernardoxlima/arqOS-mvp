@@ -36,6 +36,8 @@ export interface WizardState {
   serviceModality: ServiceModality;
   paymentType: PaymentType;
   discountPercentage: number;
+  managementPercent: number;
+  displacementFee: number;
   includeManagement: boolean;
 }
 
@@ -50,6 +52,8 @@ const initialState: WizardState = {
   serviceModality: 'presencial',
   paymentType: 'installments',
   discountPercentage: 0,
+  managementPercent: 0,
+  displacementFee: 0,
   includeManagement: false,
 };
 
@@ -328,10 +332,14 @@ export function CalculatorWizard() {
               serviceModality={state.serviceModality}
               paymentType={state.paymentType}
               discountPercentage={state.discountPercentage}
+              managementPercent={state.managementPercent}
+              displacementFee={state.displacementFee}
               includeManagement={state.includeManagement}
               onServiceModalityChange={(serviceModality) => updateState({ serviceModality })}
               onPaymentTypeChange={(paymentType) => updateState({ paymentType })}
               onDiscountChange={(discountPercentage) => updateState({ discountPercentage })}
+              onManagementPercentChange={(managementPercent) => updateState({ managementPercent })}
+              onDisplacementFeeChange={(displacementFee) => updateState({ displacementFee })}
               onIncludeManagementChange={(includeManagement) => updateState({ includeManagement })}
             />
           )}
@@ -377,7 +385,6 @@ export function CalculatorWizard() {
         <div className="sticky top-6">
           <CalculatorResult
             result={result}
-            service={state.service}
             isCalculating={isCalculating}
             onGenerateBudget={handleGenerateBudget}
             isSavingBudget={isSavingBudget}

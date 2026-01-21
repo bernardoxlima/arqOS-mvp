@@ -1,44 +1,24 @@
 'use client';
 
-import { useState } from 'react';
-import { Clock, TrendingUp, Sparkles, Loader2, Save, FileText } from 'lucide-react';
+import { Clock, TrendingUp, Sparkles, Loader2, Save, AlertTriangle, Timer } from 'lucide-react';
 import { Card } from '@/shared/components/ui/card';
 import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
-import type { CalculationResult, ServiceType } from '../types';
+import { Alert, AlertDescription } from '@/shared/components/ui/alert';
+import type { CalculationResult } from '../types';
 
 interface CalculatorResultProps {
   result: CalculationResult | null;
-  service: ServiceType | null;
   isCalculating: boolean;
   onGenerateBudget?: () => Promise<string | null>;
   isSavingBudget?: boolean;
 }
-
-const SERVICE_NAMES: Record<ServiceType, string> = {
-  decorexpress: 'DecorExpress',
-  producao: 'Produção',
-  projetexpress: 'ProjetExpress',
-};
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   }).format(value);
-}
-
-function getEfficiencyColor(efficiency: string): string {
-  switch (efficiency) {
-    case 'Ótimo':
-      return 'bg-green-500';
-    case 'Bom':
-      return 'bg-amber-500';
-    case 'Reajustar':
-      return 'bg-red-500';
-    default:
-      return 'bg-muted';
-  }
 }
 
 function getEfficiencyBadgeVariant(efficiency: string): 'default' | 'secondary' | 'destructive' {
@@ -54,7 +34,7 @@ function getEfficiencyBadgeVariant(efficiency: string): 'default' | 'secondary' 
   }
 }
 
-export function CalculatorResult({ result, service, isCalculating, onGenerateBudget, isSavingBudget }: CalculatorResultProps) {
+export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSavingBudget }: CalculatorResultProps) {
   if (isCalculating) {
     return (
       <Card className="p-6">
@@ -101,6 +81,42 @@ export function CalculatorResult({ result, service, isCalculating, onGenerateBud
           </div>
         </div>
       </Card>
+
+      {/* Horas Máximas (Controle de Eficiência) */}
+      {result.maxHours !== undefined && result.maxHours > 0 && (
+        <Card className={`p-4 ${result.isOverBudget ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}`}>
+          <div className="flex items-center gap-3">
+            <Timer className={`h-5 w-5 ${result.isOverBudget ? 'text-red-600' : 'text-green-600'}`} />
+            <div className="flex-1">
+              <p className={`text-xs uppercase tracking-wide ${result.isOverBudget ? 'text-red-600' : 'text-green-600'}`}>
+                Horas Máximas (Limite)
+              </p>
+              <p className={`text-2xl font-bold ${result.isOverBudget ? 'text-red-900' : 'text-green-900'}`}>
+                {result.maxHours}h
+              </p>
+              <p className={`text-xs ${result.isOverBudget ? 'text-red-600' : 'text-green-600'}`}>
+                Baseado em {formatCurrency(result.hourlyRateUsed || 0)}/hora
+              </p>
+            </div>
+            {result.isOverBudget ? (
+              <Badge variant="destructive" className="text-xs">Excedido</Badge>
+            ) : (
+              <Badge variant="default" className="text-xs bg-green-500">OK</Badge>
+            )}
+          </div>
+        </Card>
+      )}
+
+      {/* Alerta de Over-Budget */}
+      {result.isOverBudget && (
+        <Alert variant="destructive" className="border-red-300 bg-red-50">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription className="text-sm">
+            <strong>Atenção:</strong> As horas estimadas ({result.estimatedHours}h) excedem o limite máximo ({result.maxHours}h) para manter a rentabilidade.
+            Considere reduzir o escopo ou aumentar o preço.
+          </AlertDescription>
+        </Alert>
+      )}
 
       {/* Referência de Preço */}
       <Card className="p-4">
@@ -216,7 +232,7 @@ export function CalculatorResult({ result, service, isCalculating, onGenerateBud
       </Card>
 
       {/* Breakdown */}
-      {(result.extrasTotal > 0 || result.surveyFeeTotal > 0 || result.managementFeeTotal) && (
+      {(result.extrasTotal > 0 || result.surveyFeeTotal > 0 || result.managementFeeTotal || result.variablesBreakdown) && (
         <Card className="p-4">
           <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">
             Detalhamento
@@ -240,8 +256,27 @@ export function CalculatorResult({ result, service, isCalculating, onGenerateBud
             )}
             {result.managementFeeTotal && result.managementFeeTotal > 0 && (
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Gerenciamento</span>
+                <span className="text-muted-foreground">Gerenciamento de Obra</span>
                 <span>{formatCurrency(result.managementFeeTotal)}</span>
+              </div>
+            )}
+            {/* Variables Breakdown */}
+            {result.variablesBreakdown && result.variablesBreakdown.managementValue > 0 && (
+              <div className="flex justify-between text-green-600">
+                <span>+ Gerenciamento ({result.variablesBreakdown.managementPercent}%)</span>
+                <span>{formatCurrency(result.variablesBreakdown.managementValue)}</span>
+              </div>
+            )}
+            {result.variablesBreakdown && result.variablesBreakdown.discountValue > 0 && (
+              <div className="flex justify-between text-red-600">
+                <span>- Desconto ({result.variablesBreakdown.discountPercent}%)</span>
+                <span>-{formatCurrency(result.variablesBreakdown.discountValue)}</span>
+              </div>
+            )}
+            {result.variablesBreakdown && result.variablesBreakdown.displacementFee > 0 && (
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">+ Deslocamento</span>
+                <span>{formatCurrency(result.variablesBreakdown.displacementFee)}</span>
               </div>
             )}
           </div>

@@ -12,6 +12,9 @@ export type TeamRole = 'owner' | 'coordinator' | 'architect' | 'intern' | 'admin
 // Service types offered by the office
 export type ServiceId = 'decorexpress' | 'projetexpress' | 'producao' | 'consultoria';
 
+// Market positioning multiplier
+export type PositioningMultiplier = 'iniciante' | 'estruturado' | 'bem_posicionado' | 'premium' | 'ultra_premium';
+
 // Office costs structure
 export interface OfficeCosts {
   rent: number;
@@ -29,6 +32,7 @@ export interface OfficeConfig {
   margin: number;
   services: ServiceId[];
   costs: OfficeCosts;
+  positioningMultiplier?: PositioningMultiplier; // Market positioning (default: bem_posicionado)
 }
 
 // Organization settings structure (extends any existing settings)
@@ -59,6 +63,7 @@ export interface SetupWizardState {
   costs: OfficeCosts;
   services: ServiceId[];
   margin: number;
+  positioningMultiplier: PositioningMultiplier;
 }
 
 // Setup status response
@@ -77,6 +82,7 @@ export interface CompleteSetupData {
     margin: number;
     services: ServiceId[];
     costs: OfficeCosts;
+    positioningMultiplier?: PositioningMultiplier;
   };
   team: TeamMemberData[];
   organizationName: string;
@@ -117,4 +123,13 @@ export interface ServiceOption {
   id: ServiceId;
   name: string;
   description: string;
+}
+
+// Positioning multiplier option for UI
+export interface PositioningOption {
+  id: PositioningMultiplier;
+  name: string;
+  multiplier: number;
+  description: string;
+  recommended?: boolean;
 }

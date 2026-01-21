@@ -13,12 +13,17 @@ import type {
   EnvironmentType,
   EnvironmentSize,
   EfficiencyRating,
+  HourlyRateConfig,
+  HourlyRateResult,
+  AdditionalVariables,
+  VariablesBreakdown,
 } from './types';
 
 import {
   SURVEY_FEE,
   EXTRA_ENVIRONMENT,
   DEFAULT_MANAGEMENT_FEE,
+  HOURS_PER_MONTH,
   environmentTypeMultipliers,
   sizeMultipliers,
   decorExpressPricing,
@@ -27,6 +32,78 @@ import {
   getEfficiencyRating,
   getDefaultDiscount,
 } from './pricing-data';
+
+/**
+ * Calculate office hourly rate based on costs, margin, and positioning
+ * Formula:
+ *   CUSTO_HORA_BASE = (CUSTO_EQUIPE + CUSTO_OPERACIONAL) / 160h
+ *   CUSTO_HORA_MARGEM = CUSTO_HORA_BASE × (1 + MARGEM/100)
+ *   VALOR_HORA_VENDA = CUSTO_HORA_MARGEM × MULTIPLICADOR_POSICIONAMENTO
+ */
+export function calculateHourlyRate(config: HourlyRateConfig): HourlyRateResult {
+  const teamCostPerHour = config.teamSalaries / HOURS_PER_MONTH;
+  const operationalCostPerHour = config.operationalCosts / HOURS_PER_MONTH;
+  const baseCost = teamCostPerHour + operationalCostPerHour;
+  const withMargin = baseCost * (1 + config.margin / 100);
+  const saleValue = withMargin * config.positioningMultiplier;
+
+  return {
+    baseCost: Math.round(baseCost * 100) / 100,
+    withMargin: Math.round(withMargin * 100) / 100,
+    saleValue: Math.round(saleValue * 100) / 100,
+    breakdown: {
+      teamCostPerHour: Math.round(teamCostPerHour * 100) / 100,
+      operationalCostPerHour: Math.round(operationalCostPerHour * 100) / 100,
+    },
+  };
+}
+
+/**
+ * Apply additional variables (management %, discount %, displacement fee) to price
+ * Formula: PRECO_FINAL = PRECO_BASE × (1 + GERENCIAMENTO/100) × (1 - DESCONTO/100) + DESLOCAMENTO
+ */
+export function applyAdditionalVariables(
+  basePrice: number,
+  variables: AdditionalVariables
+): { finalPrice: number; breakdown: VariablesBreakdown } {
+  const managementPercent = variables.managementPercent || 0;
+  const discountPercent = variables.discountPercent || 0;
+  const displacementFee = variables.displacementFee || 0;
+
+  const managementValue = basePrice * (managementPercent / 100);
+  const withManagement = basePrice + managementValue;
+
+  const discountValue = withManagement * (discountPercent / 100);
+  const withDiscount = withManagement - discountValue;
+
+  const finalPrice = withDiscount + displacementFee;
+
+  return {
+    finalPrice: Math.round(finalPrice * 100) / 100,
+    breakdown: {
+      managementPercent,
+      managementValue: Math.round(managementValue * 100) / 100,
+      discountPercent,
+      discountValue: Math.round(discountValue * 100) / 100,
+      displacementFee,
+    },
+  };
+}
+
+/**
+ * Calculate max hours based on price and office hourly rate
+ * Formula: HORAS_MAXIMAS = PRECO_COBRADO / VALOR_HORA_VENDA
+ */
+export function calculateMaxHours(
+  price: number,
+  officeHourlyRate: number
+): { maxHours: number; isOverBudget: (estimatedHours: number) => boolean } {
+  const maxHours = officeHourlyRate > 0 ? price / officeHourlyRate : 0;
+  return {
+    maxHours: Math.round(maxHours * 10) / 10, // 1 decimal place
+    isOverBudget: (estimatedHours: number) => estimatedHours > maxHours,
+  };
+}
 
 /**
  * Main calculator function - routes to appropriate service calculator

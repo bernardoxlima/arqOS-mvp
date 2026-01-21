@@ -13,7 +13,7 @@ import {
   SettingsServicesSection,
   SettingsServicesSectionSkeleton,
 } from "@/modules/settings";
-import type { OfficeCosts, ServiceId, OfficeSize } from "@/modules/onboarding";
+import type { OfficeCosts, ServiceId, OfficeSize, PositioningMultiplier } from "@/modules/onboarding";
 
 export default function ConfiguracoesPage() {
   const {
@@ -24,6 +24,7 @@ export default function ConfiguracoesPage() {
     updateOrganizationName,
     updateOfficeSize,
     updateMargin,
+    updatePositioning,
     updateCosts,
     updateServices,
     addTeamMember,
@@ -36,6 +37,7 @@ export default function ConfiguracoesPage() {
   const orgSettings = organization?.settings;
   const officeSize: OfficeSize = orgSettings?.office?.size || "small";
   const margin = orgSettings?.margin || orgSettings?.office?.margin || 30;
+  const positioningMultiplier: PositioningMultiplier = orgSettings?.office?.positioningMultiplier || "bem_posicionado";
   const costs: OfficeCosts = orgSettings?.costs || orgSettings?.office?.costs || {
     rent: 0,
     utilities: 0,
@@ -113,12 +115,14 @@ export default function ConfiguracoesPage() {
             name={orgName}
             size={officeSize}
             margin={margin}
+            positioningMultiplier={positioningMultiplier}
             costs={costs}
             team={team}
             isSaving={isSaving}
             onUpdateName={updateOrganizationName}
             onUpdateSize={updateOfficeSize}
             onUpdateMargin={updateMargin}
+            onUpdatePositioning={updatePositioning}
           />
         </TabsContent>
 

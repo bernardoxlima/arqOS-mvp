@@ -34,6 +34,7 @@ export function SetupWizard() {
     setCostField,
     toggleService,
     setMargin,
+    setPositioningMultiplier,
     complete,
   } = useSetupWizard();
 
@@ -80,7 +81,9 @@ export function SetupWizard() {
         return (
           <StepMargin
             value={state.margin}
+            positioningMultiplier={state.positioningMultiplier}
             onChange={setMargin}
+            onPositioningChange={setPositioningMultiplier}
             costs={state.costs}
             team={state.team}
           />

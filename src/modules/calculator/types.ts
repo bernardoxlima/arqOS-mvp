@@ -15,6 +15,7 @@ export type ServiceType = 'decorexpress' | 'producao' | 'projetexpress';
 export type ServiceModality = 'online' | 'presencial';
 export type PaymentType = 'cash' | 'installments' | 'custom';
 export type EfficiencyRating = 'Ótimo' | 'Bom' | 'Reajustar';
+export type PositioningMultiplier = 'iniciante' | 'estruturado' | 'bem_posicionado' | 'premium' | 'ultra_premium';
 
 // Multiplier Configurations
 export interface EnvironmentTypeMultiplier {
@@ -73,6 +74,41 @@ export interface ProjetRange {
 export interface ProjetPricing {
   name: string;
   ranges: ProjetRange[];
+}
+
+// Additional Variables for pricing calculations
+export interface AdditionalVariables {
+  managementPercent?: number;  // 0-15% additional for project management
+  discountPercent?: number;    // 0-15% discount
+  displacementFee?: number;    // Fixed value in R$ for travel/displacement
+}
+
+// Variables breakdown in result
+export interface VariablesBreakdown {
+  managementPercent: number;
+  managementValue: number;
+  discountPercent: number;
+  discountValue: number;
+  displacementFee: number;
+}
+
+// Hourly rate calculation result
+export interface HourlyRateResult {
+  baseCost: number;           // Base cost per hour (salaries + operational / hours)
+  withMargin: number;         // With margin (MHV - Minimum Viable Hour)
+  saleValue: number;          // Final sale value per hour (with positioning multiplier)
+  breakdown: {
+    teamCostPerHour: number;
+    operationalCostPerHour: number;
+  };
+}
+
+// Configuration for calculating hourly rate
+export interface HourlyRateConfig {
+  teamSalaries: number;
+  operationalCosts: number;
+  margin: number;
+  positioningMultiplier: number;
 }
 
 // Environment Configuration
@@ -149,6 +185,12 @@ export interface CalculationResult {
   description?: string;
   efficiency: EfficiencyRating;
   pricePerM2?: number;
+  // New fields for additional variables
+  variablesBreakdown?: VariablesBreakdown;
+  // New fields for max hours calculation
+  maxHours?: number;           // Maximum hours to avoid loss (finalPrice / officeHourlyRate)
+  hourlyRateUsed?: number;     // Office hourly rate used in calculation
+  isOverBudget?: boolean;      // True if estimatedHours > maxHours
 }
 
 // Full Pricing Configuration

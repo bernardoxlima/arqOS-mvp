@@ -3,7 +3,7 @@
  * Types for organization and team settings management
  */
 
-import type { TeamRole, OfficeCosts, ServiceId, OfficeSize } from "@/modules/onboarding";
+import type { TeamRole, OfficeCosts, ServiceId, OfficeSize, PositioningMultiplier } from "@/modules/onboarding";
 
 // ============================================
 // Organization Update Types
@@ -23,6 +23,7 @@ export interface UpdateOrganizationData {
       margin?: number;
       services?: ServiceId[];
       costs?: Partial<OfficeCosts>;
+      positioningMultiplier?: PositioningMultiplier;
     };
   };
 }
@@ -42,6 +43,7 @@ export interface OrganizationSettingsFull {
     margin: number;
     services: ServiceId[];
     costs: OfficeCosts;
+    positioningMultiplier?: PositioningMultiplier;
   };
 }
 
@@ -54,7 +56,6 @@ export interface OrganizationSettingsFull {
  */
 export interface CreateTeamMemberData {
   full_name: string;
-  email: string;
   role: TeamRole;
   salary: number;
   monthly_hours: number;
@@ -168,6 +169,7 @@ export interface OfficeFormValues {
   name: string;
   size: OfficeSize;
   margin: number;
+  positioningMultiplier: PositioningMultiplier;
 }
 
 /**
@@ -175,7 +177,6 @@ export interface OfficeFormValues {
  */
 export interface TeamMemberFormValues {
   full_name: string;
-  email: string;
   role: TeamRole;
   salary: number;
   monthly_hours: number;

@@ -7,6 +7,7 @@ export * from './office-sizes';
 export * from './roles';
 export * from './cost-fields';
 export * from './services';
+export * from './positioning';
 
 // Wizard steps configuration
 export const WIZARD_STEPS = [

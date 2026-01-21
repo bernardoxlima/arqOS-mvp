@@ -15,6 +15,7 @@ export type {
   ServiceModality,
   PaymentType,
   EfficiencyRating,
+  PositioningMultiplier,
   EnvironmentTypeMultiplier,
   SizeMultiplier,
   ComplexityMultiplier,
@@ -34,6 +35,11 @@ export type {
   PricingConfig,
   CalculateBudgetResponse,
   PricingConfigResponse,
+  // New types for dynamic pricing
+  AdditionalVariables,
+  VariablesBreakdown,
+  HourlyRateResult,
+  HourlyRateConfig,
 } from './types';
 
 // Schemas
@@ -63,6 +69,8 @@ export {
 // Pricing Data
 export {
   HOUR_VALUE,
+  HOURS_PER_MONTH,
+  POSITIONING_MULTIPLIERS,
   SURVEY_FEE,
   EXTRA_ENVIRONMENT,
   DEFAULT_MANAGEMENT_FEE,
@@ -84,6 +92,9 @@ export {
 // Calculator Engine
 export {
   calculateBudget,
+  calculateHourlyRate,
+  applyAdditionalVariables,
+  calculateMaxHours,
   estimateHours,
   calculatePricePerM2,
   formatCurrency,

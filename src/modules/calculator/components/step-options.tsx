@@ -1,9 +1,10 @@
 'use client';
 
-import { MapPin, Wifi, CreditCard, Banknote, Settings2 } from 'lucide-react';
+import { MapPin, Wifi, CreditCard, Banknote, Settings2, Car, Percent } from 'lucide-react';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { Checkbox } from '@/shared/components/ui/checkbox';
+import { Slider } from '@/shared/components/ui/slider';
 import type { ServiceType, ServiceModality, PaymentType } from '../types';
 
 interface StepOptionsProps {
@@ -11,10 +12,14 @@ interface StepOptionsProps {
   serviceModality: ServiceModality;
   paymentType: PaymentType;
   discountPercentage: number;
+  managementPercent: number;
+  displacementFee: number;
   includeManagement: boolean;
   onServiceModalityChange: (modality: ServiceModality) => void;
   onPaymentTypeChange: (type: PaymentType) => void;
   onDiscountChange: (discount: number) => void;
+  onManagementPercentChange: (percent: number) => void;
+  onDisplacementFeeChange: (fee: number) => void;
   onIncludeManagementChange: (include: boolean) => void;
 }
 
@@ -53,10 +58,14 @@ export function StepOptions({
   serviceModality,
   paymentType,
   discountPercentage,
+  managementPercent,
+  displacementFee,
   includeManagement,
   onServiceModalityChange,
   onPaymentTypeChange,
   onDiscountChange,
+  onManagementPercentChange,
+  onDisplacementFeeChange,
   onIncludeManagementChange,
 }: StepOptionsProps) {
   return (
@@ -159,7 +168,91 @@ export function StepOptions({
         </div>
       )}
 
-      {/* Gerenciamento (apenas ProjetExpress) */}
+      {/* Gerenciamento % (para todos os serviços) */}
+      <div className="space-y-3">
+        <Label className="text-xs text-muted-foreground uppercase tracking-wide flex items-center gap-2">
+          <Percent className="h-3 w-3" />
+          Gerenciamento Adicional (%)
+        </Label>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">0%</span>
+            <span className="text-lg font-semibold text-primary">{managementPercent}%</span>
+            <span className="text-sm text-muted-foreground">15%</span>
+          </div>
+          <Slider
+            value={[managementPercent]}
+            onValueChange={([v]) => onManagementPercentChange(v)}
+            min={0}
+            max={15}
+            step={5}
+            className="w-full"
+          />
+          <div className="flex gap-2 justify-center">
+            {[0, 5, 10, 15].map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => onManagementPercentChange(p)}
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                  managementPercent === p
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted hover:bg-muted/80'
+                }`}
+              >
+                {p}%
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Adicional sobre o preço para acompanhamento e gerenciamento do projeto
+        </p>
+      </div>
+
+      {/* Deslocamento */}
+      <div className="space-y-3">
+        <Label className="text-xs text-muted-foreground uppercase tracking-wide flex items-center gap-2">
+          <Car className="h-3 w-3" />
+          Taxa de Deslocamento (R$)
+        </Label>
+        <div className="flex items-center gap-3">
+          <span className="text-muted-foreground">R$</span>
+          <Input
+            type="number"
+            value={displacementFee || ''}
+            onChange={(e) => {
+              const value = parseFloat(e.target.value) || 0;
+              onDisplacementFeeChange(Math.max(0, value));
+            }}
+            min={0}
+            step={50}
+            placeholder="0"
+            className="w-32 text-center"
+          />
+          <div className="flex gap-2">
+            {[0, 100, 200, 300].map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => onDisplacementFeeChange(v)}
+                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                  displacementFee === v
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted hover:bg-muted/80'
+                }`}
+              >
+                {v === 0 ? 'Sem' : `R$ ${v}`}
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Valor fixo para custos de transporte/deslocamento ao local
+        </p>
+      </div>
+
+      {/* Gerenciamento de Obra (apenas ProjetExpress) */}
       {service === 'projetexpress' && (
         <div className="flex items-center space-x-3 p-4 rounded-lg border bg-muted/30">
           <Checkbox
@@ -172,7 +265,7 @@ export function StepOptions({
               Incluir Gerenciamento de Obra
             </Label>
             <p className="text-xs text-muted-foreground">
-              Acompanhamento da execução do projeto
+              Acompanhamento da execução do projeto (valor fixo)
             </p>
           </div>
           <Settings2 className="h-5 w-5 text-muted-foreground" />

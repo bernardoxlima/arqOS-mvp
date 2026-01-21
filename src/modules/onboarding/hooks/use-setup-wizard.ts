@@ -9,8 +9,9 @@ import type {
   OfficeCosts,
   TeamMemberData,
   CompleteSetupData,
+  PositioningMultiplier,
 } from "../types";
-import { DEFAULT_COSTS, TOTAL_STEPS, DEFAULT_MARGIN } from "../constants";
+import { DEFAULT_COSTS, TOTAL_STEPS, DEFAULT_MARGIN, DEFAULT_POSITIONING } from "../constants";
 import {
   getSetupStatus,
   updateSetupStep,
@@ -52,8 +53,9 @@ interface UseSetupWizardReturn {
   toggleService: (serviceId: ServiceId) => void;
   setServices: (services: ServiceId[]) => void;
 
-  // Step 6: Margin
+  // Step 6: Margin & Positioning
   setMargin: (margin: number) => void;
+  setPositioningMultiplier: (positioning: PositioningMultiplier) => void;
 
   // Actions
   saveProgress: () => Promise<void>;
@@ -70,6 +72,7 @@ const initialState: SetupWizardState = {
   costs: DEFAULT_COSTS,
   services: [],
   margin: DEFAULT_MARGIN,
+  positioningMultiplier: DEFAULT_POSITIONING,
 };
 
 export function useSetupWizard(): UseSetupWizardReturn {
@@ -231,9 +234,13 @@ export function useSetupWizard(): UseSetupWizardReturn {
     setState((prev) => ({ ...prev, services }));
   }, []);
 
-  // Step 6: Margin
+  // Step 6: Margin & Positioning
   const setMargin = useCallback((margin: number) => {
     setState((prev) => ({ ...prev, margin }));
+  }, []);
+
+  const setPositioningMultiplier = useCallback((positioning: PositioningMultiplier) => {
+    setState((prev) => ({ ...prev, positioningMultiplier: positioning }));
   }, []);
 
   // Actions
@@ -266,6 +273,7 @@ export function useSetupWizard(): UseSetupWizardReturn {
           margin: state.margin,
           services: state.services,
           costs: state.costs,
+          positioningMultiplier: state.positioningMultiplier,
         },
         team: state.team,
         organizationName: state.officeName,
@@ -332,6 +340,7 @@ export function useSetupWizard(): UseSetupWizardReturn {
     toggleService,
     setServices,
     setMargin,
+    setPositioningMultiplier,
     saveProgress,
     complete,
     skip,

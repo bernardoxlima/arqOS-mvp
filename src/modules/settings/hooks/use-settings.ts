@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
-import type { OfficeCosts, ServiceId, OfficeSize, TeamRole } from "@/modules/onboarding";
+import type { OfficeCosts, ServiceId, OfficeSize, TeamRole, PositioningMultiplier } from "@/modules/onboarding";
 import type { OrganizationData, TeamData, TeamMember } from "@/modules/dashboard/types";
 import type { UpdateOrganizationData, CreateTeamMemberData, UpdateTeamMemberData } from "../types";
 
@@ -18,6 +18,7 @@ interface OrganizationSettingsExtended {
     margin: number;
     services: ServiceId[];
     costs: OfficeCosts;
+    positioningMultiplier?: PositioningMultiplier;
   };
 }
 
@@ -42,6 +43,7 @@ interface UseSettingsReturn {
   updateOrganizationName: (name: string) => Promise<boolean>;
   updateOfficeSize: (size: OfficeSize) => Promise<boolean>;
   updateMargin: (margin: number) => Promise<boolean>;
+  updatePositioning: (positioning: PositioningMultiplier) => Promise<boolean>;
   updateCosts: (costs: Partial<OfficeCosts>) => Promise<boolean>;
   updateServices: (services: ServiceId[]) => Promise<boolean>;
 
@@ -154,6 +156,16 @@ export function useSettings(): UseSettingsReturn {
     async (margin: number): Promise<boolean> => {
       return updateOrganization({
         settings: { margin, office: { margin } },
+      });
+    },
+    [updateOrganization]
+  );
+
+  // Update positioning multiplier
+  const updatePositioning = useCallback(
+    async (positioning: PositioningMultiplier): Promise<boolean> => {
+      return updateOrganization({
+        settings: { office: { positioningMultiplier: positioning } },
       });
     },
     [updateOrganization]
@@ -333,6 +345,7 @@ export function useSettings(): UseSettingsReturn {
     updateOrganizationName,
     updateOfficeSize,
     updateMargin,
+    updatePositioning,
     updateCosts,
     updateServices,
     addTeamMember,
