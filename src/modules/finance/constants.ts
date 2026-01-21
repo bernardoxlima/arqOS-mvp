@@ -3,6 +3,8 @@
  * Category colors, labels, and configuration
  */
 
+import type { ExpenseCategory } from './types';
+
 // Category labels for income (Portuguese)
 export const INCOME_CATEGORY_LABELS: Record<string, string> = {
   projeto: 'Projetos',
@@ -10,29 +12,79 @@ export const INCOME_CATEGORY_LABELS: Record<string, string> = {
   variavel: 'Variável',
 };
 
-// Category labels for expenses (Portuguese)
+// Category labels for expenses (Portuguese) - legacy format
 export const EXPENSE_CATEGORY_LABELS: Record<string, string> = {
-  operacional: 'Operacional',
-  material: 'Material',
-  pessoal: 'Pessoal',
-  marketing: 'Marketing',
-  outros: 'Outros',
+  fixo: 'Custos Fixos',
+  variavel: 'Custos Variáveis',
+  salario: 'Salários',
+  imposto: 'Impostos',
+};
+
+// Expense categories with full configuration
+export const EXPENSE_CATEGORIES: Record<
+  ExpenseCategory,
+  {
+    label: string;
+    description: string;
+    color: string;
+    bgColor: string;
+    textColor: string;
+    borderColor: string;
+  }
+> = {
+  fixo: {
+    label: 'Custos Fixos',
+    description: 'Aluguel, contas, assinaturas mensais',
+    color: 'bg-blue-500',
+    bgColor: 'bg-blue-50',
+    textColor: 'text-blue-700',
+    borderColor: 'border-blue-200',
+  },
+  variavel: {
+    label: 'Custos Variáveis',
+    description: 'Materiais, serviços, ferramentas',
+    color: 'bg-orange-500',
+    bgColor: 'bg-orange-50',
+    textColor: 'text-orange-700',
+    borderColor: 'border-orange-200',
+  },
+  salario: {
+    label: 'Salários',
+    description: 'Folha de pagamento, benefícios',
+    color: 'bg-purple-500',
+    bgColor: 'bg-purple-50',
+    textColor: 'text-purple-700',
+    borderColor: 'border-purple-200',
+  },
+  imposto: {
+    label: 'Impostos',
+    description: 'ISS, IRPJ, CSLL, outros tributos',
+    color: 'bg-red-500',
+    bgColor: 'bg-red-50',
+    textColor: 'text-red-700',
+    borderColor: 'border-red-200',
+  },
 };
 
 // Category colors for charts and visualizations
 export const CATEGORY_COLORS = {
   // Income categories
   projeto: '#10b981', // emerald-500
-  fixo: '#6366f1', // indigo-500
-  variavel: '#f59e0b', // amber-500
-
-  // Expense categories
-  operacional: '#ef4444', // red-500
-  material: '#f97316', // orange-500
-  pessoal: '#8b5cf6', // violet-500
-  marketing: '#ec4899', // pink-500
-  outros: '#6b7280', // gray-500
+  // Shared categories (income/expense)
+  fixo: '#3b82f6', // blue-500
+  variavel: '#f97316', // orange-500
+  // Expense-only categories
+  salario: '#8b5cf6', // violet-500
+  imposto: '#ef4444', // red-500
 } as const;
+
+// Expense category colors for charts (hex values)
+export const EXPENSE_CATEGORY_COLORS: Record<ExpenseCategory, string> = {
+  fixo: '#3b82f6', // blue-500
+  variavel: '#f97316', // orange-500
+  salario: '#8b5cf6', // violet-500
+  imposto: '#ef4444', // red-500
+};
 
 // Chart colors for income vs expenses
 export const CHART_COLORS = {

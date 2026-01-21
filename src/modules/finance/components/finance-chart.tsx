@@ -16,7 +16,7 @@ import type { FinanceSummary } from '@/modules/dashboard/types';
 import {
   INCOME_CATEGORY_LABELS,
   EXPENSE_CATEGORY_LABELS,
-  CATEGORY_COLORS,
+  CHART_COLORS,
 } from '../constants';
 
 interface FinanceChartProps {
@@ -138,13 +138,13 @@ export function FinanceChart({ data }: FinanceChartProps) {
               />
               <Bar
                 dataKey="receitas"
-                fill={CATEGORY_COLORS.projeto}
+                fill={CHART_COLORS.income}
                 radius={[0, 4, 4, 0]}
                 name="receitas"
               />
               <Bar
                 dataKey="despesas"
-                fill={CATEGORY_COLORS.operacional}
+                fill={CHART_COLORS.expenses}
                 radius={[0, 4, 4, 0]}
                 name="despesas"
               />
