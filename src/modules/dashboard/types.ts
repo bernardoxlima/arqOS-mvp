@@ -174,3 +174,129 @@ export interface FinanceSummaryParams {
   startDate?: string;
   endDate?: string;
 }
+
+// ============================================
+// Organization Types
+// ============================================
+
+/**
+ * Organization costs breakdown
+ */
+export interface OrganizationCosts {
+  rent: number;
+  utilities: number;
+  software: number;
+  marketing: number;
+  accountant: number;
+  internet: number;
+  others: number;
+}
+
+/**
+ * Organization settings from JSONB
+ */
+export interface OrganizationSettings {
+  margin: number;
+  hour_value: number;
+  costs: OrganizationCosts;
+}
+
+/**
+ * Organization data for dashboard
+ */
+export interface OrganizationData {
+  id: string;
+  name: string;
+  slug: string;
+  settings: OrganizationSettings;
+}
+
+// ============================================
+// Team Types
+// ============================================
+
+/**
+ * Team member with profile data
+ */
+export interface TeamMember {
+  id: string;
+  full_name: string;
+  role: "owner" | "coordinator" | "architect" | "intern" | "admin";
+  avatar_url: string | null;
+  salary: number | null;
+  monthly_hours: number;
+}
+
+/**
+ * Team data aggregation
+ */
+export interface TeamData {
+  members: TeamMember[];
+  totals: {
+    salaries: number;
+    hours: number;
+    hourly_rate: number;
+  };
+}
+
+// ============================================
+// Office Totals Types
+// ============================================
+
+/**
+ * Calculated office totals
+ */
+export interface OfficeTotals {
+  salaries: number;
+  costs: number;
+  monthly: number;
+  hourly: number;
+}
+
+// ============================================
+// Process Flow Types
+// ============================================
+
+/**
+ * Process flow step counts
+ */
+export interface ProcessFlowCounts {
+  orcamento: number;
+  aprovacao: number;
+  projeto: number;
+  financeiro: number;
+}
+
+// ============================================
+// Active Services Types
+// ============================================
+
+/**
+ * Active service from projects
+ */
+export interface ActiveService {
+  type: string;
+  count: number;
+}
+
+// ============================================
+// API Response Types (Organization)
+// ============================================
+
+export interface OrganizationResponse {
+  success: boolean;
+  data?: OrganizationData;
+  error?: string;
+}
+
+export interface TeamResponse {
+  success: boolean;
+  data?: TeamData;
+  error?: string;
+}
+
+export interface ServicesResponse {
+  success: boolean;
+  data?: ActiveService[];
+  error?: string;
+}

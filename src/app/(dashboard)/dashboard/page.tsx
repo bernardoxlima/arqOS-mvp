@@ -9,6 +9,11 @@ import {
   RecentBudgets,
   ActiveProjects,
   QuickActions,
+  OfficeDetailsCard,
+  TeamSummaryCard,
+  ServicesActiveCard,
+  MonthlyCostsCard,
+  ProcessFlowCard,
 } from "@/modules/dashboard/components";
 import { formatCurrency, formatPercentage, formatHours } from "@/shared/lib/format";
 import {
@@ -28,6 +33,11 @@ export default function DashboardPage() {
     recentProjects,
     recentBudgets,
     financeSummary,
+    organization,
+    team,
+    officeTotals,
+    services,
+    processFlow,
     isLoading: dashboardLoading,
   } = useDashboard();
 
@@ -94,6 +104,37 @@ export default function DashboardPage() {
           iconColor="text-amber-500"
         />
       </div>
+
+      {/* Office Info Section */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <OfficeDetailsCard
+          organization={organization}
+          teamCount={team?.members.length ?? 0}
+          isLoading={isLoading}
+        />
+        <TeamSummaryCard
+          team={team}
+          isLoading={isLoading}
+        />
+      </div>
+
+      {/* Services & Costs Section */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <ServicesActiveCard
+          services={services}
+          isLoading={isLoading}
+        />
+        <MonthlyCostsCard
+          totals={officeTotals}
+          isLoading={isLoading}
+        />
+      </div>
+
+      {/* Process Flow */}
+      <ProcessFlowCard
+        counts={processFlow}
+        isLoading={isLoading}
+      />
 
       {/* Financial Summary */}
       <div className="grid gap-4 md:grid-cols-3">

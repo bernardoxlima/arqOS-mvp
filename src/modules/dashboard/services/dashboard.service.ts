@@ -10,6 +10,14 @@ import type {
   BudgetStats,
   PresentationStats,
   HoursStats,
+  OrganizationData,
+  OrganizationSettings,
+  OrganizationCosts,
+  TeamData,
+  TeamMember,
+  OfficeTotals,
+  ActiveService,
+  ProcessFlowCounts,
 } from "../types";
 
 // ============================================
@@ -506,6 +514,271 @@ export async function getFinanceSummary(
       },
       balance: Math.round(balance * 100) / 100,
       projectsRevenue,
+    },
+    error: null,
+  };
+}
+
+// ============================================
+// Organization Data
+// ============================================
+
+/**
+ * Default costs structure
+ */
+const DEFAULT_COSTS: OrganizationCosts = {
+  rent: 0,
+  utilities: 0,
+  software: 0,
+  marketing: 0,
+  accountant: 0,
+  internet: 0,
+  others: 0,
+};
+
+/**
+ * Default settings structure
+ */
+const DEFAULT_SETTINGS: OrganizationSettings = {
+  margin: 30,
+  hour_value: 200,
+  costs: DEFAULT_COSTS,
+};
+
+/**
+ * Get organization data for the current user
+ */
+export async function getOrganizationData(
+  organizationId: string
+): Promise<DashboardResult<OrganizationData>> {
+  const supabase = await createClient();
+
+  const { data: org, error } = await supabase
+    .from("organizations")
+    .select("id, name, slug, settings")
+    .eq("id", organizationId)
+    .single();
+
+  if (error) {
+    return { data: null, error: { message: error.message, code: error.code } };
+  }
+
+  if (!org) {
+    return { data: null, error: { message: "Organization not found" } };
+  }
+
+  // Parse settings from JSONB with defaults
+  const rawSettings = (org.settings || {}) as Partial<OrganizationSettings>;
+  const rawCosts = (rawSettings.costs || {}) as Partial<OrganizationCosts>;
+
+  const settings: OrganizationSettings = {
+    margin: rawSettings.margin ?? DEFAULT_SETTINGS.margin,
+    hour_value: rawSettings.hour_value ?? DEFAULT_SETTINGS.hour_value,
+    costs: {
+      rent: rawCosts.rent ?? DEFAULT_COSTS.rent,
+      utilities: rawCosts.utilities ?? DEFAULT_COSTS.utilities,
+      software: rawCosts.software ?? DEFAULT_COSTS.software,
+      marketing: rawCosts.marketing ?? DEFAULT_COSTS.marketing,
+      accountant: rawCosts.accountant ?? DEFAULT_COSTS.accountant,
+      internet: rawCosts.internet ?? DEFAULT_COSTS.internet,
+      others: rawCosts.others ?? DEFAULT_COSTS.others,
+    },
+  };
+
+  return {
+    data: {
+      id: org.id,
+      name: org.name,
+      slug: org.slug,
+      settings,
+    },
+    error: null,
+  };
+}
+
+// ============================================
+// Team Data
+// ============================================
+
+/**
+ * Get team members for an organization
+ */
+export async function getTeamData(
+  organizationId: string
+): Promise<DashboardResult<TeamData>> {
+  const supabase = await createClient();
+
+  const { data: profiles, error } = await supabase
+    .from("profiles")
+    .select("id, full_name, role, settings, metadata")
+    .eq("organization_id", organizationId);
+
+  if (error) {
+    return { data: null, error: { message: error.message, code: error.code } };
+  }
+
+  // Map profiles to team members
+  const members: TeamMember[] = (profiles || []).map((profile) => {
+    const settings = (profile.settings || {}) as { avatar_url?: string | null };
+    const metadata = (profile.metadata || {}) as { salary?: number | null; monthly_hours?: number };
+
+    return {
+      id: profile.id,
+      full_name: profile.full_name,
+      role: profile.role as TeamMember["role"],
+      avatar_url: settings.avatar_url ?? null,
+      salary: metadata.salary ?? null,
+      monthly_hours: metadata.monthly_hours ?? 160,
+    };
+  });
+
+  // Calculate totals
+  const salaries = members.reduce((sum, m) => sum + (m.salary || 0), 0);
+  const hours = members.reduce((sum, m) => sum + m.monthly_hours, 0);
+  const hourlyRate = hours > 0 ? salaries / hours : 0;
+
+  return {
+    data: {
+      members,
+      totals: {
+        salaries: Math.round(salaries * 100) / 100,
+        hours,
+        hourly_rate: Math.round(hourlyRate * 100) / 100,
+      },
+    },
+    error: null,
+  };
+}
+
+// ============================================
+// Office Totals
+// ============================================
+
+/**
+ * Calculate office totals from organization and team data
+ * Note: Made async to comply with "use server" file requirements
+ */
+export async function calculateOfficeTotals(
+  org: OrganizationData,
+  team: TeamData
+): Promise<OfficeTotals> {
+  const costs = org.settings.costs;
+  const totalCosts =
+    costs.rent +
+    costs.utilities +
+    costs.software +
+    costs.marketing +
+    costs.accountant +
+    costs.internet +
+    costs.others;
+
+  const monthly = team.totals.salaries + totalCosts;
+  const hourly = team.totals.hours > 0 ? monthly / team.totals.hours : 0;
+
+  return {
+    salaries: team.totals.salaries,
+    costs: totalCosts,
+    monthly: Math.round(monthly * 100) / 100,
+    hourly: Math.round(hourly * 100) / 100,
+  };
+}
+
+// ============================================
+// Active Services
+// ============================================
+
+/**
+ * Get active services from projects
+ */
+export async function getActiveServices(
+  organizationId: string
+): Promise<DashboardResult<ActiveService[]>> {
+  const supabase = await createClient();
+
+  // Get distinct service types from active/in-progress projects
+  const { data: projects, error } = await supabase
+    .from("projects")
+    .select("service_type")
+    .eq("organization_id", organizationId)
+    .in("status", ["aguardando", "em_andamento"]);
+
+  if (error) {
+    return { data: null, error: { message: error.message, code: error.code } };
+  }
+
+  // Count by service type
+  const countByType: Record<string, number> = {};
+  for (const project of projects || []) {
+    const type = project.service_type || "unknown";
+    countByType[type] = (countByType[type] || 0) + 1;
+  }
+
+  // Convert to array
+  const services: ActiveService[] = Object.entries(countByType)
+    .map(([type, count]) => ({ type, count }))
+    .sort((a, b) => b.count - a.count);
+
+  return { data: services, error: null };
+}
+
+// ============================================
+// Process Flow Counts
+// ============================================
+
+/**
+ * Get process flow counts for the pipeline visualization
+ */
+export async function getProcessFlowCounts(
+  organizationId: string
+): Promise<DashboardResult<ProcessFlowCounts>> {
+  const supabase = await createClient();
+
+  // Fetch budgets and projects in parallel
+  const [budgetsRes, projectsRes, financeRes] = await Promise.all([
+    supabase
+      .from("budgets")
+      .select("status")
+      .eq("organization_id", organizationId),
+    supabase
+      .from("projects")
+      .select("status")
+      .eq("organization_id", organizationId),
+    supabase
+      .from("finance_records")
+      .select("status")
+      .eq("organization_id", organizationId)
+      .eq("type", "income"),
+  ]);
+
+  if (budgetsRes.error) {
+    return { data: null, error: { message: budgetsRes.error.message, code: budgetsRes.error.code } };
+  }
+  if (projectsRes.error) {
+    return { data: null, error: { message: projectsRes.error.message, code: projectsRes.error.code } };
+  }
+
+  const budgets = budgetsRes.data || [];
+  const projects = projectsRes.data || [];
+  const financeRecords = financeRes.data || [];
+
+  // Count budgets in draft/sent (orcamento stage)
+  const orcamento = budgets.filter((b) => b.status === "draft" || b.status === "sent").length;
+
+  // Count budgets waiting approval (sent status)
+  const aprovacao = budgets.filter((b) => b.status === "sent").length;
+
+  // Count active projects
+  const projeto = projects.filter((p) => p.status === "em_andamento" || p.status === "aguardando").length;
+
+  // Count pending financial records
+  const financeiro = financeRecords.filter((f) => f.status === "pending").length;
+
+  return {
+    data: {
+      orcamento,
+      aprovacao,
+      projeto,
+      financeiro,
     },
     error: null,
   };
