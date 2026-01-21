@@ -61,7 +61,7 @@ export function BudgetDetailHeader({
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <Link
-          href="/dashboard/orcamentos"
+          href="/orcamentos"
           className="p-2 hover:bg-muted rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />

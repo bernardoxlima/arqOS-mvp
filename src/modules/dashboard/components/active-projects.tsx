@@ -73,7 +73,7 @@ export function ActiveProjects({
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold">Projetos Ativos</h3>
         <Link
-          href="/dashboard/projetos"
+          href="/projetos"
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           Ver todos
@@ -93,7 +93,7 @@ export function ActiveProjects({
           return (
             <Link
               key={project.id}
-              href={`/dashboard/projetos/${project.id}`}
+              href={`/projetos/${project.id}`}
               className="block group hover:bg-muted/50 -mx-2 px-2 py-2 rounded-lg transition-colors"
             >
               <div className="flex items-center justify-between mb-2">

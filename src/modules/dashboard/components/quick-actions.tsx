@@ -12,25 +12,25 @@ export interface QuickActionsProps {
 const ACTIONS = [
   {
     label: "Novo Projeto",
-    href: "/dashboard/projetos/novo",
+    href: "/projetos/novo",
     icon: Plus,
     variant: "default" as const,
   },
   {
     label: "Novo Orcamento",
-    href: "/dashboard/orcamentos/novo",
+    href: "/orcamentos/novo",
     icon: FileText,
     variant: "outline" as const,
   },
   {
     label: "Calculadora",
-    href: "/dashboard/calculadora",
+    href: "/calculadora",
     icon: Calculator,
     variant: "outline" as const,
   },
   {
     label: "Apresentacao",
-    href: "/dashboard/apresentacoes",
+    href: "/apresentacoes",
     icon: Presentation,
     variant: "outline" as const,
   },

@@ -32,7 +32,7 @@ export function BudgetsEmptyState({ hasFilters, onClearFilters }: BudgetsEmptySt
         </Button>
       ) : (
         <Button asChild>
-          <Link href="/dashboard/calculadora">
+          <Link href="/calculadora">
             <Plus className="w-4 h-4" />
             Criar Orcamento
           </Link>

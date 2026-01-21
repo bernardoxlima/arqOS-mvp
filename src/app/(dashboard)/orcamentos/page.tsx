@@ -72,7 +72,7 @@ export default function OrcamentosPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/dashboard/calculadora">
+          <Link href="/calculadora">
             <Plus className="w-4 h-4" />
             Novo Orcamento
           </Link>

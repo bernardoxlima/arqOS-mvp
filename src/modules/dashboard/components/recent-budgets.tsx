@@ -59,7 +59,7 @@ export function RecentBudgets({ budgets, className }: RecentBudgetsProps) {
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold">Orcamentos Recentes</h3>
         <Link
-          href="/dashboard/orcamentos"
+          href="/orcamentos"
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           Ver todos
@@ -75,7 +75,7 @@ export function RecentBudgets({ budgets, className }: RecentBudgetsProps) {
           return (
             <Link
               key={budget.id}
-              href={`/dashboard/orcamentos/${budget.id}`}
+              href={`/orcamentos/${budget.id}`}
               className="flex items-center justify-between group hover:bg-muted/50 -mx-2 px-2 py-2 rounded-lg transition-colors"
             >
               <div className="space-y-0.5">
