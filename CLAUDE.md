@@ -83,7 +83,9 @@ arqOS-mvp/
 │   │   │   ├── orcamentos/
 │   │   │   ├── apresentacoes/
 │   │   │   ├── financeiro/
-│   │   │   └── perfil/           # Profile page
+│   │   │   ├── perfil/           # Profile page
+│   │   │   └── configuracoes/    # Settings page
+│   │   │       └── page.tsx      # /configuracoes - Office settings
 │   │   ├── (onboarding)/         # Onboarding routes (no sidebar)
 │   │   │   ├── layout.tsx        # Centered layout
 │   │   │   ├── welcome/page.tsx  # /welcome - Welcome screen
@@ -237,6 +239,18 @@ arqOS-mvp/
 │   │   │   │       └── step-margin.tsx # Profit margin slider
 │   │   │   ├── hooks/
 │   │   │   │   └── use-setup-wizard.ts # Wizard state management
+│   │   │   └── index.ts          # Public exports
+│   │   ├── settings/             # Settings module (office configuration)
+│   │   │   ├── types.ts          # TypeScript types (UpdateOrganizationData, CreateTeamMemberData, etc.)
+│   │   │   ├── schemas.ts        # Zod validation schemas
+│   │   │   ├── hooks/
+│   │   │   │   └── use-settings.ts # Settings state management
+│   │   │   ├── components/
+│   │   │   │   ├── settings-office-section.tsx  # Office name, size, margin
+│   │   │   │   ├── settings-team-section.tsx    # Team members CRUD
+│   │   │   │   ├── settings-costs-section.tsx   # Fixed costs
+│   │   │   │   ├── settings-services-section.tsx # Services offered
+│   │   │   │   └── index.ts      # Component exports
 │   │   │   └── index.ts          # Public exports
 │   │   └── ai/
 │   │
@@ -709,6 +723,29 @@ presentation-images  # Private - presentation images
   }
   ```
 
+### ✅ Configurações do Escritório (COMPLETA)
+- [x] Módulo settings criado em `src/modules/settings/`
+- [x] Types: UpdateOrganizationData, CreateTeamMemberData, UpdateTeamMemberData, etc.
+- [x] Schemas Zod: updateOrganizationSchema, createTeamMemberSchema, updateTeamMemberSchema
+- [x] API endpoints:
+  - `PUT /api/organization` - Atualizar nome e settings da organização
+  - `POST /api/organization/team` - Adicionar novo membro da equipe
+  - `GET /api/organization/team/[id]` - Buscar membro específico
+  - `PUT /api/organization/team/[id]` - Atualizar membro da equipe
+  - `DELETE /api/organization/team/[id]` - Remover membro da equipe
+- [x] Página `/configuracoes` com 4 abas:
+  - Escritório: Nome, Porte, Margem de lucro
+  - Equipe: CRUD de membros com salários e horas
+  - Custos: 7 categorias de custos fixos
+  - Serviços: Toggle de 4 serviços oferecidos
+- [x] Componentes:
+  - `SettingsOfficeSection` - Nome, porte e margem
+  - `SettingsTeamSection` - Tabela e modais de equipe
+  - `SettingsCostsSection` - Grid de custos fixos
+  - `SettingsServicesSection` - Cards de serviços
+- [x] Hook `useSettings` - Estado e mutations para configurações
+- [x] Link "Configurações" adicionado ao dropdown do sidebar
+
 ### 🔲 Fase 9: Deploy
 Ver `TODO.md` para detalhes completos (Polish UX, Performance, Deploy, Documentação).
 
@@ -785,4 +822,4 @@ npx shadcn@latest add [component]
 
 ---
 
-**Última atualização:** 2026-01-21 (Fases 0-8 + Onboarding completas - Backend + Frontend)
+**Última atualização:** 2026-01-21 (Fases 0-8 + Onboarding + Configurações completas - Backend + Frontend)

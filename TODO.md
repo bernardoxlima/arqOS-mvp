@@ -522,6 +522,38 @@
 
 ---
 
+## ✅ CONFIGURAÇÕES DO ESCRITÓRIO (COMPLETA)
+
+### Lógica de Configurações ✅
+- [x] 🟢 Criar módulo de configurações (`src/modules/settings/`)
+- [x] 🟢 Criar types e schemas para atualização (`types.ts`, `schemas.ts`)
+- [x] 🟢 Adicionar PUT em `/api/organization` para atualizar organização
+- [x] 🟢 Adicionar POST em `/api/organization/team` para adicionar membro
+- [x] 🟢 Criar PUT/DELETE em `/api/organization/team/[id]` para gerenciar membros
+- [x] 🟢 Criar hook `useSettings` para gerenciamento de estado
+
+### Tela de Configurações ✅
+- [x] 🔵 Criar página de configurações (`/configuracoes`)
+- [x] 🔵 Criar aba Escritório (`settings-office-section.tsx`)
+  - Nome do escritório (edição inline)
+  - Porte (Solo, Pequeno, Médio, Grande)
+  - Margem de lucro (slider 10-100%)
+  - Preview custo/hora
+- [x] 🔵 Criar aba Equipe (`settings-team-section.tsx`)
+  - Listar membros com avatar, nome, cargo, salário, horas
+  - Adicionar membro (modal)
+  - Editar membro (modal)
+  - Remover membro (confirmação)
+  - Totais: salários, horas, custo/hora
+- [x] 🔵 Criar aba Custos (`settings-costs-section.tsx`)
+  - 7 categorias de custo fixo
+  - Total calculado automaticamente
+- [x] 🔵 Criar aba Serviços (`settings-services-section.tsx`)
+  - Toggle de 4 serviços (DecorExpress, ProjetExpress, Produção, Consultoria)
+- [x] 🔵 Adicionar link Configurações no dropdown do sidebar
+
+---
+
 ## 🚢 FASE 9: DEPLOY
 
 ### Polish de UX
@@ -575,4 +607,4 @@
 
 ---
 
-**Última atualização:** 2026-01-20 (Fases 2-8 completas - 654+ testes)
+**Última atualização:** 2026-01-21 (Fases 2-8 + Onboarding + Configurações completas - 654+ testes)

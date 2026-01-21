@@ -11,6 +11,7 @@ import {
   LogOut,
   User,
   Sparkles,
+  Settings,
 } from "lucide-react";
 
 import { useAuth } from "@/modules/auth";
@@ -168,6 +169,12 @@ export function AppSidebar() {
                   <Link href="/perfil">
                     <User className="mr-2 h-4 w-4" />
                     Meu Perfil
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/configuracoes">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Configurações
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
