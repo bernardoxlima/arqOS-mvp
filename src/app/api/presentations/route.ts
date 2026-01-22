@@ -6,7 +6,7 @@ import { z } from "zod";
 const createPresentationSchema = z.object({
   name: z.string().min(1, "Name is required"),
   projectId: z.string().uuid().optional(),
-  phase: z.enum(["Entrega Final", "Proposta Inicial", "Revisão 1", "Revisão 2", "Revisão 3"]).optional(),
+  phase: z.enum(["apresentacao", "revisao", "manual", "entrega"]).optional(),
   clientData: z.object({
     clientName: z.string(),
     projectCode: z.string().optional(),

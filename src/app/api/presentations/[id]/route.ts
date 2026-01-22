@@ -13,8 +13,8 @@ type RouteContext = {
 
 const updatePresentationSchema = z.object({
   name: z.string().min(1).optional(),
-  status: z.enum(["draft", "in_progress", "review", "approved", "archived"]).optional(),
-  phase: z.enum(["Entrega Final", "Proposta Inicial", "Revisão 1", "Revisão 2", "Revisão 3"]).optional(),
+  status: z.enum(["draft", "in_progress", "ready", "delivered"]).optional(),
+  phase: z.enum(["apresentacao", "revisao", "manual", "entrega"]).optional(),
   clientData: z.object({
     clientName: z.string(),
     projectCode: z.string().optional(),

@@ -214,7 +214,8 @@ export function CalculatorWizard() {
           price_per_m2: result.pricePerM2 || 0,
         },
         paymentTerms: {
-          type: state.paymentType,
+          // Map calculator paymentType to budget schema paymentType
+          type: state.paymentType === 'installments' ? '30_30_40' : state.paymentType === 'cash' ? 'cash' : 'custom',
           installments: getPaymentInstallments(state.paymentType),
           validity_days: 30,
         },
@@ -235,7 +236,7 @@ export function CalculatorWizard() {
 
       if (data.success && data.data?.id) {
         toast.success('Orcamento criado com sucesso!');
-        router.push(`/dashboard/orcamentos/${data.data.id}`);
+        router.push(`/orcamentos/${data.data.id}`);
         return data.data.id;
       }
 
