@@ -56,10 +56,7 @@ export default function OrcamentoDetailPage() {
     if (!budget) return;
 
     try {
-      const response = await fetch(
-        `/api/documents/presentations/${budgetId}/budget?format=excel`,
-        { method: "POST" }
-      );
+      const response = await fetch(`/api/budgets/${budgetId}/export`);
 
       if (!response.ok) {
         throw new Error("Falha ao gerar Excel");
