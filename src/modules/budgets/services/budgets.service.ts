@@ -137,6 +137,27 @@ export async function createBudget(
     };
   }
 
+  // If clientName is provided but not clientId, create a new client
+  let clientId = data.clientId || null;
+  if (!clientId && data.clientName) {
+    const { data: newClient, error: clientError } = await supabase
+      .from("clients")
+      .insert({
+        organization_id: profile.organization_id,
+        name: data.clientName,
+      })
+      .select("id")
+      .single();
+
+    if (clientError) {
+      return {
+        data: null,
+        error: { message: clientError.message, code: clientError.code },
+      };
+    }
+    clientId = newClient.id;
+  }
+
   // Generate budget code
   const { data: code, error: codeError } = await supabase.rpc(
     "generate_budget_code",
@@ -175,14 +196,14 @@ export async function createBudget(
   const insertData = {
     organization_id: profile.organization_id,
     code: code || `PROP-${Date.now()}`,
-    client_id: data.clientId || null,
+    client_id: clientId,
     service_type: data.serviceType,
     status: "draft",
     details: details as unknown as Record<string, unknown>,
     calculation: calculation as unknown as Record<string, unknown>,
     payment_terms: paymentTerms as unknown as Record<string, unknown>,
     scope: data.scope || null,
-    notes: data.notes || null,
+    notes: data.projectName ? `Projeto: ${data.projectName}` : (data.notes || null),
     created_by: profile.id,
   };
 

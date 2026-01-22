@@ -5,6 +5,16 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Button } from '@/shared/components/ui/button';
 import { Card } from '@/shared/components/ui/card';
+import { Input } from '@/shared/components/ui/input';
+import { Label } from '@/shared/components/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/shared/components/ui/dialog';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { useCalculator } from '../hooks/use-calculator';
 import type {
@@ -114,6 +124,9 @@ export function CalculatorWizard() {
   const [step, setStep] = useState(0);
   const [state, setState] = useState<WizardState>(initialState);
   const [isSavingBudget, setIsSavingBudget] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [clientName, setClientName] = useState('');
+  const [projectName, setProjectName] = useState('');
   const { result, isCalculating, error, calculate, reset } = useCalculator();
 
   const updateState = useCallback((updates: Partial<WizardState>) => {
@@ -159,8 +172,20 @@ export function CalculatorWizard() {
     reset();
   }, [reset]);
 
+  // Open modal to get client and project name
   const handleGenerateBudget = useCallback(async (): Promise<string | null> => {
     if (!result || !state.service) return null;
+    setShowSaveModal(true);
+    return null;
+  }, [result, state.service]);
+
+  // Actually save the budget after modal confirmation
+  const handleConfirmSaveBudget = useCallback(async () => {
+    if (!result || !state.service) return;
+    if (!clientName.trim()) {
+      toast.error('Informe o nome do cliente');
+      return;
+    }
 
     setIsSavingBudget(true);
     try {
@@ -191,6 +216,8 @@ export function CalculatorWizard() {
       });
 
       const budgetData = {
+        clientName: clientName.trim(),
+        projectName: projectName.trim() || undefined,
         serviceType: serviceTypeMap[state.service],
         details: {
           area: state.service === 'projetexpress' ? state.projectArea : 0,
@@ -239,18 +266,20 @@ export function CalculatorWizard() {
 
       if (data.success && data.data?.id) {
         toast.success('Orcamento criado com sucesso!');
+        setShowSaveModal(false);
+        setClientName('');
+        setProjectName('');
         router.push(`/orcamentos/${data.data.id}`);
-        return data.data.id;
+        return;
       }
 
       throw new Error('Resposta inesperada da API');
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Erro ao criar orcamento');
-      return null;
     } finally {
       setIsSavingBudget(false);
     }
-  }, [result, state, router]);
+  }, [result, state, router, clientName, projectName]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -397,6 +426,53 @@ export function CalculatorWizard() {
           />
         </div>
       </div>
+
+      {/* Modal para salvar orçamento */}
+      <Dialog open={showSaveModal} onOpenChange={setShowSaveModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Salvar Orçamento</DialogTitle>
+            <DialogDescription>
+              Informe os dados do cliente para salvar o orçamento.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="clientName">Nome do Cliente *</Label>
+              <Input
+                id="clientName"
+                placeholder="Ex: João Silva"
+                value={clientName}
+                onChange={(e) => setClientName(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="projectName">Nome do Projeto (opcional)</Label>
+              <Input
+                id="projectName"
+                placeholder="Ex: Apartamento Centro"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowSaveModal(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleConfirmSaveBudget} disabled={isSavingBudget || !clientName.trim()}>
+              {isSavingBudget ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Salvando...
+                </>
+              ) : (
+                'Salvar Orçamento'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

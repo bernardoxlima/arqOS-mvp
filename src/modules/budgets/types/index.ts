@@ -145,6 +145,8 @@ export interface PartialBudgetCalculation {
 // Data for creating a budget
 export interface CreateBudgetData {
   clientId?: string;
+  clientName?: string;
+  projectName?: string;
   serviceType: BudgetServiceType;
   details?: Partial<BudgetDetails>;
   calculation?: PartialBudgetCalculation;

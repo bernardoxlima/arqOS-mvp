@@ -96,6 +96,8 @@ const budgetPaymentTermsSchema = z.object({
  */
 export const createBudgetSchema = z.object({
   clientId: z.string().uuid("ID do cliente deve ser um UUID válido").optional(),
+  clientName: z.string().min(1, "Nome do cliente é obrigatório").optional(),
+  projectName: z.string().optional(),
   serviceType: budgetServiceTypeEnum,
   details: budgetDetailsSchema.optional(),
   calculation: budgetCalculationSchema.optional(),
