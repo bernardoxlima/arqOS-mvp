@@ -8,7 +8,7 @@ import { z } from "zod";
 const createInvitationSchema = z.object({
   email: z.string().email("Email inválido"),
   role: z.enum(["socio", "coordinator", "architect", "intern", "admin"], {
-    errorMap: () => ({ message: "Cargo inválido" }),
+    message: "Cargo inválido",
   }),
   full_name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres").optional(),
   salary: z.number().min(0).optional(),
