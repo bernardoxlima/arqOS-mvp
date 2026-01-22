@@ -151,12 +151,12 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
         {/* Meta info */}
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-3">
-            {financials && (
+            {financials && (financials.hours_used || financials.estimated_hours) ? (
               <span className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
                 {financials.hours_used || 0}h / {financials.estimated_hours || 0}h
               </span>
-            )}
+            ) : null}
             {project.created_at && (
               <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />

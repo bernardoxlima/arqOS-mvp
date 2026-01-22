@@ -266,24 +266,28 @@ export default function ProjectDetailPage() {
 
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">Horas usadas</p>
-                      <p className="font-semibold">
-                        {financials?.hours_used || 0}h / {financials?.estimated_hours || 0}h
-                      </p>
+                  {(financials?.hours_used || financials?.estimated_hours) ? (
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Horas usadas</p>
+                        <p className="font-semibold">
+                          {financials?.hours_used || 0}h / {financials?.estimated_hours || 0}h
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">Valor</p>
-                      <p className="font-semibold">
-                        {formatCurrency(financials?.value || 0)}
-                      </p>
+                  ) : null}
+                  {financials?.value ? (
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Valor</p>
+                        <p className="font-semibold">
+                          {formatCurrency(financials.value)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  ) : null}
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">

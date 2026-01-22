@@ -91,14 +91,14 @@ export function KanbanCard({ project, isDragging }: KanbanCardProps) {
             </div>
 
             {/* Hours */}
-            {financials && (
+            {financials && (financials.hours_used || financials.estimated_hours) ? (
               <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                 <Clock className="h-3 w-3" />
                 <span>
                   {financials.hours_used || 0}h / {financials.estimated_hours || 0}h
                 </span>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
