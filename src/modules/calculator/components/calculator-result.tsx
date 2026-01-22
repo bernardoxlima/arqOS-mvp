@@ -6,7 +6,6 @@ import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
 import { Alert, AlertDescription } from '@/shared/components/ui/alert';
 import type { CalculationResult } from '../types';
-import { finishMultipliers } from '../pricing-data';
 
 interface CalculatorResultProps {
   result: CalculationResult | null;
@@ -50,9 +49,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
     );
   }
 
-  // Get finish level name
-  const finishLevelName = result.finishLevel ? finishMultipliers[result.finishLevel]?.name : null;
-
   return (
     <div className="space-y-4">
       {/* Horas Estimadas */}
@@ -62,9 +58,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
           <div className="flex-1">
             <p className="text-xs text-amber-600 uppercase tracking-wide">Horas Estimadas</p>
             <p className="text-3xl font-bold text-amber-900">{result.estimatedHours}h</p>
-            <p className="text-sm text-amber-700 mt-1">
-              Custo das horas: <strong>{formatCurrency(costValue)}</strong>
-            </p>
           </div>
         </div>
       </Card>
@@ -104,42 +97,79 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
         </Alert>
       )}
 
-      {/* Valor Final */}
-      <Card className="p-6 bg-primary text-primary-foreground">
+      {/* Resultado */}
+      <Card className="p-6">
         <div className="space-y-4">
-          <div className="flex justify-between items-start">
-            <p className="text-sm opacity-80">Valor do Projeto</p>
-          </div>
-
-          <div>
-            <p className="text-4xl font-bold">{formatCurrency(result.priceWithDiscount)}</p>
-          </div>
-
-          {result.discount > 0 && (
-            <p className="text-sm opacity-80">
-              <span className="line-through">{formatCurrency(result.finalPrice)}</span>
-              {' '}(-{((result.discount / result.finalPrice) * 100).toFixed(0)}%)
-            </p>
+          {/* Valor por m² (se disponível) */}
+          {result.pricePerM2 && (
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Valor por m²</span>
+              <span className="font-medium">{formatCurrency(result.pricePerM2)}</span>
+            </div>
           )}
 
-          {/* Multipliers Applied */}
-          {(result.avgMultiplier && result.avgMultiplier !== 1) || (result.finishMultiplier && result.finishMultiplier !== 1) ? (
-            <div className="flex flex-wrap gap-2">
-              {result.avgMultiplier && result.avgMultiplier !== 1 && (
-                <Badge variant="secondary" className="text-xs bg-primary-foreground/20">
-                  Ambiente: {result.avgMultiplier.toFixed(2)}x
-                </Badge>
-              )}
-              {result.finishMultiplier && result.finishMultiplier !== 1 && finishLevelName && (
-                <Badge variant="secondary" className="text-xs bg-primary-foreground/20">
-                  {finishLevelName}: {result.finishMultiplier > 1 ? '+' : ''}{((result.finishMultiplier - 1) * 100).toFixed(0)}%
-                </Badge>
-              )}
+          {/* Área Total (se disponível - extraído da descrição) */}
+          {result.description && result.description.includes('m²') && (
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Área Total</span>
+              <span className="font-medium">{result.description.split(' - ')[1]}</span>
             </div>
-          ) : null}
+          )}
+
+          {/* Valor Base */}
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Valor Base</span>
+            <span className="font-medium">{formatCurrency(result.basePrice)}</span>
+          </div>
+
+          {/* Ambientes extras */}
+          {result.extrasTotal > 0 && (
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Ambientes extras</span>
+              <span className="font-medium">+ {formatCurrency(result.extrasTotal)}</span>
+            </div>
+          )}
+
+          {/* Taxa de Levantamento */}
+          {result.surveyFeeTotal > 0 && (
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Taxa de Levantamento</span>
+              <span className="font-medium">+ {formatCurrency(result.surveyFeeTotal)}</span>
+            </div>
+          )}
+
+          {/* Gerenciamento de Obra */}
+          {result.managementFeeTotal && result.managementFeeTotal > 0 && (
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Gerenciamento de Obra</span>
+              <span className="font-medium">+ {formatCurrency(result.managementFeeTotal)}</span>
+            </div>
+          )}
+
+          {/* Deslocamento */}
+          {result.variablesBreakdown && result.variablesBreakdown.displacementFee > 0 && (
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Deslocamento</span>
+              <span className="font-medium">+ {formatCurrency(result.variablesBreakdown.displacementFee)}</span>
+            </div>
+          )}
+
+          {/* Valor Total */}
+          <div className="border-t pt-3 flex justify-between">
+            <span className="font-medium">Valor Total</span>
+            <span className="font-bold text-lg">{formatCurrency(result.finalPrice)}</span>
+          </div>
+
+          {/* Com Desconto */}
+          {result.discount > 0 && (
+            <div className="flex justify-between text-green-600">
+              <span className="font-medium">Com Desconto ({((result.discount / result.finalPrice) * 100).toFixed(0)}%)</span>
+              <span className="font-bold text-lg">{formatCurrency(result.priceWithDiscount)}</span>
+            </div>
+          )}
 
           <Button
-            className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+            className="w-full mt-4"
             onClick={onGenerateBudget}
             disabled={isSavingBudget || !onGenerateBudget}
           >
@@ -157,74 +187,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
           </Button>
         </div>
       </Card>
-
-      {/* Detalhamento */}
-      {(result.extrasTotal > 0 || result.surveyFeeTotal > 0 || result.managementFeeTotal || result.variablesBreakdown) && (
-        <Card className="p-4">
-          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">
-            Detalhamento
-          </p>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Preço base</span>
-              <span>{formatCurrency(result.basePrice)}</span>
-            </div>
-            {result.avgMultiplier && result.avgMultiplier !== 1 && (
-              <div className="flex justify-between text-blue-600">
-                <span>× Multiplicador ambiente</span>
-                <span>{result.avgMultiplier.toFixed(2)}x</span>
-              </div>
-            )}
-            {result.finishMultiplier && result.finishMultiplier !== 1 && (
-              <div className="flex justify-between text-purple-600">
-                <span>× Multiplicador acabamento ({finishLevelName})</span>
-                <span>{result.finishMultiplier.toFixed(2)}x</span>
-              </div>
-            )}
-            {result.extrasTotal > 0 && (
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">+ Ambientes extras</span>
-                <span>{formatCurrency(result.extrasTotal)}</span>
-              </div>
-            )}
-            {result.surveyFeeTotal > 0 && (
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">+ Visita técnica</span>
-                <span>{formatCurrency(result.surveyFeeTotal)}</span>
-              </div>
-            )}
-            {result.managementFeeTotal && result.managementFeeTotal > 0 && (
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">+ Gerenciamento de Obra</span>
-                <span>{formatCurrency(result.managementFeeTotal)}</span>
-              </div>
-            )}
-            {/* Variables Breakdown */}
-            {result.variablesBreakdown && result.variablesBreakdown.managementValue > 0 && (
-              <div className="flex justify-between text-green-600">
-                <span>+ Gerenciamento ({result.variablesBreakdown.managementPercent}%)</span>
-                <span>{formatCurrency(result.variablesBreakdown.managementValue)}</span>
-              </div>
-            )}
-            {result.variablesBreakdown && result.variablesBreakdown.discountValue > 0 && (
-              <div className="flex justify-between text-red-600">
-                <span>- Desconto ({result.variablesBreakdown.discountPercent}%)</span>
-                <span>-{formatCurrency(result.variablesBreakdown.discountValue)}</span>
-              </div>
-            )}
-            {result.variablesBreakdown && result.variablesBreakdown.displacementFee > 0 && (
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">+ Deslocamento</span>
-                <span>{formatCurrency(result.variablesBreakdown.displacementFee)}</span>
-              </div>
-            )}
-            <div className="border-t pt-2 flex justify-between font-medium">
-              <span>Total final</span>
-              <span>{formatCurrency(result.priceWithDiscount)}</span>
-            </div>
-          </div>
-        </Card>
-      )}
     </div>
   );
 }
