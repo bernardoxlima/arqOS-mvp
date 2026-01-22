@@ -200,18 +200,17 @@ export function StepOptions({
           <div className="flex items-center gap-3">
             <Input
               type="number"
-              value={discountPercentage}
+              value={discountPercentage || ''}
               onChange={(e) => {
                 const value = parseFloat(e.target.value) || 0;
-                onDiscountChange(Math.min(15, Math.max(0, value)));
+                onDiscountChange(Math.max(0, value));
               }}
               min={0}
-              max={15}
-              step={0.5}
+              step={1}
+              placeholder="0"
               className="w-24 text-center"
             />
             <span className="text-muted-foreground">%</span>
-            <span className="text-xs text-muted-foreground">(máx. 15%)</span>
           </div>
         </div>
       )}
