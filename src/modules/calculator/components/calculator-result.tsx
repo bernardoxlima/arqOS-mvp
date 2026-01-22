@@ -22,21 +22,6 @@ function formatCurrency(value: number): string {
   }).format(value);
 }
 
-// Health status based on price multiplier
-function getHealthStatus(priceMultiplier: number): { status: 'danger' | 'warning' | 'good'; label: string } {
-  if (priceMultiplier < 2) return { status: 'danger', label: 'Abaixo do mínimo' };
-  if (priceMultiplier < 2.5) return { status: 'warning', label: 'Adequado' };
-  return { status: 'good', label: 'Ideal' };
-}
-
-function getHealthStatusColor(status: 'danger' | 'warning' | 'good'): string {
-  switch (status) {
-    case 'danger': return 'bg-red-500/20 text-red-600 border-red-200';
-    case 'warning': return 'bg-amber-500/20 text-amber-600 border-amber-200';
-    case 'good': return 'bg-emerald-500/20 text-emerald-600 border-emerald-200';
-  }
-}
-
 export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSavingBudget }: CalculatorResultProps) {
   if (isCalculating) {
     return (
@@ -64,15 +49,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
       </Card>
     );
   }
-
-  // Calculate cost, profit, and price multiplier
-  const costValue = result.estimatedHours * (result.hourlyRateUsed || result.hourRate);
-  const profit = result.priceWithDiscount - costValue;
-  const profitMargin = result.priceWithDiscount > 0 ? (profit / result.priceWithDiscount) * 100 : 0;
-
-  // Price multiplier and health status
-  const priceMultiplier = costValue > 0 ? result.priceWithDiscount / costValue : 0;
-  const healthStatus = getHealthStatus(priceMultiplier);
 
   // Get finish level name
   const finishLevelName = result.finishLevel ? finishMultipliers[result.finishLevel]?.name : null;
@@ -133,9 +109,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
         <div className="space-y-4">
           <div className="flex justify-between items-start">
             <p className="text-sm opacity-80">Valor do Projeto</p>
-            <Badge className={`text-xs border ${getHealthStatusColor(healthStatus.status)}`}>
-              {priceMultiplier.toFixed(1)}x custo
-            </Badge>
           </div>
 
           <div>
@@ -171,18 +144,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
           ) : null}
 
           <div className="border-t border-primary-foreground/20 pt-4 space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="opacity-80">Custo (horas)</span>
-              <span>{formatCurrency(costValue)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="opacity-80">Margem</span>
-              <span>{profitMargin.toFixed(0)}%</span>
-            </div>
-            <div className="flex justify-between text-sm text-green-300">
-              <span>Lucro estimado</span>
-              <span>{formatCurrency(profit)}</span>
-            </div>
             <div className="flex justify-between text-sm text-amber-300">
               <span>R$/hora de venda</span>
               <span>{formatCurrency(result.priceWithDiscount / result.estimatedHours)}</span>
