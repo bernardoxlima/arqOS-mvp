@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Home,
   FolderKanban,
   Calculator,
   FileText,
@@ -38,6 +39,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 
 const navItems = [
+  {
+    title: "Início",
+    url: "/dashboard",
+    icon: Home,
+  },
   {
     title: "Projetos",
     url: "/projetos",
