@@ -40,11 +40,10 @@ import {
 import { toast } from "sonner";
 
 const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  draft: { label: "Rascunho", variant: "secondary" },
-  active: { label: "Ativo", variant: "default" },
-  paused: { label: "Pausado", variant: "outline" },
-  completed: { label: "Concluído", variant: "default" },
-  cancelled: { label: "Cancelado", variant: "destructive" },
+  aguardando: { label: "Aguardando", variant: "secondary" },
+  em_andamento: { label: "Em Andamento", variant: "default" },
+  entregue: { label: "Entregue", variant: "default" },
+  cancelado: { label: "Cancelado", variant: "destructive" },
 };
 
 const serviceTypeLabels: Record<string, string> = {
@@ -152,7 +151,7 @@ export default function ProjectDetailPage() {
   const clientSnapshot = project.client_snapshot as { name?: string; contact?: Record<string, string> } | null;
   const currentStageName = getCurrentStageName(workflow);
   const progress = getWorkflowProgress(workflow);
-  const statusInfo = statusConfig[project.status] || statusConfig.draft;
+  const statusInfo = statusConfig[project.status] || statusConfig.aguardando;
   const serviceLabel = workflow?.type ? serviceTypeLabels[workflow.type] : "Projeto";
 
   const formatDate = (date: string | null) => {

@@ -68,21 +68,21 @@ async function getProjectStats(): Promise<DashboardResult<ProjectStats>> {
 
   for (const project of projects || []) {
     // Count by status
-    const status = project.status || "draft";
+    const status = project.status || "aguardando";
     byStatus[status] = (byStatus[status] || 0) + 1;
 
     // Count by service type
     const serviceType = project.service_type || "unknown";
     byServiceType[serviceType] = (byServiceType[serviceType] || 0) + 1;
 
-    // Count active
-    if (status === "active") {
+    // Count active (em_andamento)
+    if (status === "em_andamento") {
       activeCount++;
     }
 
-    // Count completed this month
+    // Count completed this month (entregue)
     if (
-      status === "completed" &&
+      status === "entregue" &&
       project.completed_at &&
       project.completed_at >= monthStart
     ) {

@@ -44,11 +44,10 @@ type ViewMode = "grid" | "list" | "kanban";
 
 const statusOptions: { value: ProjectStatus | "all"; label: string }[] = [
   { value: "all", label: "Todos" },
-  { value: "active", label: "Ativos" },
-  { value: "draft", label: "Rascunhos" },
-  { value: "paused", label: "Pausados" },
-  { value: "completed", label: "Concluídos" },
-  { value: "cancelled", label: "Cancelados" },
+  { value: "aguardando", label: "Aguardando" },
+  { value: "em_andamento", label: "Em Andamento" },
+  { value: "entregue", label: "Entregue" },
+  { value: "cancelado", label: "Cancelado" },
 ];
 
 function ProjectsLoading({ viewMode }: { viewMode: ViewMode }) {

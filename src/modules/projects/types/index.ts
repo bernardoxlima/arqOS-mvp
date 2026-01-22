@@ -91,8 +91,16 @@ export interface ServiceResult<T = void> {
 // Extended service types for future expansion
 export type ExtendedServiceType = ServiceType | "arquitetonico" | "interiores";
 
-// Project status
-export type ProjectStatus = "draft" | "active" | "paused" | "completed" | "cancelled";
+// Project status (matches database CHECK constraint)
+export type ProjectStatus = "aguardando" | "em_andamento" | "entregue" | "cancelado";
+
+// Status display labels for UI
+export const PROJECT_STATUS_LABELS: Record<ProjectStatus, string> = {
+  aguardando: "Aguardando",
+  em_andamento: "Em Andamento",
+  entregue: "Entregue",
+  cancelado: "Cancelado",
+};
 
 // Filters for listing projects
 export interface ProjectFilters {

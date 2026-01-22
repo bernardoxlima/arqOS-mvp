@@ -169,7 +169,7 @@ export async function createProject(
     notes: data.notes || null,
     schedule: data.schedule || null,
     team: data.team || null,
-    status: "draft",
+    status: "aguardando",
     stage: stages[0]?.id || null,
     workflow: workflow as unknown as Record<string, unknown>,
   };
@@ -233,7 +233,7 @@ export async function updateProject(
   }
 
   // If completing, set completed_at
-  if (data.status === "completed") {
+  if (data.status === "entregue") {
     updateData.completed_at = new Date().toISOString();
   }
 

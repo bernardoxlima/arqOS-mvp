@@ -9,13 +9,12 @@ const serviceTypeEnum = z.enum([
   "interiores",
 ]);
 
-// Project status enum
+// Project status enum (matches database CHECK constraint)
 const projectStatusEnum = z.enum([
-  "draft",
-  "active",
-  "paused",
-  "completed",
-  "cancelled",
+  "aguardando",
+  "em_andamento",
+  "entregue",
+  "cancelado",
 ]);
 
 // Modality enum
