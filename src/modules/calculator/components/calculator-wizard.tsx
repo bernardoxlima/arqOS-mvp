@@ -12,12 +12,13 @@ import type {
   ServiceModality,
   PaymentType,
   DecorComplexity,
-  ProducaoComplexity,
+  ProduzExpressComplexity,
   ProjectType,
   EnvironmentType,
   EnvironmentSize,
   CalculatorInput,
   EnvironmentConfig,
+  FinishLevel,
 } from '../types';
 import { StepService } from './step-service';
 import { StepEnvironments } from './step-environments';
@@ -28,7 +29,8 @@ import { CalculatorResult } from './calculator-result';
 export interface WizardState {
   service: ServiceType | null;
   environmentCount: 1 | 2 | 3;
-  complexity: DecorComplexity | ProducaoComplexity;
+  complexity: DecorComplexity | ProduzExpressComplexity;
+  finishLevel: FinishLevel;
   environmentsConfig: EnvironmentConfig[];
   extraEnvironments: number;
   projectType: ProjectType;
@@ -45,6 +47,7 @@ const initialState: WizardState = {
   service: null,
   environmentCount: 1,
   complexity: 'decor1',
+  finishLevel: 'padrao',
   environmentsConfig: [{ type: 'standard', size: 'M', complexity: 'decor1' }],
   extraEnvironments: 0,
   projectType: 'novo',
@@ -82,7 +85,7 @@ function generateScope(state: WizardState): string[] {
   const scope: string[] = [];
   const serviceNames: Record<ServiceType, string> = {
     decorexpress: 'DecorExpress',
-    producao: 'Producao',
+    produzexpress: 'ProduzExpress',
     projetexpress: 'ProjetExpress',
   };
 
@@ -164,7 +167,7 @@ export function CalculatorWizard() {
       // Map service type to budget service type
       const serviceTypeMap: Record<ServiceType, string> = {
         decorexpress: 'decorexpress',
-        producao: 'producao',
+        produzexpress: 'produzexpress',
         projetexpress: 'projetexpress',
       };
 
@@ -194,7 +197,7 @@ export function CalculatorWizard() {
           rooms: state.environmentCount,
           room_list: roomList,
           complexity: getComplexityLevel(),
-          finish: 'padrao',
+          finish: state.finishLevel,
           modality: state.serviceModality,
           project_type: state.projectType,
         },
@@ -202,7 +205,7 @@ export function CalculatorWizard() {
           base_price: result.basePrice,
           multipliers: {
             complexity: 1,
-            finish: 1,
+            finish: result.finishMultiplier || 1,
           },
           extras_total: result.extrasTotal || 0,
           survey_fee: result.surveyFeeTotal || 0,
@@ -278,11 +281,11 @@ export function CalculatorWizard() {
               onServiceChange={(service) => {
                 updateState({
                   service,
-                  complexity: service === 'producao' ? 'prod1' : 'decor1',
+                  complexity: service === 'produzexpress' ? 'prod1' : 'decor1',
                   environmentsConfig: [{
                     type: 'standard',
                     size: 'M',
-                    complexity: service === 'producao' ? 'prod1' : 'decor1',
+                    complexity: service === 'produzexpress' ? 'prod1' : 'decor1',
                   }],
                 });
               }}
@@ -332,12 +335,14 @@ export function CalculatorWizard() {
               service={state.service}
               serviceModality={state.serviceModality}
               paymentType={state.paymentType}
+              finishLevel={state.finishLevel}
               discountPercentage={state.discountPercentage}
               managementPercent={state.managementPercent}
               displacementFee={state.displacementFee}
               includeManagement={state.includeManagement}
               onServiceModalityChange={(serviceModality) => updateState({ serviceModality })}
               onPaymentTypeChange={(paymentType) => updateState({ paymentType })}
+              onFinishLevelChange={(finishLevel) => updateState({ finishLevel })}
               onDiscountChange={(discountPercentage) => updateState({ discountPercentage })}
               onManagementPercentChange={(managementPercent) => updateState({ managementPercent })}
               onDisplacementFeeChange={(displacementFee) => updateState({ displacementFee })}
@@ -403,6 +408,7 @@ function buildCalculatorInput(state: WizardState): CalculatorInput | null {
     serviceModality: state.serviceModality,
     paymentType: state.paymentType,
     discountPercentage: state.discountPercentage > 0 ? state.discountPercentage : undefined,
+    finishLevel: state.finishLevel,
   };
 
   if (state.service === 'projetexpress') {
@@ -426,11 +432,11 @@ function buildCalculatorInput(state: WizardState): CalculatorInput | null {
     };
   }
 
-  if (state.service === 'producao') {
+  if (state.service === 'produzexpress') {
     return {
-      service: 'producao',
+      service: 'produzexpress',
       environmentCount: state.environmentCount,
-      complexity: state.complexity as ProducaoComplexity,
+      complexity: state.complexity as ProduzExpressComplexity,
       environmentsConfig: state.environmentsConfig,
       extraEnvironments: state.extraEnvironments > 0 ? state.extraEnvironments : undefined,
       ...baseInput,

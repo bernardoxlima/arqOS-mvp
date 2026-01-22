@@ -5,18 +5,21 @@ import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { Checkbox } from '@/shared/components/ui/checkbox';
 import { Slider } from '@/shared/components/ui/slider';
-import type { ServiceType, ServiceModality, PaymentType } from '../types';
+import type { ServiceType, ServiceModality, PaymentType, FinishLevel } from '../types';
+import { finishMultipliers } from '../pricing-data';
 
 interface StepOptionsProps {
   service: ServiceType | null;
   serviceModality: ServiceModality;
   paymentType: PaymentType;
+  finishLevel: FinishLevel;
   discountPercentage: number;
   managementPercent: number;
   displacementFee: number;
   includeManagement: boolean;
   onServiceModalityChange: (modality: ServiceModality) => void;
   onPaymentTypeChange: (type: PaymentType) => void;
+  onFinishLevelChange: (level: FinishLevel) => void;
   onDiscountChange: (discount: number) => void;
   onManagementPercentChange: (percent: number) => void;
   onDisplacementFeeChange: (fee: number) => void;
@@ -53,16 +56,26 @@ const PAYMENT_OPTIONS = [
   },
 ];
 
+// Finish level options array for rendering
+const FINISH_LEVEL_OPTIONS: { id: FinishLevel; name: string; description: string; multiplier: number }[] = [
+  { id: 'economico', ...finishMultipliers.economico },
+  { id: 'padrao', ...finishMultipliers.padrao },
+  { id: 'alto_padrao', ...finishMultipliers.alto_padrao },
+  { id: 'luxo', ...finishMultipliers.luxo },
+];
+
 export function StepOptions({
   service,
   serviceModality,
   paymentType,
+  finishLevel,
   discountPercentage,
   managementPercent,
   displacementFee,
   includeManagement,
   onServiceModalityChange,
   onPaymentTypeChange,
+  onFinishLevelChange,
   onDiscountChange,
   onManagementPercentChange,
   onDisplacementFeeChange,
@@ -141,6 +154,41 @@ export function StepOptions({
             );
           })}
         </div>
+      </div>
+
+      {/* Nível de Acabamento */}
+      <div className="space-y-3">
+        <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+          Nível de Acabamento
+        </Label>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {FINISH_LEVEL_OPTIONS.map((option) => {
+            const isSelected = finishLevel === option.id;
+            const multiplierLabel = option.multiplier === 1 ? 'Base' :
+              option.multiplier < 1 ? `${Math.round((1 - option.multiplier) * 100)}%` :
+              `+${Math.round((option.multiplier - 1) * 100)}%`;
+            return (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => onFinishLevelChange(option.id)}
+                className={`py-3 px-3 rounded-lg border-2 text-center transition-all ${
+                  isSelected
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-border hover:border-primary/50'
+                }`}
+              >
+                <p className="font-medium text-sm">{option.name}</p>
+                <p className={`text-xs ${isSelected ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
+                  {multiplierLabel}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Ajuste o preço conforme o nível de acabamento do projeto
+        </p>
       </div>
 
       {/* Desconto */}

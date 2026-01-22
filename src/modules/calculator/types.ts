@@ -9,9 +9,9 @@ export type EnvironmentSize = 'P' | 'M' | 'G';
 export type ComplexityLevel = 'simples' | 'padrao' | 'complexo' | 'muito_complexo';
 export type FinishLevel = 'economico' | 'padrao' | 'alto_padrao' | 'luxo';
 export type DecorComplexity = 'decor1' | 'decor2' | 'decor3';
-export type ProducaoComplexity = 'prod1' | 'prod3';
+export type ProduzExpressComplexity = 'prod1' | 'prod3';
 export type ProjectType = 'novo' | 'reforma';
-export type ServiceType = 'decorexpress' | 'producao' | 'projetexpress';
+export type ServiceType = 'decorexpress' | 'produzexpress' | 'projetexpress';
 export type ServiceModality = 'online' | 'presencial';
 export type PaymentType = 'cash' | 'installments' | 'custom';
 export type EfficiencyRating = 'Ótimo' | 'Bom' | 'Reajustar';
@@ -57,7 +57,7 @@ export interface DecorPricing {
   decor3: PricingTier;
 }
 
-export interface ProducaoPricing {
+export interface ProduzExpressPricing {
   name: string;
   baseRange: string;
   prod1: PricingTier;
@@ -115,7 +115,7 @@ export interface HourlyRateConfig {
 export interface EnvironmentConfig {
   type: EnvironmentType;
   size: EnvironmentSize;
-  complexity: DecorComplexity | ProducaoComplexity;
+  complexity: DecorComplexity | ProduzExpressComplexity;
 }
 
 export interface EnvironmentDetail {
@@ -132,6 +132,7 @@ export interface DecorExpressInput {
   service: 'decorexpress';
   environmentCount: 1 | 2 | 3;
   complexity: DecorComplexity;
+  finishLevel?: FinishLevel;
   environmentsConfig: EnvironmentConfig[];
   extraEnvironments?: number;
   extraEnvironmentPrice?: number;
@@ -140,10 +141,11 @@ export interface DecorExpressInput {
   discountPercentage?: number;
 }
 
-export interface ProducaoInput {
-  service: 'producao';
+export interface ProduzExpressInput {
+  service: 'produzexpress';
   environmentCount: 1 | 2 | 3;
-  complexity: ProducaoComplexity;
+  complexity: ProduzExpressComplexity;
+  finishLevel?: FinishLevel;
   environmentsConfig: EnvironmentConfig[];
   extraEnvironments?: number;
   extraEnvironmentPrice?: number;
@@ -156,6 +158,7 @@ export interface ProjetExpressInput {
   service: 'projetexpress';
   projectType: ProjectType;
   projectArea: number;
+  finishLevel?: FinishLevel;
   serviceModality: ServiceModality;
   paymentType: PaymentType;
   discountPercentage?: number;
@@ -163,12 +166,13 @@ export interface ProjetExpressInput {
   managementFee?: number;
 }
 
-export type CalculatorInput = DecorExpressInput | ProducaoInput | ProjetExpressInput;
+export type CalculatorInput = DecorExpressInput | ProduzExpressInput | ProjetExpressInput;
 
 // Calculation Result (Output)
 export interface CalculationResult {
   basePrice: number;
   avgMultiplier?: number;
+  finishMultiplier?: number;
   environmentsDetails?: EnvironmentDetail[];
   priceBeforeExtras?: number;
   extrasTotal: number;
@@ -185,6 +189,7 @@ export interface CalculationResult {
   description?: string;
   efficiency: EfficiencyRating;
   pricePerM2?: number;
+  finishLevel?: FinishLevel;
   // New fields for additional variables
   variablesBreakdown?: VariablesBreakdown;
   // New fields for max hours calculation
@@ -218,7 +223,7 @@ export interface PricingConfig {
   complexityMultipliers: Record<ComplexityLevel, ComplexityMultiplier>;
   finishMultipliers: Record<FinishLevel, FinishMultiplier>;
   decorExpressPricing: Record<string, DecorPricing>;
-  producaoPricing: Record<string, ProducaoPricing>;
+  produzexpressPricing: Record<string, ProduzExpressPricing>;
   projetExpressPricing: Record<ProjectType, ProjetPricing>;
 }
 

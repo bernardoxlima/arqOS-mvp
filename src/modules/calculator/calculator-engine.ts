@@ -7,7 +7,7 @@ import type {
   CalculatorInput,
   CalculationResult,
   DecorExpressInput,
-  ProducaoInput,
+  ProduzExpressInput,
   ProjetExpressInput,
   EnvironmentDetail,
   EnvironmentType,
@@ -17,6 +17,7 @@ import type {
   HourlyRateResult,
   AdditionalVariables,
   VariablesBreakdown,
+  FinishLevel,
 } from './types';
 
 import {
@@ -26,8 +27,9 @@ import {
   HOURS_PER_MONTH,
   environmentTypeMultipliers,
   sizeMultipliers,
+  finishMultipliers,
   decorExpressPricing,
-  producaoPricing,
+  produzexpressPricing,
   projetExpressPricing,
   getEfficiencyRating,
   getDefaultDiscount,
@@ -106,14 +108,22 @@ export function calculateMaxHours(
 }
 
 /**
+ * Helper function to get finish multiplier value
+ */
+function getFinishMultiplier(finishLevel?: FinishLevel): number {
+  if (!finishLevel) return 1.0;
+  return finishMultipliers[finishLevel]?.multiplier ?? 1.0;
+}
+
+/**
  * Main calculator function - routes to appropriate service calculator
  */
 export function calculateBudget(input: CalculatorInput): CalculationResult {
   switch (input.service) {
     case 'decorexpress':
       return calculateDecorExpress(input);
-    case 'producao':
-      return calculateProducao(input);
+    case 'produzexpress':
+      return calculateProduzExpress(input);
     case 'projetexpress':
       return calculateProjetExpress(input);
     default:
@@ -192,9 +202,12 @@ function calculateDecorExpress(input: DecorExpressInput): CalculationResult {
   const environmentsDetails = calculateEnvironmentDetails(input.environmentsConfig);
   const avgMultiplier = calculateAverageMultiplier(environmentsDetails);
 
-  // Calculate base price with multiplier
+  // Get finish multiplier
+  const finishMult = getFinishMultiplier(input.finishLevel);
+
+  // Calculate base price with multipliers (environment + finish)
   const basePrice = basePricing.price;
-  const priceWithMultiplier = basePrice * avgMultiplier;
+  const priceWithMultiplier = basePrice * avgMultiplier * finishMult;
 
   // Calculate extras (additional environments beyond the base)
   const extraCount = input.extraEnvironments ?? 0;
@@ -223,6 +236,8 @@ function calculateDecorExpress(input: DecorExpressInput): CalculationResult {
   return {
     basePrice,
     avgMultiplier,
+    finishMultiplier: finishMult,
+    finishLevel: input.finishLevel,
     environmentsDetails,
     priceBeforeExtras,
     extrasTotal: extras.total,
@@ -240,11 +255,11 @@ function calculateDecorExpress(input: DecorExpressInput): CalculationResult {
 }
 
 /**
- * Calculate Producao budget
+ * Calculate ProduzExpress budget
  */
-function calculateProducao(input: ProducaoInput): CalculationResult {
+function calculateProduzExpress(input: ProduzExpressInput): CalculationResult {
   const envCount = String(input.environmentCount);
-  const pricingTier = producaoPricing[envCount];
+  const pricingTier = produzexpressPricing[envCount];
 
   if (!pricingTier) {
     throw new Error(`Invalid environment count: ${input.environmentCount}`);
@@ -260,9 +275,12 @@ function calculateProducao(input: ProducaoInput): CalculationResult {
   const environmentsDetails = calculateEnvironmentDetails(input.environmentsConfig);
   const avgMultiplier = calculateAverageMultiplier(environmentsDetails);
 
-  // Calculate base price with multiplier
+  // Get finish multiplier
+  const finishMult = getFinishMultiplier(input.finishLevel);
+
+  // Calculate base price with multipliers (environment + finish)
   const basePrice = basePricing.price;
-  const priceWithMultiplier = basePrice * avgMultiplier;
+  const priceWithMultiplier = basePrice * avgMultiplier * finishMult;
 
   // Calculate extras (additional environments beyond the base)
   const extraCount = input.extraEnvironments ?? 0;
@@ -291,6 +309,8 @@ function calculateProducao(input: ProducaoInput): CalculationResult {
   return {
     basePrice,
     avgMultiplier,
+    finishMultiplier: finishMult,
+    finishLevel: input.finishLevel,
     environmentsDetails,
     priceBeforeExtras,
     extrasTotal: extras.total,
@@ -336,9 +356,13 @@ function calculateProjetExpress(input: ProjetExpressInput): CalculationResult {
 
   const selectedRange = range ?? pricing.ranges[0];
 
-  // Calculate base price (price per m² × area)
-  const basePrice = selectedRange.pricePerM2 * input.projectArea;
-  const pricePerM2 = selectedRange.pricePerM2;
+  // Get finish multiplier
+  const finishMult = getFinishMultiplier(input.finishLevel);
+
+  // Calculate base price (price per m² × area × finish multiplier)
+  const rawBasePrice = selectedRange.pricePerM2 * input.projectArea;
+  const basePrice = rawBasePrice * finishMult;
+  const pricePerM2 = selectedRange.pricePerM2 * finishMult;
 
   // Calculate survey fee
   const surveyFee = getSurveyFee(input.serviceModality);
@@ -371,6 +395,8 @@ function calculateProjetExpress(input: ProjetExpressInput): CalculationResult {
   return {
     basePrice,
     pricePerM2,
+    finishMultiplier: finishMult,
+    finishLevel: input.finishLevel,
     extrasTotal: 0,
     extrasHours: 0,
     surveyFeeTotal: surveyFee.price,
@@ -391,7 +417,7 @@ function calculateProjetExpress(input: ProjetExpressInput): CalculationResult {
  * Utility: Estimate hours for a custom configuration
  */
 export function estimateHours(params: {
-  service: 'decorexpress' | 'producao' | 'projetexpress';
+  service: 'decorexpress' | 'produzexpress' | 'projetexpress';
   environmentCount?: number;
   complexity?: string;
   projectArea?: number;
@@ -408,7 +434,7 @@ export function estimateHours(params: {
     return range.hoursPerM2 * params.projectArea;
   }
 
-  // DecorExpress or Producao
+  // DecorExpress or ProduzExpress
   if (!params.environmentCount || !params.complexity) {
     throw new Error('environmentCount and complexity required');
   }
@@ -421,8 +447,8 @@ export function estimateHours(params: {
     return typeof pricing === 'object' && 'hours' in pricing ? pricing.hours : 0;
   }
 
-  if (params.service === 'producao') {
-    const tier = producaoPricing[envCount];
+  if (params.service === 'produzexpress') {
+    const tier = produzexpressPricing[envCount];
     const pricing = tier?.[params.complexity as keyof typeof tier];
     return typeof pricing === 'object' && 'hours' in pricing ? pricing.hours : 0;
   }

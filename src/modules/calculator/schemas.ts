@@ -10,9 +10,9 @@ export const environmentSizeSchema = z.enum(['P', 'M', 'G']);
 export const complexityLevelSchema = z.enum(['simples', 'padrao', 'complexo', 'muito_complexo']);
 export const finishLevelSchema = z.enum(['economico', 'padrao', 'alto_padrao', 'luxo']);
 export const decorComplexitySchema = z.enum(['decor1', 'decor2', 'decor3']);
-export const producaoComplexitySchema = z.enum(['prod1', 'prod3']);
+export const produzexpressComplexitySchema = z.enum(['prod1', 'prod3']);
 export const projectTypeSchema = z.enum(['novo', 'reforma']);
-export const serviceTypeSchema = z.enum(['decorexpress', 'producao', 'projetexpress']);
+export const serviceTypeSchema = z.enum(['decorexpress', 'produzexpress', 'projetexpress']);
 export const serviceModalitySchema = z.enum(['online', 'presencial']);
 export const paymentTypeSchema = z.enum(['cash', 'installments', 'custom']);
 export const efficiencyRatingSchema = z.enum(['Ótimo', 'Bom', 'Reajustar']);
@@ -21,7 +21,7 @@ export const efficiencyRatingSchema = z.enum(['Ótimo', 'Bom', 'Reajustar']);
 export const environmentConfigSchema = z.object({
   type: environmentTypeSchema,
   size: environmentSizeSchema,
-  complexity: z.union([decorComplexitySchema, producaoComplexitySchema]),
+  complexity: z.union([decorComplexitySchema, produzexpressComplexitySchema]),
 });
 
 // DecorExpress input
@@ -29,6 +29,7 @@ export const decorExpressInputSchema = z.object({
   service: z.literal('decorexpress'),
   environmentCount: z.union([z.literal(1), z.literal(2), z.literal(3)]),
   complexity: decorComplexitySchema,
+  finishLevel: finishLevelSchema.optional(),
   environmentsConfig: z.array(environmentConfigSchema).min(1).max(3),
   extraEnvironments: z.number().int().min(0).optional(),
   extraEnvironmentPrice: z.number().min(0).optional(),
@@ -37,11 +38,12 @@ export const decorExpressInputSchema = z.object({
   discountPercentage: z.number().min(0).max(100).optional(),
 });
 
-// Producao input
-export const producaoInputSchema = z.object({
-  service: z.literal('producao'),
+// ProduzExpress input
+export const produzexpressInputSchema = z.object({
+  service: z.literal('produzexpress'),
   environmentCount: z.union([z.literal(1), z.literal(2), z.literal(3)]),
-  complexity: producaoComplexitySchema,
+  complexity: produzexpressComplexitySchema,
+  finishLevel: finishLevelSchema.optional(),
   environmentsConfig: z.array(environmentConfigSchema).min(1).max(3),
   extraEnvironments: z.number().int().min(0).optional(),
   extraEnvironmentPrice: z.number().min(0).optional(),
@@ -55,6 +57,7 @@ export const projetExpressInputSchema = z.object({
   service: z.literal('projetexpress'),
   projectType: projectTypeSchema,
   projectArea: z.number().min(20).max(300),
+  finishLevel: finishLevelSchema.optional(),
   serviceModality: serviceModalitySchema,
   paymentType: paymentTypeSchema,
   discountPercentage: z.number().min(0).max(100).optional(),
@@ -65,7 +68,7 @@ export const projetExpressInputSchema = z.object({
 // Combined calculator input
 export const calculatorInputSchema = z.discriminatedUnion('service', [
   decorExpressInputSchema,
-  producaoInputSchema,
+  produzexpressInputSchema,
   projetExpressInputSchema,
 ]);
 
@@ -117,7 +120,7 @@ export const calculateBudgetResponseSchema = z.object({
 // Types inferred from schemas
 export type EnvironmentConfigInput = z.infer<typeof environmentConfigSchema>;
 export type DecorExpressInputSchema = z.infer<typeof decorExpressInputSchema>;
-export type ProducaoInputSchema = z.infer<typeof producaoInputSchema>;
+export type ProduzExpressInputSchema = z.infer<typeof produzexpressInputSchema>;
 export type ProjetExpressInputSchema = z.infer<typeof projetExpressInputSchema>;
 export type CalculatorInputSchema = z.infer<typeof calculatorInputSchema>;
 export type CalculationResultSchema = z.infer<typeof calculationResultSchema>;

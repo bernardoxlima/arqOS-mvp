@@ -16,9 +16,9 @@ const SERVICES = [
     icon: Palette,
   },
   {
-    id: 'producao' as ServiceType,
-    name: 'Produção',
-    description: 'Produção completa do projeto',
+    id: 'produzexpress' as ServiceType,
+    name: 'ProduzExpress',
+    description: 'Produção presencial de ambientes',
     icon: Package,
   },
   {

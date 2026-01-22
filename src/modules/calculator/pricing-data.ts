@@ -10,7 +10,7 @@ import type {
   ComplexityMultiplier,
   FinishMultiplier,
   DecorPricing,
-  ProducaoPricing,
+  ProduzExpressPricing,
   ProjetPricing,
   EnvironmentType,
   EnvironmentSize,
@@ -183,8 +183,8 @@ export const decorExpressPricing: Record<string, DecorPricing> = {
   },
 };
 
-// Producao pricing by number of environments
-export const producaoPricing: Record<string, ProducaoPricing> = {
+// ProduzExpress pricing by number of environments
+export const produzexpressPricing: Record<string, ProduzExpressPricing> = {
   '1': {
     name: '1 Ambiente',
     baseRange: 'R$ 1.600 - 2.400',
@@ -241,7 +241,7 @@ export const defaultPricingConfig: PricingConfig = {
   complexityMultipliers,
   finishMultipliers,
   decorExpressPricing,
-  producaoPricing,
+  produzexpressPricing,
   projetExpressPricing,
 };
 
