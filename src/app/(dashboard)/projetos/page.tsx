@@ -247,7 +247,9 @@ export default function ProjectsPage() {
       {!isLoading && !error && projects.length > 0 && (
         <>
           {viewMode === "kanban" ? (
-            <KanbanBoard projects={projects} onMoveProject={handleMoveProject} />
+            <div className="relative -mx-4 sm:-mx-6 px-4 sm:px-6">
+              <KanbanBoard projects={projects} onMoveProject={handleMoveProject} />
+            </div>
           ) : (
             <div
               className={

@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 import type { Project, Workflow, Financials, ServiceType } from "@/modules/projects";
-import { getCurrentStageName, getWorkflowProgress, TabEtapas, TabAgenda, TabEscopo } from "@/modules/projects";
+import { getCurrentStageName, getWorkflowProgress, TabEtapas, TabAgenda, TabEscopo, TimeEntryModal } from "@/modules/projects";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
@@ -81,6 +81,10 @@ export default function ProjectDetailPage() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isAdvancingStage, setIsAdvancingStage] = useState(false);
+  const [pendingAdvance, setPendingAdvance] = useState<{
+    stageId: string;
+    stageName: string;
+  } | null>(null);
 
   const fetchProject = useCallback(async () => {
     try {
@@ -125,12 +129,28 @@ export default function ProjectDetailPage() {
   };
 
   const handleAdvanceStage = async (stageId: string) => {
+    // Find the stage name from workflow
+    const workflow = project?.workflow as Workflow | null;
+    const stage = workflow?.stages?.find((s) => s.id === stageId);
+    if (!stage) return;
+
+    // Open modal to collect hours
+    setPendingAdvance({
+      stageId,
+      stageName: stage.name,
+    });
+  };
+
+  const handleConfirmAdvance = async (hours: number, description?: string) => {
+    if (!pendingAdvance) return;
+
     setIsAdvancingStage(true);
     try {
+      // Move to stage
       const response = await fetch(`/api/projects/${projectId}/stage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stage: stageId }),
+        body: JSON.stringify({ stage: pendingAdvance.stageId }),
       });
 
       if (!response.ok) {
@@ -138,7 +158,32 @@ export default function ProjectDetailPage() {
         throw new Error(result.error || "Erro ao avançar etapa");
       }
 
+      // Add time entry if hours > 0
+      if (hours > 0) {
+        const workflow = project?.workflow as Workflow | null;
+        const currentIndex = workflow?.current_stage_index ?? 0;
+        const currentStage = workflow?.stages?.[currentIndex];
+
+        const timeResponse = await fetch(`/api/projects/${projectId}/time-entry`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            stage: currentStage?.id || pendingAdvance.stageId,
+            hours,
+            description,
+            date: new Date().toISOString().split("T")[0],
+          }),
+        });
+
+        if (!timeResponse.ok) {
+          toast.error("Erro ao registrar horas", {
+            description: "A etapa foi avançada, mas as horas não foram registradas.",
+          });
+        }
+      }
+
       toast.success("Etapa avançada com sucesso!");
+      setPendingAdvance(null);
       await fetchProject();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erro ao avançar etapa");
@@ -420,6 +465,15 @@ export default function ProjectDetailPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Time entry modal for stage advancement */}
+      <TimeEntryModal
+        open={!!pendingAdvance}
+        onOpenChange={(open) => !open && setPendingAdvance(null)}
+        projectName={clientSnapshot?.name || "Projeto"}
+        targetStage={pendingAdvance?.stageName || ""}
+        onConfirm={handleConfirmAdvance}
+      />
     </div>
   );
 }

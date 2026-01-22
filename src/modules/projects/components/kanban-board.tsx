@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -27,16 +27,16 @@ interface KanbanBoardProps {
   onMoveProject: (projectId: string, stage: string, hours: number, description?: string) => Promise<void>;
 }
 
-const stageColorClasses: Record<StageColor, { bg: string; border: string }> = {
-  purple: { bg: "bg-purple-50 dark:bg-purple-950/30", border: "border-purple-200 dark:border-purple-800" },
-  blue: { bg: "bg-blue-50 dark:bg-blue-950/30", border: "border-blue-200 dark:border-blue-800" },
-  cyan: { bg: "bg-cyan-50 dark:bg-cyan-950/30", border: "border-cyan-200 dark:border-cyan-800" },
-  green: { bg: "bg-green-50 dark:bg-green-950/30", border: "border-green-200 dark:border-green-800" },
-  yellow: { bg: "bg-yellow-50 dark:bg-yellow-950/30", border: "border-yellow-200 dark:border-yellow-800" },
-  orange: { bg: "bg-orange-50 dark:bg-orange-950/30", border: "border-orange-200 dark:border-orange-800" },
-  pink: { bg: "bg-pink-50 dark:bg-pink-950/30", border: "border-pink-200 dark:border-pink-800" },
-  gray: { bg: "bg-gray-50 dark:bg-gray-950/30", border: "border-gray-200 dark:border-gray-800" },
-  emerald: { bg: "bg-emerald-50 dark:bg-emerald-950/30", border: "border-emerald-200 dark:border-emerald-800" },
+const stageColorClasses: Record<StageColor, { bg: string; border: string; bar: string }> = {
+  purple: { bg: "bg-purple-50 dark:bg-purple-950/30", border: "border-purple-200 dark:border-purple-800", bar: "bg-purple-500" },
+  blue: { bg: "bg-blue-50 dark:bg-blue-950/30", border: "border-blue-200 dark:border-blue-800", bar: "bg-blue-500" },
+  cyan: { bg: "bg-cyan-50 dark:bg-cyan-950/30", border: "border-cyan-200 dark:border-cyan-800", bar: "bg-cyan-500" },
+  green: { bg: "bg-green-50 dark:bg-green-950/30", border: "border-green-200 dark:border-green-800", bar: "bg-green-500" },
+  yellow: { bg: "bg-yellow-50 dark:bg-yellow-950/30", border: "border-yellow-200 dark:border-yellow-800", bar: "bg-yellow-500" },
+  orange: { bg: "bg-orange-50 dark:bg-orange-950/30", border: "border-orange-200 dark:border-orange-800", bar: "bg-orange-500" },
+  pink: { bg: "bg-pink-50 dark:bg-pink-950/30", border: "border-pink-200 dark:border-pink-800", bar: "bg-pink-500" },
+  gray: { bg: "bg-gray-50 dark:bg-gray-950/30", border: "border-gray-200 dark:border-gray-800", bar: "bg-gray-500" },
+  emerald: { bg: "bg-emerald-50 dark:bg-emerald-950/30", border: "border-emerald-200 dark:border-emerald-800", bar: "bg-emerald-500" },
 };
 
 export function KanbanBoard({ projects, onMoveProject }: KanbanBoardProps) {
@@ -46,6 +46,24 @@ export function KanbanBoard({ projects, onMoveProject }: KanbanBoardProps) {
     targetStage: string;
     targetStageName: string;
   } | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Convert vertical scroll to horizontal scroll on the kanban board
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      // Only intercept if scrolling vertically and container can scroll horizontally
+      if (e.deltaY !== 0 && container.scrollWidth > container.clientWidth) {
+        e.preventDefault();
+        container.scrollLeft += e.deltaY;
+      }
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheel);
+  }, []);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -162,7 +180,10 @@ export function KanbanBoard({ projects, onMoveProject }: KanbanBoardProps) {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div
+          ref={scrollContainerRef}
+          className="flex gap-4 overflow-x-auto pb-4 scroll-smooth"
+        >
           {stages.map((stage) => {
             const colors = stageColorClasses[stage.color] || stageColorClasses.gray;
             const stageProjects = projectsByStage[stage.id] || [];
@@ -178,6 +199,7 @@ export function KanbanBoard({ projects, onMoveProject }: KanbanBoardProps) {
                   title={stage.name}
                   count={stageProjects.length}
                   className={`${colors.bg} ${colors.border}`}
+                  borderColor={colors.bar}
                 >
                   {stageProjects.map((project) => (
                     <KanbanCard key={project.id} project={project} />
