@@ -82,7 +82,7 @@ export function BudgetCard({
 
   return (
     <Link
-      href={`/dashboard/orcamentos/${id}`}
+      href={`/orcamentos/${id}`}
       className="arq-card p-4 text-left hover:border-primary/50 transition-colors group block"
     >
       {/* Header with avatar + code + status */}
