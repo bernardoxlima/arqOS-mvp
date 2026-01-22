@@ -1,6 +1,6 @@
 'use client';
 
-import { Clock, TrendingUp, Sparkles, Loader2, Save, AlertTriangle, Timer } from 'lucide-react';
+import { Clock, TrendingUp, Loader2, Save, AlertTriangle, Timer } from 'lucide-react';
 import { Card } from '@/shared/components/ui/card';
 import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
@@ -206,24 +206,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
               </>
             )}
           </Button>
-        </div>
-      </Card>
-
-      {/* Sugestão AI */}
-      <Card className="p-4 bg-gradient-to-r from-violet-50 to-blue-50 border-violet-200">
-        <div className="flex items-start gap-3">
-          <Sparkles className="h-5 w-5 text-violet-600 mt-0.5" />
-          <div>
-            <p className="text-xs text-violet-600 uppercase tracking-wide mb-1">Sugestão</p>
-            <p className="text-sm text-violet-900">
-              {healthStatus.status === 'good' &&
-                'Excelente! Este projeto está precificado no nível ideal (3x custo). Margem saudável para imprevistos e lucro.'}
-              {healthStatus.status === 'warning' &&
-                'Margem adequada, mas considere aumentar o valor para alcançar o nível ideal (3x custo) e ter mais segurança.'}
-              {healthStatus.status === 'danger' &&
-                'Atenção: Valor abaixo do mínimo recomendado (2x custo). Revise o escopo ou aumente o preço para garantir rentabilidade.'}
-            </p>
-          </div>
         </div>
       </Card>
 
