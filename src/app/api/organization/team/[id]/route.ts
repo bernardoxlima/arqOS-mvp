@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/shared/lib/supabase/server";
+import { createAdminClient } from "@/shared/lib/supabase/admin";
 import { updateTeamMemberSchema } from "@/modules/settings";
+import { canChangeRole, canRemoveRole, canManageTeam } from "@/shared/lib/permissions";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -118,8 +120,8 @@ export async function PUT(request: NextRequest, context: RouteParams) {
       );
     }
 
-    // Only owners and coordinators can edit team members
-    if (!["owner", "coordinator"].includes(profile.role || "")) {
+    // Check if user can manage team
+    if (!canManageTeam(profile.role || "")) {
       return NextResponse.json(
         { success: false, error: "Sem permissão para editar membros" },
         { status: 403 }
@@ -129,7 +131,7 @@ export async function PUT(request: NextRequest, context: RouteParams) {
     // Check if member exists in the organization
     const { data: existingMember, error: existingError } = await supabase
       .from("profiles")
-      .select("id, metadata")
+      .select("id, metadata, role")
       .eq("id", id)
       .eq("organization_id", profile.organization_id)
       .single();
@@ -153,6 +155,24 @@ export async function PUT(request: NextRequest, context: RouteParams) {
     }
 
     const { full_name, role, salary, monthly_hours } = validation.data;
+
+    // Check permission to change role if role is being changed
+    if (role !== undefined && role !== existingMember.role) {
+      // Check if user can change from the current role
+      if (!canChangeRole(profile.role || "", existingMember.role || "")) {
+        return NextResponse.json(
+          { success: false, error: "Sem permissão para alterar o cargo deste membro" },
+          { status: 403 }
+        );
+      }
+      // Check if user can assign the new role
+      if (!canChangeRole(profile.role || "", role)) {
+        return NextResponse.json(
+          { success: false, error: "Sem permissão para atribuir este cargo" },
+          { status: 403 }
+        );
+      }
+    }
 
     // Build update object
     const updateData: Record<string, unknown> = {};
@@ -182,8 +202,11 @@ export async function PUT(request: NextRequest, context: RouteParams) {
       updateData.metadata = newMetadata;
     }
 
+    // Use admin client to update (bypasses RLS for team members without user_id)
+    const adminClient = createAdminClient();
+
     // Update the member
-    const { data: updatedMember, error: updateError } = await supabase
+    const { data: updatedMember, error: updateError } = await adminClient
       .from("profiles")
       .update(updateData)
       .eq("id", id)
@@ -260,14 +283,6 @@ export async function DELETE(request: NextRequest, context: RouteParams) {
       );
     }
 
-    // Only owners can delete team members
-    if (profile.role !== "owner") {
-      return NextResponse.json(
-        { success: false, error: "Somente proprietários podem remover membros" },
-        { status: 403 }
-      );
-    }
-
     // Cannot delete yourself
     if (profile.id === id) {
       return NextResponse.json(
@@ -279,7 +294,7 @@ export async function DELETE(request: NextRequest, context: RouteParams) {
     // Check if member exists in the organization
     const { data: existingMember, error: existingError } = await supabase
       .from("profiles")
-      .select("id, user_id")
+      .select("id, user_id, role")
       .eq("id", id)
       .eq("organization_id", profile.organization_id)
       .single();
@@ -291,8 +306,19 @@ export async function DELETE(request: NextRequest, context: RouteParams) {
       );
     }
 
+    // Check permission to remove this role
+    if (!canRemoveRole(profile.role || "", existingMember.role || "")) {
+      return NextResponse.json(
+        { success: false, error: "Sem permissão para remover este membro" },
+        { status: 403 }
+      );
+    }
+
+    // Use admin client to delete (bypasses RLS)
+    const adminClient = createAdminClient();
+
     // Delete the member
-    const { error: deleteError } = await supabase
+    const { error: deleteError } = await adminClient
       .from("profiles")
       .delete()
       .eq("id", id);

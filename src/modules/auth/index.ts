@@ -3,6 +3,7 @@ export { AuthProvider, useAuthContext } from "./context";
 
 // Hooks
 export { useAuth } from "./hooks/use-auth";
+export { usePermissions } from "./hooks/use-permissions";
 
 // Types
 export type { AuthContextType, AuthState, Profile } from "./types";

@@ -8,6 +8,12 @@ import type { RoleOption, TeamRole } from '../types';
 export const TEAM_ROLES: RoleOption[] = [
   {
     id: 'owner',
+    name: 'Proprietário(a)',
+    defaultSalary: 10000,
+    defaultHours: 160,
+  },
+  {
+    id: 'socio',
     name: 'Sócio(a)',
     defaultSalary: 10000,
     defaultHours: 160,

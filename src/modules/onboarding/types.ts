@@ -7,7 +7,7 @@
 export type OfficeSize = 'solo' | 'small' | 'medium' | 'large';
 
 // Team member role types
-export type TeamRole = 'owner' | 'coordinator' | 'architect' | 'intern' | 'admin';
+export type TeamRole = 'owner' | 'socio' | 'coordinator' | 'architect' | 'intern' | 'admin';
 
 // Service types offered by the office
 export type ServiceId = 'decorexpress' | 'projetexpress' | 'producao' | 'consultoria';

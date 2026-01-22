@@ -8,14 +8,14 @@ import {
   Calculator,
   FileText,
   Presentation,
-  // DollarSign, // TODO: Reativar quando financeiro estiver pronto
+  DollarSign,
   LogOut,
   User,
   Sparkles,
   Settings,
 } from "lucide-react";
 
-import { useAuth } from "@/modules/auth";
+import { useAuth, usePermissions } from "@/modules/auth";
 import {
   Sidebar,
   SidebarContent,
@@ -38,7 +38,14 @@ import {
 } from "@/shared/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 
-const navItems = [
+interface NavItem {
+  title: string;
+  url: string;
+  icon: React.ComponentType<{ className?: string }>;
+  requiresPermission?: "canAccessFinance";
+}
+
+const navItems: NavItem[] = [
   {
     title: "Início",
     url: "/dashboard",
@@ -69,17 +76,18 @@ const navItems = [
     url: "/brandbook",
     icon: Sparkles,
   },
-  // TODO: Reativar quando financeiro estiver pronto
-  // {
-  //   title: "Financeiro",
-  //   url: "/financeiro",
-  //   icon: DollarSign,
-  // },
+  {
+    title: "Financeiro",
+    url: "/financeiro",
+    icon: DollarSign,
+    requiresPermission: "canAccessFinance",
+  },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
   const { profile, signOut } = useAuth();
+  const permissions = usePermissions();
 
   const getInitials = (name: string) => {
     return name
@@ -118,23 +126,39 @@ export function AppSidebar() {
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={
-                      pathname === item.url ||
-                      (item.url !== "/" && pathname.startsWith(item.url))
-                    }
-                    tooltip={item.title}
-                  >
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {navItems.map((item) => {
+                // Check if item requires permission
+                const hasPermission = item.requiresPermission
+                  ? permissions[item.requiresPermission]
+                  : true;
+
+                return (
+                  <SidebarMenuItem key={item.url}>
+                    <SidebarMenuButton
+                      asChild={hasPermission}
+                      isActive={
+                        pathname === item.url ||
+                        (item.url !== "/" && pathname.startsWith(item.url))
+                      }
+                      tooltip={hasPermission ? item.title : `${item.title} (sem acesso)`}
+                      disabled={!hasPermission}
+                      className={!hasPermission ? "opacity-50 cursor-not-allowed" : ""}
+                    >
+                      {hasPermission ? (
+                        <Link href={item.url}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.title}</span>
+                        </span>
+                      )}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

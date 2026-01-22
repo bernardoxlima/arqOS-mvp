@@ -1,7 +1,8 @@
 "use client";
 
-import { Clock, TrendingUp, Target } from "lucide-react";
+import { Clock, TrendingUp, Target, Lock } from "lucide-react";
 import { formatCurrency, formatNumber } from "@/shared/lib/format";
+import { usePermissions } from "@/modules/auth";
 import type { BudgetCalculation, BudgetDetails } from "../types";
 
 export interface BudgetValueCardProps {
@@ -29,6 +30,9 @@ export function BudgetValueCard({
   calculation,
   details,
 }: BudgetValueCardProps) {
+  const permissions = usePermissions();
+  const canViewCosts = permissions.canViewBudgetCosts;
+
   const profit = calculation.final_price - (calculation.estimated_hours * calculation.hour_rate);
   const profitPercentage = calculation.final_price > 0
     ? (profit / calculation.final_price) * 100
@@ -83,21 +87,39 @@ export function BudgetValueCard({
           <span>{formatNumber(calculation.estimated_hours)}h</span>
         </div>
 
-        {/* Hour rate */}
-        <div className="flex justify-between">
-          <span className="text-primary-foreground/60 flex items-center gap-1">
-            <Target className="w-3 h-3" /> Valor/hora
-          </span>
-          <span>{formatCurrency(calculation.hour_rate)}</span>
-        </div>
+        {/* Hour rate - only visible to admins */}
+        {canViewCosts ? (
+          <div className="flex justify-between">
+            <span className="text-primary-foreground/60 flex items-center gap-1">
+              <Target className="w-3 h-3" /> Valor/hora
+            </span>
+            <span>{formatCurrency(calculation.hour_rate)}</span>
+          </div>
+        ) : (
+          <div className="flex justify-between text-primary-foreground/40">
+            <span className="flex items-center gap-1">
+              <Lock className="w-3 h-3" /> Valor/hora
+            </span>
+            <span>***</span>
+          </div>
+        )}
 
-        {/* Estimated cost */}
-        <div className="flex justify-between">
-          <span className="text-primary-foreground/60">Custo estimado</span>
-          <span>
-            {formatCurrency(calculation.estimated_hours * calculation.hour_rate)}
-          </span>
-        </div>
+        {/* Estimated cost - only visible to admins */}
+        {canViewCosts ? (
+          <div className="flex justify-between">
+            <span className="text-primary-foreground/60">Custo estimado</span>
+            <span>
+              {formatCurrency(calculation.estimated_hours * calculation.hour_rate)}
+            </span>
+          </div>
+        ) : (
+          <div className="flex justify-between text-primary-foreground/40">
+            <span className="flex items-center gap-1">
+              <Lock className="w-3 h-3" /> Custo estimado
+            </span>
+            <span>***</span>
+          </div>
+        )}
 
         {/* Items total */}
         {calculation.items_total !== undefined && calculation.items_total > 0 && (
@@ -107,18 +129,27 @@ export function BudgetValueCard({
           </div>
         )}
 
-        {/* Expected profit */}
-        <div className="flex justify-between text-emerald-400">
-          <span className="flex items-center gap-1">
-            <TrendingUp className="w-3 h-3" /> Lucro previsto
-          </span>
-          <span>
-            {formatCurrency(profit)}{" "}
-            <span className="text-xs opacity-75">
-              ({formatNumber(profitPercentage, 0)}%)
+        {/* Expected profit - only visible to admins */}
+        {canViewCosts ? (
+          <div className="flex justify-between text-emerald-400">
+            <span className="flex items-center gap-1">
+              <TrendingUp className="w-3 h-3" /> Lucro previsto
             </span>
-          </span>
-        </div>
+            <span>
+              {formatCurrency(profit)}{" "}
+              <span className="text-xs opacity-75">
+                ({formatNumber(profitPercentage, 0)}%)
+              </span>
+            </span>
+          </div>
+        ) : (
+          <div className="flex justify-between text-primary-foreground/40">
+            <span className="flex items-center gap-1">
+              <Lock className="w-3 h-3" /> Lucro previsto
+            </span>
+            <span>***</span>
+          </div>
+        )}
 
         {/* Price per m2 */}
         {calculation.price_per_m2 > 0 && (

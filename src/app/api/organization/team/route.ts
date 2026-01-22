@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/shared/lib/supabase/server";
+import { createAdminClient } from "@/shared/lib/supabase/admin";
 import { getTeamData } from "@/modules/dashboard/services/dashboard.service";
 import { createTeamMemberSchema } from "@/modules/settings";
+import { canInviteRole } from "@/shared/lib/permissions";
 
 /**
  * GET /api/organization/team
@@ -98,14 +100,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Only owners and coordinators can add team members
-    if (!["owner", "coordinator"].includes(profile.role || "")) {
-      return NextResponse.json(
-        { success: false, error: "Sem permissão para adicionar membros" },
-        { status: 403 }
-      );
-    }
-
     // Parse and validate request body
     const body = await request.json();
     const validation = createTeamMemberSchema.safeParse(body);
@@ -119,9 +113,21 @@ export async function POST(request: NextRequest) {
 
     const { full_name, role, salary, monthly_hours } = validation.data;
 
+    // Check permission to add this role
+    if (!canInviteRole(profile.role || "", role)) {
+      return NextResponse.json(
+        { success: false, error: "Sem permissão para adicionar este cargo" },
+        { status: 403 }
+      );
+    }
+
+    // Use admin client to bypass RLS for creating team member profiles
+    // This is needed because team members don't have user_id yet
+    const adminClient = createAdminClient();
+
     // Create the team member profile
     // Note: user_id is null for members not yet registered
-    const { data: newMember, error: createError } = await supabase
+    const { data: newMember, error: createError } = await adminClient
       .from("profiles")
       .insert({
         organization_id: profile.organization_id,

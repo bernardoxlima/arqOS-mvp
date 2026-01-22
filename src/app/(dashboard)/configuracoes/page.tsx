@@ -13,9 +13,11 @@ import {
   SettingsServicesSection,
   SettingsServicesSectionSkeleton,
 } from "@/modules/settings";
+import { usePermissions } from "@/modules/auth";
 import type { OfficeCosts, ServiceId, OfficeSize, PositioningMultiplier } from "@/modules/onboarding";
 
 export default function ConfiguracoesPage() {
+  const permissions = usePermissions();
   const {
     organization,
     team,
@@ -31,6 +33,18 @@ export default function ConfiguracoesPage() {
     updateTeamMember,
     deleteTeamMember,
   } = useSettings();
+
+  // Determine which tabs are visible based on permissions
+  const showOfficeTab = permissions.canManageOffice;
+  const showCostsTab = permissions.canAccessCosts;
+  const showServicesTab = permissions.canManageServices;
+
+  // Calculate grid columns based on visible tabs
+  // Using inline style because Tailwind classes need to be compiled at build time
+  const visibleTabCount = 1 + (showOfficeTab ? 1 : 0) + (showCostsTab ? 1 : 0) + (showServicesTab ? 1 : 0);
+
+  // Default tab based on permissions
+  const defaultTab = showOfficeTab ? "escritorio" : "equipe";
 
   // Default values if organization is loading
   const orgName = organization?.name || "";
@@ -62,26 +76,32 @@ export default function ConfiguracoesPage() {
           </div>
         </div>
 
-        <Tabs defaultValue="escritorio" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="escritorio">Escritório</TabsTrigger>
+        <Tabs defaultValue={defaultTab} className="w-full">
+          <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${visibleTabCount}, minmax(0, 1fr))` }}>
+            {showOfficeTab && <TabsTrigger value="escritorio">Escritório</TabsTrigger>}
             <TabsTrigger value="equipe">Equipe</TabsTrigger>
-            <TabsTrigger value="custos">Custos</TabsTrigger>
-            <TabsTrigger value="servicos">Serviços</TabsTrigger>
+            {showCostsTab && <TabsTrigger value="custos">Custos</TabsTrigger>}
+            {showServicesTab && <TabsTrigger value="servicos">Serviços</TabsTrigger>}
           </TabsList>
 
-          <TabsContent value="escritorio" className="mt-6">
-            <SettingsOfficeSectionSkeleton />
-          </TabsContent>
+          {showOfficeTab && (
+            <TabsContent value="escritorio" className="mt-6">
+              <SettingsOfficeSectionSkeleton />
+            </TabsContent>
+          )}
           <TabsContent value="equipe" className="mt-6">
             <SettingsTeamSectionSkeleton />
           </TabsContent>
-          <TabsContent value="custos" className="mt-6">
-            <SettingsCostsSectionSkeleton />
-          </TabsContent>
-          <TabsContent value="servicos" className="mt-6">
-            <SettingsServicesSectionSkeleton />
-          </TabsContent>
+          {showCostsTab && (
+            <TabsContent value="custos" className="mt-6">
+              <SettingsCostsSectionSkeleton />
+            </TabsContent>
+          )}
+          {showServicesTab && (
+            <TabsContent value="servicos" className="mt-6">
+              <SettingsServicesSectionSkeleton />
+            </TabsContent>
+          )}
         </Tabs>
       </div>
     );
@@ -101,30 +121,32 @@ export default function ConfiguracoesPage() {
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="escritorio" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="escritorio">Escritório</TabsTrigger>
+      <Tabs defaultValue={defaultTab} className="w-full">
+        <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${visibleTabCount}, minmax(0, 1fr))` }}>
+          {showOfficeTab && <TabsTrigger value="escritorio">Escritório</TabsTrigger>}
           <TabsTrigger value="equipe">Equipe</TabsTrigger>
-          <TabsTrigger value="custos">Custos</TabsTrigger>
-          <TabsTrigger value="servicos">Serviços</TabsTrigger>
+          {showCostsTab && <TabsTrigger value="custos">Custos</TabsTrigger>}
+          {showServicesTab && <TabsTrigger value="servicos">Serviços</TabsTrigger>}
         </TabsList>
 
         {/* Escritório Tab */}
-        <TabsContent value="escritorio" className="mt-6">
-          <SettingsOfficeSection
-            name={orgName}
-            size={officeSize}
-            margin={margin}
-            positioningMultiplier={positioningMultiplier}
-            costs={costs}
-            team={team}
-            isSaving={isSaving}
-            onUpdateName={updateOrganizationName}
-            onUpdateSize={updateOfficeSize}
-            onUpdateMargin={updateMargin}
-            onUpdatePositioning={updatePositioning}
-          />
-        </TabsContent>
+        {showOfficeTab && (
+          <TabsContent value="escritorio" className="mt-6">
+            <SettingsOfficeSection
+              name={orgName}
+              size={officeSize}
+              margin={margin}
+              positioningMultiplier={positioningMultiplier}
+              costs={costs}
+              team={team}
+              isSaving={isSaving}
+              onUpdateName={updateOrganizationName}
+              onUpdateSize={updateOfficeSize}
+              onUpdateMargin={updateMargin}
+              onUpdatePositioning={updatePositioning}
+            />
+          </TabsContent>
+        )}
 
         {/* Equipe Tab */}
         <TabsContent value="equipe" className="mt-6">
@@ -138,22 +160,26 @@ export default function ConfiguracoesPage() {
         </TabsContent>
 
         {/* Custos Tab */}
-        <TabsContent value="custos" className="mt-6">
-          <SettingsCostsSection
-            costs={costs}
-            isSaving={isSaving}
-            onUpdateCosts={updateCosts}
-          />
-        </TabsContent>
+        {showCostsTab && (
+          <TabsContent value="custos" className="mt-6">
+            <SettingsCostsSection
+              costs={costs}
+              isSaving={isSaving}
+              onUpdateCosts={updateCosts}
+            />
+          </TabsContent>
+        )}
 
         {/* Serviços Tab */}
-        <TabsContent value="servicos" className="mt-6">
-          <SettingsServicesSection
-            services={services}
-            isSaving={isSaving}
-            onUpdateServices={updateServices}
-          />
-        </TabsContent>
+        {showServicesTab && (
+          <TabsContent value="servicos" className="mt-6">
+            <SettingsServicesSection
+              services={services}
+              isSaving={isSaving}
+              onUpdateServices={updateServices}
+            />
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   );
