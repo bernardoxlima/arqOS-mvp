@@ -48,6 +48,7 @@ export async function GET(request: NextRequest) {
 
     // Return with pagination metadata
     return NextResponse.json({
+      success: true,
       data: budgetsResult.data,
       pagination: {
         total: countResult.data || 0,
@@ -94,7 +95,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: result.error.message }, { status });
     }
 
-    return NextResponse.json(result.data, { status: 201 });
+    return NextResponse.json({ success: true, data: result.data }, { status: 201 });
   } catch (error) {
     console.error("Error creating budget:", error);
     return NextResponse.json(
