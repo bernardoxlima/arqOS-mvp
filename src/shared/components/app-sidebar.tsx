@@ -7,7 +7,7 @@ import {
   Calculator,
   FileText,
   Presentation,
-  DollarSign,
+  // DollarSign, // TODO: Reativar quando financeiro estiver pronto
   LogOut,
   User,
   Sparkles,
@@ -63,11 +63,12 @@ const navItems = [
     url: "/brandbook",
     icon: Sparkles,
   },
-  {
-    title: "Financeiro",
-    url: "/financeiro",
-    icon: DollarSign,
-  },
+  // TODO: Reativar quando financeiro estiver pronto
+  // {
+  //   title: "Financeiro",
+  //   url: "/financeiro",
+  //   icon: DollarSign,
+  // },
 ];
 
 export function AppSidebar() {

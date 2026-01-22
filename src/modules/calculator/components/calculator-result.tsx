@@ -118,36 +118,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
         </Alert>
       )}
 
-      {/* Referência de Preço */}
-      <Card className="p-4">
-        <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">
-          Referência de Preço
-        </p>
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-500" />
-              <span className="text-sm">Mínimo (2x)</span>
-            </div>
-            <span className="font-medium">{formatCurrency(hourCost * 2)}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-amber-500" />
-              <span className="text-sm">Adequado (2.5x)</span>
-            </div>
-            <span className="font-medium">{formatCurrency(hourCost * 2.5)}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
-              <span className="text-sm">Ideal (3x)</span>
-            </div>
-            <span className="font-medium">{formatCurrency(hourCost * 3)}</span>
-          </div>
-        </div>
-      </Card>
-
       {/* Valor Final */}
       <Card className="p-6 bg-primary text-primary-foreground">
         <div className="space-y-4">
