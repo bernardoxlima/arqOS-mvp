@@ -40,7 +40,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    return NextResponse.json(result.data);
+    return NextResponse.json({ data: result.data });
   } catch (error) {
     console.error("Error fetching project:", error);
     return NextResponse.json(
@@ -88,7 +88,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    return NextResponse.json(result.data);
+    return NextResponse.json({ data: result.data });
   } catch (error) {
     console.error("Error updating project:", error);
     return NextResponse.json(
