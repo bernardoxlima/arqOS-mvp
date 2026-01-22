@@ -1,6 +1,6 @@
 'use client';
 
-import { Clock, TrendingUp, Sparkles, Loader2, Save, AlertTriangle, Timer, Target } from 'lucide-react';
+import { Clock, TrendingUp, Sparkles, Loader2, Save, AlertTriangle, Timer } from 'lucide-react';
 import { Card } from '@/shared/components/ui/card';
 import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
@@ -65,16 +65,10 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
     );
   }
 
-  // Calculate cost, profit, and price references
-  const hourCost = result.estimatedHours * result.hourRate;
+  // Calculate cost, profit, and price multiplier
   const costValue = result.estimatedHours * (result.hourlyRateUsed || result.hourRate);
   const profit = result.priceWithDiscount - costValue;
   const profitMargin = result.priceWithDiscount > 0 ? (profit / result.priceWithDiscount) * 100 : 0;
-
-  // Price reference calculations (based on cost)
-  const minPrice = costValue * 2;      // 2x cost
-  const adequatePrice = costValue * 2.5; // 2.5x cost
-  const idealPrice = costValue * 3;    // 3x cost
 
   // Price multiplier and health status
   const priceMultiplier = costValue > 0 ? result.priceWithDiscount / costValue : 0;
@@ -133,39 +127,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
           </AlertDescription>
         </Alert>
       )}
-
-      {/* Referência de Precificação */}
-      <Card className="p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <Target className="h-4 w-4 text-muted-foreground" />
-          <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-            Referência de Precificação
-          </p>
-        </div>
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between items-center">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-500" />
-              <span className="text-muted-foreground">Mínimo (2x custo)</span>
-            </span>
-            <span className="font-medium">{formatCurrency(minPrice)}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-amber-500" />
-              <span className="text-muted-foreground">Adequado (2.5x)</span>
-            </span>
-            <span className="font-medium">{formatCurrency(adequatePrice)}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span className="text-muted-foreground">Ideal (3x custo)</span>
-            </span>
-            <span className="font-medium">{formatCurrency(idealPrice)}</span>
-          </div>
-        </div>
-      </Card>
 
       {/* Valor Final */}
       <Card className="p-6 bg-primary text-primary-foreground">
