@@ -101,7 +101,7 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
       <Card className="p-6">
         <div className="space-y-4">
           {/* Valor por m² (se disponível) */}
-          {result.pricePerM2 && (
+          {result.pricePerM2 !== undefined && result.pricePerM2 > 0 && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Valor por m²</span>
               <span className="font-medium">{formatCurrency(result.pricePerM2)}</span>
@@ -139,7 +139,7 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
           )}
 
           {/* Gerenciamento de Obra */}
-          {result.managementFeeTotal && result.managementFeeTotal > 0 && (
+          {result.managementFeeTotal !== undefined && result.managementFeeTotal > 0 && (
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Gerenciamento de Obra</span>
               <span className="font-medium">+ {formatCurrency(result.managementFeeTotal)}</span>
