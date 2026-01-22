@@ -182,9 +182,6 @@ export default function ProjectDetailPage() {
           </Button>
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-sm font-mono text-muted-foreground">
-                {project.code}
-              </span>
               <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
               <Badge variant="outline">{serviceLabel}</Badge>
             </div>
@@ -374,8 +371,7 @@ export default function ProjectDetailPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir projeto?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta ação não pode ser desfeita. O projeto <strong>{project.code}</strong> será
-              permanentemente excluído.
+              Esta ação não pode ser desfeita. Este projeto será permanentemente excluído.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

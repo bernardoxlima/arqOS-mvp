@@ -78,9 +78,6 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
         <div className="flex items-start justify-between">
           <div className="space-y-1 flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-muted-foreground">
-                {project.code}
-              </span>
               <Badge variant={statusInfo.variant} className="text-xs">
                 {statusInfo.label}
               </Badge>

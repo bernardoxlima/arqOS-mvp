@@ -19,7 +19,7 @@ import { Textarea } from "@/shared/components/ui/textarea";
 interface TimeEntryModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  projectCode: string;
+  projectName: string;
   targetStage: string;
   onConfirm: (hours: number, description?: string) => Promise<void>;
 }
@@ -27,7 +27,7 @@ interface TimeEntryModalProps {
 export function TimeEntryModal({
   open,
   onOpenChange,
-  projectCode,
+  projectName,
   targetStage,
   onConfirm,
 }: TimeEntryModalProps) {
@@ -60,7 +60,7 @@ export function TimeEntryModal({
         <DialogHeader>
           <DialogTitle>Mover para {targetStage}</DialogTitle>
           <DialogDescription>
-            Movendo o projeto <strong>{projectCode}</strong> para a etapa{" "}
+            Movendo <strong>{projectName}</strong> para a etapa{" "}
             <strong>{targetStage}</strong>.
           </DialogDescription>
         </DialogHeader>

@@ -105,9 +105,7 @@ export default function ProjectsPage() {
   const handleCreateProject = async (data: CreateProjectData) => {
     const result = await createProject(data);
     if (result) {
-      toast.success("Projeto criado com sucesso!", {
-        description: `Código: ${result.code}`,
-      });
+      toast.success("Projeto criado com sucesso!");
     } else {
       toast.error("Erro ao criar projeto", {
         description: "Tente novamente mais tarde.",
@@ -116,8 +114,8 @@ export default function ProjectsPage() {
     }
   };
 
-  const handleDeleteProject = async (project: { id: string; code: string }) => {
-    if (!confirm(`Tem certeza que deseja excluir o projeto ${project.code}?`)) {
+  const handleDeleteProject = async (project: { id: string }) => {
+    if (!confirm("Tem certeza que deseja excluir este projeto?")) {
       return;
     }
     const success = await deleteProject(project.id);

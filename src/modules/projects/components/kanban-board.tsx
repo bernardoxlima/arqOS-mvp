@@ -196,7 +196,7 @@ export function KanbanBoard({ projects, onMoveProject }: KanbanBoardProps) {
       <TimeEntryModal
         open={!!pendingMove}
         onOpenChange={(open) => !open && setPendingMove(null)}
-        projectCode={pendingMove?.project.code || ""}
+        projectName={(pendingMove?.project.client_snapshot as { name?: string } | null)?.name || "Projeto"}
         targetStage={pendingMove?.targetStageName || ""}
         onConfirm={handleConfirmMove}
       />

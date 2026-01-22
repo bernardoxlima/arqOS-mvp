@@ -60,16 +60,13 @@ export function KanbanCard({ project, isDragging }: KanbanCardProps) {
         </button>
 
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-mono text-muted-foreground">
-              {project.code}
-            </span>
-            {serviceLabel && (
+          {serviceLabel && (
+            <div className="flex items-center gap-2 mb-1">
               <span className="text-[10px] text-muted-foreground">
                 {serviceLabel}
               </span>
-            )}
-          </div>
+            </div>
+          )}
 
           <Link
             href={`/projetos/${project.id}`}
