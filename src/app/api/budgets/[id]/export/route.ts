@@ -137,32 +137,38 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       data.push([]);
     }
 
-    // Items (if any)
-    const items = budget.items as Array<{
-      name: string;
-      category: string;
-      quantity: number;
-      unit: string;
-      unit_price: number;
-      total_price: number;
-    }> | null;
+    // Items (if any) - stored in details.items
+    const budgetDetails = budget.details as {
+      items?: Array<{
+        id: string;
+        fornecedor: string;
+        descricao: string;
+        quantidade: number;
+        unidade: string;
+        valorProduto: number;
+        valorCompleto: number;
+        category?: string;
+        ambiente?: string;
+      }>;
+    } | null;
+    const items = budgetDetails?.items || [];
 
-    if (items && items.length > 0) {
+    if (items.length > 0) {
       data.push(["ITENS DO ORÇAMENTO"]);
-      data.push(["#", "Item", "Categoria", "Qtd", "Unidade", "Valor Unit.", "Total"]);
+      data.push(["#", "Item", "Fornecedor", "Qtd", "Unidade", "Valor Unit.", "Total"]);
 
       let itemsTotal = 0;
       items.forEach((item, index) => {
         data.push([
           index + 1,
-          item.name,
-          item.category,
-          item.quantity,
-          item.unit,
-          item.unit_price,
-          item.total_price,
+          item.descricao,
+          item.fornecedor || "-",
+          item.quantidade,
+          item.unidade,
+          item.valorProduto,
+          item.valorCompleto,
         ]);
-        itemsTotal += item.total_price;
+        itemsTotal += item.valorCompleto;
       });
 
       data.push([]);
@@ -185,14 +191,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     XLSX.utils.book_append_sheet(wb, ws, "Orçamento");
 
-    // Generate buffer
+    // Generate buffer as Uint8Array for NextResponse compatibility
     const buffer = XLSX.write(wb, {
-      type: "buffer",
+      type: "array",
       bookType: "xlsx",
-    }) as Buffer;
+    });
 
     // Return file
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       status: 200,
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
