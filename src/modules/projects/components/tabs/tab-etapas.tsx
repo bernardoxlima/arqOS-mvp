@@ -1,15 +1,19 @@
 "use client";
 
-import { Check, Circle, Clock, CalendarDays } from "lucide-react";
+import { useState } from "react";
+import { Check, Circle, Clock, CalendarDays, ChevronRight, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 import type { ProjectStage, StageColor, Workflow } from "../../types";
 import { Badge } from "@/shared/components/ui/badge";
+import { Button } from "@/shared/components/ui/button";
 
 interface TabEtapasProps {
   workflow: Workflow;
   startDate?: string | null;
+  onAdvanceStage?: (stageId: string) => Promise<void>;
+  isAdvancing?: boolean;
 }
 
 const stageColorClasses: Record<StageColor, { bg: string; text: string; border: string; light: string }> = {
@@ -67,10 +71,12 @@ function getEstimatedDays(stageId: string, serviceType: string): number {
   return estimates[serviceType]?.[stageId] ?? 3;
 }
 
-export function TabEtapas({ workflow, startDate }: TabEtapasProps) {
+export function TabEtapas({ workflow, startDate, onAdvanceStage, isAdvancing }: TabEtapasProps) {
   const currentStageIndex = workflow.current_stage_index ?? 0;
   const stages = workflow.stages || [];
   const serviceType = workflow.type || "decorexpress";
+  const isLastStage = currentStageIndex >= stages.length - 1;
+  const nextStage = !isLastStage ? stages[currentStageIndex + 1] : null;
 
   // Calculate cumulative dates
   let cumulativeDays = 0;
@@ -87,25 +93,43 @@ export function TabEtapas({ workflow, startDate }: TabEtapasProps) {
   return (
     <div className="space-y-6">
       {/* Summary */}
-      <div className="flex flex-wrap gap-4 p-4 bg-muted/50 rounded-lg">
-        <div className="flex items-center gap-2">
-          <Clock className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm">
-            <strong>{totalDays}</strong> dias estimados
-          </span>
+      <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-muted/50 rounded-lg">
+        <div className="flex flex-wrap gap-4">
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm">
+              <strong>{totalDays}</strong> dias estimados
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CalendarDays className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm">
+              <strong>{stages.length}</strong> etapas
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Check className="h-4 w-4 text-green-500" />
+            <span className="text-sm">
+              <strong>{currentStageIndex}</strong> concluídas
+            </span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <CalendarDays className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm">
-            <strong>{stages.length}</strong> etapas
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Check className="h-4 w-4 text-green-500" />
-          <span className="text-sm">
-            <strong>{currentStageIndex}</strong> concluídas
-          </span>
-        </div>
+
+        {/* Advance button */}
+        {onAdvanceStage && nextStage && (
+          <Button
+            onClick={() => onAdvanceStage(nextStage.id)}
+            disabled={isAdvancing}
+            size="sm"
+          >
+            {isAdvancing ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <ChevronRight className="h-4 w-4 mr-1" />
+            )}
+            Avançar para {nextStage.name}
+          </Button>
+        )}
       </div>
 
       {/* Timeline */}

@@ -80,6 +80,7 @@ export default function ProjectDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isAdvancingStage, setIsAdvancingStage] = useState(false);
 
   const fetchProject = useCallback(async () => {
     try {
@@ -120,6 +121,29 @@ export default function ProjectDetailPage() {
     } finally {
       setIsDeleting(false);
       setIsDeleteDialogOpen(false);
+    }
+  };
+
+  const handleAdvanceStage = async (stageId: string) => {
+    setIsAdvancingStage(true);
+    try {
+      const response = await fetch(`/api/projects/${projectId}/stage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stage: stageId }),
+      });
+
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || "Erro ao avançar etapa");
+      }
+
+      toast.success("Etapa avançada com sucesso!");
+      await fetchProject();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erro ao avançar etapa");
+    } finally {
+      setIsAdvancingStage(false);
     }
   };
 
@@ -337,7 +361,12 @@ export default function ProjectDetailPage() {
               </TabsList>
 
               <TabsContent value="etapas">
-                <TabEtapas workflow={workflow} startDate={project.created_at} />
+                <TabEtapas
+                  workflow={workflow}
+                  startDate={project.created_at}
+                  onAdvanceStage={handleAdvanceStage}
+                  isAdvancing={isAdvancingStage}
+                />
               </TabsContent>
 
               <TabsContent value="agenda">
