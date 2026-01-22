@@ -57,3 +57,9 @@ next-env.d.ts
 
 # Python virtual env
 .venv
+
+# Playwright MCP
+.playwright-mcp/
+
+# Windows artifacts
+nul
