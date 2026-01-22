@@ -147,7 +147,7 @@ export default function ProjectsPage() {
         });
 
         if (!timeResponse.ok) {
-          console.warn("Failed to add time entry");
+          toast.error("Erro ao registrar horas", { description: "O projeto foi movido, mas as horas nao foram registradas." });
         }
       }
 

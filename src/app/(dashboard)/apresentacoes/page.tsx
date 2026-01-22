@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { Plus } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
 import {
@@ -20,7 +21,7 @@ export default function ApresentacoesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showNewModal, setShowNewModal] = useState(false);
 
-  const { presentations, isLoading, error, create, isCreating } = usePresentations();
+  const { presentations, isLoading, error, create, isCreating, refetch } = usePresentations();
 
   // Filter presentations
   const filteredPresentations = useMemo(() => {
@@ -67,6 +68,28 @@ export default function ApresentacoesPage() {
   const handleCardClick = (id: string) => {
     router.push(`/dashboard/apresentacoes/${id}`);
   };
+
+  const handleDelete = useCallback(async (id: string) => {
+    if (!confirm('Tem certeza que deseja excluir esta apresentacao?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/presentations/${id}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Apresentacao excluida com sucesso');
+        await refetch();
+      } else {
+        toast.error(result.error || 'Erro ao excluir apresentacao');
+      }
+    } catch {
+      toast.error('Erro ao excluir apresentacao');
+    }
+  }, [refetch]);
 
   if (isLoading && (!presentations || presentations.length === 0)) {
     return <PresentationsSkeleton />;
@@ -115,10 +138,7 @@ export default function ApresentacoesPage() {
               presentation={presentation}
               onClick={() => handleCardClick(presentation.id)}
               onEdit={() => handleCardClick(presentation.id)}
-              onDelete={() => {
-                // TODO: Add delete confirmation modal
-                console.log('Delete:', presentation.id);
-              }}
+              onDelete={() => handleDelete(presentation.id)}
             />
           ))}
         </div>

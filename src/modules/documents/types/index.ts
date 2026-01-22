@@ -239,6 +239,44 @@ export interface WordProposalInput extends PDFProposalInput {
 }
 
 // =============================================================================
+// Delivery Schedule PDF Types
+// =============================================================================
+
+export type ScheduleServiceType =
+  | "decorexpress"
+  | "projetexpress"
+  | "produzexpress"
+  | "consultexpress";
+
+export type ScheduleModality = "online" | "presencial";
+
+export interface ScheduleTimelineItem {
+  date: Date;
+  dateFormatted: string;
+  weekday: string;
+  title: string;
+  description: string;
+  milestone?: boolean;
+}
+
+export interface ScheduleInput {
+  clientName: string;
+  serviceType: ScheduleServiceType;
+  modality: ScheduleModality;
+  environments: number;
+  startDate: string; // ISO date string
+  projectId?: string;
+  logoUrl?: string;
+}
+
+export interface ScheduleResult {
+  timeline: ScheduleTimelineItem[];
+  totalDays: number;
+  meetingsCount: string;
+  finalDeliveryDate: string;
+}
+
+// =============================================================================
 // Common Types
 // =============================================================================
 

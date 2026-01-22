@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/shared/lib/supabase/server";
 import { getPresentationById, getAllImages } from "@/modules/presentations";
-import { generatePresentationPPT } from "@/modules/documents";
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -72,6 +71,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
 
     // Cast client_data to expected type
     const clientData = (presentation.client_data || {}) as ClientDataJson;
+
+    // Dynamic import for performance (lazy load heavy library)
+    const { generatePresentationPPT } = await import("@/modules/documents");
 
     // Generate PPT
     const result = await generatePresentationPPT({

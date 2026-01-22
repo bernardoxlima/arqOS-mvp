@@ -162,7 +162,6 @@ export function ProductLinkInput({
                 width={64}
                 height={64}
                 className="h-16 w-16 rounded-md object-cover"
-                unoptimized
               />
             )}
             <div className="flex-1 min-w-0">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Calendar, Loader2, FileText } from "lucide-react";
+import { Download, Calendar, Loader2, FileText, FileDown } from "lucide-react";
 import { format, addDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { jsPDF } from "jspdf";
@@ -11,6 +11,13 @@ import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select";
 import { toast } from "sonner";
 
 interface TabAgendaProps {
@@ -86,11 +93,18 @@ function calculateDeliveries(workflow: Workflow, baseDate: Date): DeliveryItem[]
   });
 }
 
+type ScheduleModality = "online" | "presencial";
+
 export function TabAgenda({ workflow, projectCode, clientName, startDate }: TabAgendaProps) {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isDownloadingPro, setIsDownloadingPro] = useState(false);
   const [customStartDate, setCustomStartDate] = useState(
     startDate ? format(new Date(startDate), "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")
   );
+  const [modality, setModality] = useState<ScheduleModality>(
+    workflow.modality === "presencial" ? "presencial" : "online"
+  );
+  const [environments, setEnvironments] = useState(1);
 
   const baseDate = new Date(customStartDate);
   const deliveries = calculateDeliveries(workflow, baseDate);
@@ -101,7 +115,20 @@ export function TabAgenda({ workflow, projectCode, clientName, startDate }: TabA
     decorexpress: "DecorExpress",
     producao: "Produção",
     projetexpress: "ProjetExpress",
+    produzexpress: "ProduzExpress",
+    consultexpress: "ConsultExpress",
   };
+
+  // Map workflow type to schedule service type
+  const getScheduleServiceType = () => {
+    const type = workflow.type || "decorexpress";
+    if (type === "producao") return "produzexpress";
+    return type as "decorexpress" | "projetexpress";
+  };
+
+  // Show modality/environments selectors based on service type
+  const showModality = workflow.type === "decorexpress";
+  const showEnvironments = workflow.type === "decorexpress" || workflow.type === "producao";
 
   const generatePDF = async () => {
     setIsGenerating(true);
@@ -206,28 +233,113 @@ export function TabAgenda({ workflow, projectCode, clientName, startDate }: TabA
     }
   };
 
+  const downloadProPDF = async () => {
+    setIsDownloadingPro(true);
+    try {
+      const response = await fetch("/api/documents/schedule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientName,
+          serviceType: getScheduleServiceType(),
+          modality,
+          environments,
+          startDate: customStartDate,
+          format: "pdf",
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Erro ao gerar PDF");
+      }
+
+      // Download the file
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `CRONOGRAMA_${serviceTypeLabels[workflow.type || "decorexpress"].toUpperCase().replace(" ", "_")}_${clientName.toUpperCase().replace(/\s+/g, "_")}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast.success("PDF profissional baixado!");
+    } catch (error) {
+      console.error("Error downloading pro PDF:", error);
+      toast.error(error instanceof Error ? error.message : "Erro ao baixar PDF");
+    } finally {
+      setIsDownloadingPro(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Controls */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end justify-between">
-        <div className="space-y-2">
-          <Label htmlFor="startDate">Data de início do projeto</Label>
-          <Input
-            id="startDate"
-            type="date"
-            value={customStartDate}
-            onChange={(e) => setCustomStartDate(e.target.value)}
-            className="w-48"
-          />
-        </div>
-        <Button onClick={generatePDF} disabled={isGenerating}>
-          {isGenerating ? (
-            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-          ) : (
-            <Download className="h-4 w-4 mr-2" />
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap gap-4 items-end">
+          <div className="space-y-2">
+            <Label htmlFor="startDate">Data de início</Label>
+            <Input
+              id="startDate"
+              type="date"
+              value={customStartDate}
+              onChange={(e) => setCustomStartDate(e.target.value)}
+              className="w-44"
+            />
+          </div>
+
+          {showModality && (
+            <div className="space-y-2">
+              <Label>Modalidade</Label>
+              <Select value={modality} onValueChange={(v) => setModality(v as ScheduleModality)}>
+                <SelectTrigger className="w-36">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="online">Online</SelectItem>
+                  <SelectItem value="presencial">Presencial</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           )}
-          Baixar PDF
-        </Button>
+
+          {showEnvironments && (
+            <div className="space-y-2">
+              <Label>Ambientes</Label>
+              <Select value={String(environments)} onValueChange={(v) => setEnvironments(Number(v))}>
+                <SelectTrigger className="w-36">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1 Ambiente</SelectItem>
+                  <SelectItem value="2">2 Ambientes</SelectItem>
+                  <SelectItem value="3">3+ Ambientes</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <Button onClick={generatePDF} disabled={isGenerating} variant="outline" size="sm">
+            {isGenerating ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4 mr-2" />
+            )}
+            PDF Simples
+          </Button>
+          <Button onClick={downloadProPDF} disabled={isDownloadingPro} size="sm">
+            {isDownloadingPro ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <FileDown className="h-4 w-4 mr-2" />
+            )}
+            PDF Profissional
+          </Button>
+        </div>
       </div>
 
       {/* Summary */}

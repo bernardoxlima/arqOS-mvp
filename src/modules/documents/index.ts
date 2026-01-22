@@ -32,6 +32,12 @@ export type {
   PDFProposalInput,
   // Word Proposal
   WordProposalInput,
+  // Schedule PDF
+  ScheduleServiceType,
+  ScheduleModality,
+  ScheduleTimelineItem,
+  ScheduleInput,
+  ScheduleResult,
   // Common
   GenerationResult,
   DocumentFormat,
@@ -66,3 +72,4 @@ export { generateTechnicalDetailingPPT } from "./generators/technical-detailing-
 export { generateBudgetExcel, generateItemsListExcel } from "./generators/budget-excel";
 export { generateProposalPDF } from "./generators/proposal-pdf";
 export { generateProposalWord } from "./generators/proposal-word";
+export { generateSchedulePDF, generateScheduleTimeline } from "./generators/schedule-pdf";

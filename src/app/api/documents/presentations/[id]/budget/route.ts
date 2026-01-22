@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/shared/lib/supabase/server";
 import { getPresentationById, getItemsByCategory } from "@/modules/presentations";
-import { generateBudgetPPT, generateBudgetExcel } from "@/modules/documents";
 import { CATEGORY_COLORS } from "@/modules/documents";
 import type { BudgetItem, BudgetCategory } from "@/modules/documents";
 
@@ -112,6 +111,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
     });
 
     const grandTotal = categories.reduce((sum, cat) => sum + cat.subtotal, 0);
+
+    // Dynamic import for performance (lazy load heavy libraries)
+    const { generateBudgetPPT, generateBudgetExcel } = await import("@/modules/documents");
 
     // Generate document based on format
     if (format === "xlsx") {

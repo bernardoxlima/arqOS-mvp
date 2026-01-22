@@ -25,8 +25,8 @@ export default function WelcomePage() {
           // In a real scenario, we'd fetch the user's name
           setUserName(result.data.organizationName);
         }
-      } catch (error) {
-        console.error("Error checking setup status:", error);
+      } catch {
+        // Silently fail - user will see loading state and can refresh
       } finally {
         setIsLoading(false);
       }

@@ -5,3 +5,4 @@ export { KanbanBoard } from "./kanban-board";
 export { KanbanColumn } from "./kanban-column";
 export { KanbanCard } from "./kanban-card";
 export { TimeEntryModal } from "./time-entry-modal";
+export { ScheduleGenerator } from "./schedule-generator";

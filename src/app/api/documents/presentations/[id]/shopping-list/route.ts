@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/shared/lib/supabase/server";
 import { getPresentationById, getItems } from "@/modules/presentations";
-import { generateShoppingListPPT } from "@/modules/documents";
 import { CATEGORY_COLORS } from "@/modules/documents";
 
 type RouteContext = {
@@ -85,6 +84,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
         imageUrl: product.imagem,
       };
     });
+
+    // Dynamic import for performance (lazy load heavy library)
+    const { generateShoppingListPPT } = await import("@/modules/documents");
 
     // Generate PPT
     const result = await generateShoppingListPPT({

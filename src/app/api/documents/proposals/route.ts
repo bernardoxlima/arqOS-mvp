@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/shared/lib/supabase/server";
-import { generateProposalPDF, generateProposalWord } from "@/modules/documents";
 import { z } from "zod";
 
 const proposalSchema = z.object({
@@ -58,6 +57,9 @@ export async function POST(request: NextRequest) {
     }
 
     const data = validation.data;
+
+    // Dynamic import for performance (lazy load heavy libraries)
+    const { generateProposalPDF, generateProposalWord } = await import("@/modules/documents");
 
     // Generate document based on format
     if (data.format === "docx") {

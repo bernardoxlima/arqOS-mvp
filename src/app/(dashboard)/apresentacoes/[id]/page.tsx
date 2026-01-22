@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import { toast } from 'sonner';
 import {
   ArrowLeft,
   Image,
@@ -23,16 +25,36 @@ import {
 import {
   usePresentation,
   getStatusConfig,
-  TabImagens,
-  TabLayout,
-  TabCompras,
-  TabDetalhamento,
-  TabOrcamento,
-  TabExportar,
   type ImageSection,
   type ClientData,
   type AddItemInput,
 } from '@/modules/presentations';
+
+// Lazy load tabs for performance (~100-150KB reduction)
+const TabImagens = dynamic(
+  () => import('@/modules/presentations/components/tabs/tab-imagens').then(m => m.TabImagens),
+  { loading: () => <Skeleton className="h-96 w-full" /> }
+);
+const TabLayout = dynamic(
+  () => import('@/modules/presentations/components/tabs/tab-layout').then(m => m.TabLayout),
+  { loading: () => <Skeleton className="h-96 w-full" /> }
+);
+const TabCompras = dynamic(
+  () => import('@/modules/presentations/components/tabs/tab-compras').then(m => m.TabCompras),
+  { loading: () => <Skeleton className="h-96 w-full" /> }
+);
+const TabDetalhamento = dynamic(
+  () => import('@/modules/presentations/components/tabs/tab-detalhamento').then(m => m.TabDetalhamento),
+  { loading: () => <Skeleton className="h-96 w-full" /> }
+);
+const TabOrcamento = dynamic(
+  () => import('@/modules/presentations/components/tabs/tab-orcamento').then(m => m.TabOrcamento),
+  { loading: () => <Skeleton className="h-96 w-full" /> }
+);
+const TabExportar = dynamic(
+  () => import('@/modules/presentations/components/tabs/tab-exportar').then(m => m.TabExportar),
+  { loading: () => <Skeleton className="h-96 w-full" /> }
+);
 
 const TABS = [
   { id: 'imagens', label: 'Imagens', icon: Image },
@@ -79,8 +101,9 @@ export default function PresentationDetailPage() {
       }
 
       await refetch();
-    } catch (err) {
-      console.error('Upload error:', err);
+      toast.success('Imagem enviada com sucesso');
+    } catch {
+      toast.error('Erro ao enviar imagem');
     } finally {
       setIsUploading(false);
     }
@@ -97,8 +120,9 @@ export default function PresentationDetailPage() {
       }
 
       await refetch();
-    } catch (err) {
-      console.error('Delete image error:', err);
+      toast.success('Imagem excluida com sucesso');
+    } catch {
+      toast.error('Erro ao excluir imagem');
     }
   }, [presentationId, refetch]);
 
@@ -120,8 +144,9 @@ export default function PresentationDetailPage() {
       }
 
       await refetch();
-    } catch (err) {
-      console.error('Add item error:', err);
+      toast.success('Item adicionado com sucesso');
+    } catch {
+      toast.error('Erro ao adicionar item');
     }
   }, [presentationId, refetch]);
 
@@ -138,8 +163,8 @@ export default function PresentationDetailPage() {
       }
 
       await refetch();
-    } catch (err) {
-      console.error('Update item error:', err);
+    } catch {
+      toast.error('Erro ao atualizar item');
     }
   }, [presentationId, refetch]);
 
@@ -154,65 +179,94 @@ export default function PresentationDetailPage() {
       }
 
       await refetch();
-    } catch (err) {
-      console.error('Delete item error:', err);
+      toast.success('Item excluido com sucesso');
+    } catch {
+      toast.error('Erro ao excluir item');
     }
   }, [presentationId, refetch]);
 
   // Export handlers
   const handleExportPPT = useCallback(async () => {
-    const response = await fetch(`/api/documents/presentations/${presentationId}/ppt`, {
-      method: 'POST',
-    });
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `apresentacao-${presentation?.code || presentationId}.pptx`;
-      a.click();
+    try {
+      const response = await fetch(`/api/documents/presentations/${presentationId}/ppt`, {
+        method: 'POST',
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `apresentacao-${presentation?.code || presentationId}.pptx`;
+        a.click();
+        toast.success('Apresentacao exportada com sucesso');
+      } else {
+        toast.error('Erro ao exportar apresentacao');
+      }
+    } catch {
+      toast.error('Erro ao exportar apresentacao');
     }
   }, [presentationId, presentation?.code]);
 
   const handleExportShoppingListPPT = useCallback(async () => {
-    const response = await fetch(`/api/documents/presentations/${presentationId}/shopping-list`, {
-      method: 'POST',
-    });
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `lista-compras-${presentation?.code || presentationId}.pptx`;
-      a.click();
+    try {
+      const response = await fetch(`/api/documents/presentations/${presentationId}/shopping-list`, {
+        method: 'POST',
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `lista-compras-${presentation?.code || presentationId}.pptx`;
+        a.click();
+        toast.success('Lista de compras exportada com sucesso');
+      } else {
+        toast.error('Erro ao exportar lista de compras');
+      }
+    } catch {
+      toast.error('Erro ao exportar lista de compras');
     }
   }, [presentationId, presentation?.code]);
 
   const handleExportDetailingPPT = useCallback(async () => {
-    const response = await fetch(`/api/documents/presentations/${presentationId}/detailing`, {
-      method: 'POST',
-    });
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `detalhamento-${presentation?.code || presentationId}.pptx`;
-      a.click();
+    try {
+      const response = await fetch(`/api/documents/presentations/${presentationId}/detailing`, {
+        method: 'POST',
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `detalhamento-${presentation?.code || presentationId}.pptx`;
+        a.click();
+        toast.success('Detalhamento exportado com sucesso');
+      } else {
+        toast.error('Erro ao exportar detalhamento');
+      }
+    } catch {
+      toast.error('Erro ao exportar detalhamento');
     }
   }, [presentationId, presentation?.code]);
 
   const handleExportBudgetExcel = useCallback(async () => {
-    const response = await fetch(`/api/documents/presentations/${presentationId}/budget?format=xlsx`, {
-      method: 'POST',
-    });
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `orcamento-${presentation?.code || presentationId}.xlsx`;
-      a.click();
+    try {
+      const response = await fetch(`/api/documents/presentations/${presentationId}/budget?format=xlsx`, {
+        method: 'POST',
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `orcamento-${presentation?.code || presentationId}.xlsx`;
+        a.click();
+        toast.success('Orcamento exportado com sucesso');
+      } else {
+        toast.error('Erro ao exportar orcamento');
+      }
+    } catch {
+      toast.error('Erro ao exportar orcamento');
     }
   }, [presentationId, presentation?.code]);
 

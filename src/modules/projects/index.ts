@@ -95,6 +95,7 @@ export {
   KanbanColumn,
   KanbanCard,
   TimeEntryModal,
+  ScheduleGenerator,
 } from "./components";
 
 // Tab Components
