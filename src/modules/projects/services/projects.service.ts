@@ -164,6 +164,7 @@ export async function createProject(
     organization_id: profile.organization_id,
     code: code || `PRJ-${Date.now()}`,
     client_id: data.clientId || null,
+    client_snapshot: { name: data.clientName },
     service_type: data.serviceType,
     scope: data.scope || null,
     notes: data.notes || null,

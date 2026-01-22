@@ -117,6 +117,7 @@ export interface ProjectFilters {
 
 // Data for creating a project
 export interface CreateProjectData {
+  clientName: string;
   clientId?: string;
   serviceType: ServiceType | ExtendedServiceType;
   modality?: Modality;

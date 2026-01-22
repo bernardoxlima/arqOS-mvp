@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
+import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Button } from "@/shared/components/ui/button";
 
@@ -69,6 +70,7 @@ export function ProjectModal({ open, onOpenChange, onSubmit }: ProjectModalProps
   const form = useForm<CreateProjectSchemaType>({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
+      clientName: "",
       serviceType: "decorexpress",
       modality: "presencial",
       notes: "",
@@ -82,6 +84,7 @@ export function ProjectModal({ open, onOpenChange, onSubmit }: ProjectModalProps
     setIsSubmitting(true);
     try {
       await onSubmit({
+        clientName: values.clientName,
         serviceType: values.serviceType as ServiceType,
         modality: showModality ? (values.modality as Modality) : undefined,
         notes: values.notes || undefined,
@@ -107,6 +110,26 @@ export function ProjectModal({ open, onOpenChange, onSubmit }: ProjectModalProps
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="clientName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome do Cliente / Projeto</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ex: João Silva, Apartamento Centro"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Nome que identificará o projeto
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="serviceType"

@@ -24,6 +24,7 @@ const modalityEnum = z.enum(["presencial", "online"]);
  * Schema for creating a new project
  */
 export const createProjectSchema = z.object({
+  clientName: z.string().min(1, "Nome do cliente é obrigatório").max(200, "Nome não pode exceder 200 caracteres"),
   clientId: z.string().uuid("ID do cliente deve ser um UUID válido").optional(),
   serviceType: serviceTypeEnum,
   modality: modalityEnum.optional(),
