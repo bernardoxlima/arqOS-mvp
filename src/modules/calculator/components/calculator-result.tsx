@@ -113,11 +113,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
 
           <div>
             <p className="text-4xl font-bold">{formatCurrency(result.priceWithDiscount)}</p>
-            {result.pricePerM2 && (
-              <p className="text-sm opacity-80">
-                {formatCurrency(result.pricePerM2)}/m²
-              </p>
-            )}
           </div>
 
           {result.discount > 0 && (
@@ -142,13 +137,6 @@ export function CalculatorResult({ result, isCalculating, onGenerateBudget, isSa
               )}
             </div>
           ) : null}
-
-          <div className="border-t border-primary-foreground/20 pt-4 space-y-2">
-            <div className="flex justify-between text-sm text-amber-300">
-              <span>R$/hora de venda</span>
-              <span>{formatCurrency(result.priceWithDiscount / result.estimatedHours)}</span>
-            </div>
-          </div>
 
           <Button
             className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
