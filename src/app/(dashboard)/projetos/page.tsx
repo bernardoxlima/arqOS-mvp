@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import dynamic from "next/dynamic";
 import { Plus, Search, LayoutGrid, List, Columns3, Filter } from "lucide-react";
 
 import {
@@ -8,11 +9,24 @@ import {
   ProjectCard,
   EmptyState,
   ProjectModal,
-  KanbanBoard,
   type CreateProjectData,
   type ProjectStatus,
   type ProjectFilters,
 } from "@/modules/projects";
+
+// Lazy load KanbanBoard - only loaded when user selects kanban view
+const KanbanBoard = dynamic(
+  () => import("@/modules/projects/components/kanban-board").then((m) => m.KanbanBoard),
+  {
+    loading: () => (
+      <div className="flex gap-4 overflow-x-auto pb-4">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="h-[400px] w-72 flex-shrink-0 rounded-lg bg-muted animate-pulse" />
+        ))}
+      </div>
+    ),
+  }
+);
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import {
