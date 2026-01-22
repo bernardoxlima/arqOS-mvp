@@ -30,7 +30,7 @@ interface NewPresentationModalProps {
 
 export function NewPresentationModal({ open, onClose, onCreate, isCreating }: NewPresentationModalProps) {
   const [name, setName] = useState('');
-  const [phase, setPhase] = useState<PresentationPhase>('Proposta Inicial');
+  const [phase, setPhase] = useState<PresentationPhase>('apresentacao');
   const [clientName, setClientName] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,7 +46,7 @@ export function NewPresentationModal({ open, onClose, onCreate, isCreating }: Ne
 
     // Reset form
     setName('');
-    setPhase('Proposta Inicial');
+    setPhase('apresentacao');
     setClientName('');
   };
 

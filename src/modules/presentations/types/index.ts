@@ -5,16 +5,27 @@ export type Presentation = Tables<"presentations">;
 export type PresentationImage = Tables<"presentation_images">;
 export type PresentationItem = Tables<"presentation_items">;
 
-// Presentation status
-export type PresentationStatus = "draft" | "in_progress" | "review" | "approved" | "archived";
+// Presentation status (matches database CHECK constraint)
+export type PresentationStatus = "draft" | "in_progress" | "ready" | "delivered";
 
-// Presentation phase (from legacy)
-export type PresentationPhase =
-  | "Entrega Final"
-  | "Proposta Inicial"
-  | "Revisão 1"
-  | "Revisão 2"
-  | "Revisão 3";
+// Presentation phase (matches database CHECK constraint)
+export type PresentationPhase = "apresentacao" | "revisao" | "manual" | "entrega";
+
+// Phase display labels for UI
+export const PHASE_LABELS: Record<PresentationPhase, string> = {
+  apresentacao: "Proposta Inicial",
+  revisao: "Revisão",
+  manual: "Manual",
+  entrega: "Entrega Final",
+};
+
+// Status display labels for UI
+export const STATUS_LABELS: Record<PresentationStatus, string> = {
+  draft: "Rascunho",
+  in_progress: "Em Andamento",
+  ready: "Pronta",
+  delivered: "Entregue",
+};
 
 // Image sections (from legacy)
 export type ImageSection =

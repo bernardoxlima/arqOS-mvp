@@ -16,22 +16,20 @@ export interface StatusConfig {
 export const STATUS_CONFIGS: StatusConfig[] = [
   { id: 'draft', label: 'Rascunho', color: 'gray', bgColor: 'bg-gray-100', textColor: 'text-gray-700' },
   { id: 'in_progress', label: 'Em Andamento', color: 'blue', bgColor: 'bg-blue-100', textColor: 'text-blue-700' },
-  { id: 'review', label: 'Em Revisão', color: 'amber', bgColor: 'bg-amber-100', textColor: 'text-amber-700' },
-  { id: 'approved', label: 'Aprovada', color: 'emerald', bgColor: 'bg-emerald-100', textColor: 'text-emerald-700' },
-  { id: 'archived', label: 'Arquivada', color: 'slate', bgColor: 'bg-slate-100', textColor: 'text-slate-700' },
+  { id: 'ready', label: 'Pronta', color: 'emerald', bgColor: 'bg-emerald-100', textColor: 'text-emerald-700' },
+  { id: 'delivered', label: 'Entregue', color: 'slate', bgColor: 'bg-slate-100', textColor: 'text-slate-700' },
 ];
 
 export function getStatusConfig(status: string): StatusConfig {
   return STATUS_CONFIGS.find(s => s.id === status) || STATUS_CONFIGS[0];
 }
 
-// Phase options for dropdown
+// Phase options for dropdown (values match database CHECK constraint)
 export const PHASE_OPTIONS: { value: PresentationPhase; label: string }[] = [
-  { value: 'Proposta Inicial', label: 'Proposta Inicial' },
-  { value: 'Revisão 1', label: 'Revisão 1' },
-  { value: 'Revisão 2', label: 'Revisão 2' },
-  { value: 'Revisão 3', label: 'Revisão 3' },
-  { value: 'Entrega Final', label: 'Entrega Final' },
+  { value: 'apresentacao', label: 'Proposta Inicial' },
+  { value: 'revisao', label: 'Revisão' },
+  { value: 'manual', label: 'Manual' },
+  { value: 'entrega', label: 'Entrega Final' },
 ];
 
 // Image section labels

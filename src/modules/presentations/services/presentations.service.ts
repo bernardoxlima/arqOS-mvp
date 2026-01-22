@@ -45,7 +45,7 @@ export async function createPresentation(
     name: input.name,
     code: code || `APRES-${Date.now()}`,
     project_id: input.projectId || null,
-    phase: input.phase || "Entrega Final",
+    phase: input.phase || "apresentacao",
     status: "draft",
     client_data: (input.clientData || null) as unknown as Json,
     settings: (input.settings || null) as unknown as Json,

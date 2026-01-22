@@ -61,7 +61,7 @@ const samplePresentation = {
   name: "Apresentação Teste",
   code: "APRES-25001",
   project_id: null,
-  phase: "Entrega Final",
+  phase: "entrega",
   status: "draft",
   client_data: { clientName: "Maria Silva" },
   settings: null,
@@ -329,7 +329,7 @@ describe("Presentations Service", () => {
         eq: vi.fn().mockReturnThis(),
         order: vi.fn().mockReturnThis(),
         single: vi.fn().mockResolvedValue({
-          data: { ...samplePresentation, status: "approved" },
+          data: { ...samplePresentation, status: "ready" },
           error: null,
         }),
       }));
@@ -337,7 +337,7 @@ describe("Presentations Service", () => {
       const result = await updatePresentation(
         supabase,
         samplePresentation.id,
-        { status: "approved" }
+        { status: "ready" }
       );
 
       expect(result.error).toBeUndefined();

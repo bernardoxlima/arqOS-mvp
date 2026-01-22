@@ -61,12 +61,12 @@ export default function ApresentacoesPage() {
     if (result) {
       setShowNewModal(false);
       // Navigate to the new presentation
-      router.push(`/dashboard/apresentacoes/${result.id}`);
+      router.push(`/apresentacoes/${result.id}`);
     }
   };
 
   const handleCardClick = (id: string) => {
-    router.push(`/dashboard/apresentacoes/${id}`);
+    router.push(`/apresentacoes/${id}`);
   };
 
   const handleDelete = useCallback(async (id: string) => {
